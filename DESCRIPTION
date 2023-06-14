@@ -1,0 +1,15 @@
+Package: modelcheck
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: c(
+        person("Ziyang", "Guo", role = c("aut", "cre"), email = "ziyangguo2027@u.northwestern.edu"),
+        person("Jessica", "Hullman", role = "aut", email = "jessica.hullman@gmail.com"),
+        person("Matthew", "Kay", role = "aut", email = "mjskay@northwestern.edu"),
+        person("Alex", "Kale", role = "aut", email = "kalea@uchicago.edu")
+    )
+Description: What the package does (one paragraph).
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
