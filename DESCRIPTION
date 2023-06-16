@@ -8,8 +8,21 @@ Authors@R: c(
         person("Alex", "Kale", role = "aut", email = "kalea@uchicago.edu")
     )
 Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Imports: 
+    cowplot (>= 1.1.1),
+    dplyr (>= 1.1.1),
+    gganimate (>= 1.0.8),
+    ggdist (>= 3.2.1),
+    ggplot2 (>= 3.4.2),
+    insight (>= 0.19.1),
+    magick (>= 2.7.4),
+    rlang (>= 1.1.0),
+    tidybayes (>= 3.0.4),
+    zeallot (>= 0.1.0)
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
