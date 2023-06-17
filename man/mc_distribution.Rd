@@ -15,7 +15,7 @@ mc_distribution(
 }
 \arguments{
 \item{distribution}{Which distribution to draw from. The options include \code{"predictive"} and
-and pushforward transformations (e.g. $\mu$, $\sigma$, and $\phi$). For example,
+and pushforward transformations (e.g. \code{mu}, \code{sigma}, and \code{phi}). For example,
 if the model is normal family and \code{distribution = "predictive"}, we draws from
 posterior predictive distribution; if \code{distribution = "mu"}, we draws from
 the linear/link-level predictor (i.e. pushforward transformations).}
@@ -31,7 +31,7 @@ inverse-link function? See \href{https://mc-stan.org/rstantools/reference/poster
 \item{seed}{A seed to use when subsampling draws (i.e. when ndraws is not NULL).}
 
 \item{re_formula}{Formula containing group-level effects to be considered
-in the prediction. See \href{http://mjskay.github.io/tidybayes/reference/add_predicted_draws.html}{\code{add_predicted_draws}}.}
+in the prediction. See \href{http://mjskay.github.io/tidybayes/reference/add_predicted_draws.html}{\code{tidybayes::add_predicted_draws}}.}
 }
 \description{
 Define how to draw from posterior distribution

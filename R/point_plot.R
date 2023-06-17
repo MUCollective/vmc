@@ -1,24 +1,29 @@
-point_plot = function(..., draw = "collapse") {
+point_plot = function(..., n_sample = NA, draw = "collapse") {
   function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var) {
-    
+    if (!is.na(n_sample) && ".draw" %in% colnames(samples)) {
+      sample_ids = sample(1:ndraw, n_sample)
+      samples <- samples |>
+        dplyr::filter(.draw %in% sample_ids)
+    }
+
     if (draw == "collapse") {
-      p = ggplot2::geom_point(data = samples, 
+      p = ggplot2::geom_point(data = samples,
                              mapping = ggplot2::aes(y = !!y_var,
-                                                    color = model_color), 
+                                                    color = model_color),
                              ...)
     } else if (draw == "group") {
-      p = ggplot2::geom_point(data = samples, 
+      p = ggplot2::geom_point(data = samples,
                              mapping = ggplot2::aes(y = !!y_var,
                                                     group = .draw,
-                                                    color = model_color), 
+                                                    color = model_color),
                              ...)
     } else if (draw == "hops") {
       hops_id = get_unique_id()
       draw_col = paste(".draw", hops_id, sep = "")
-      p = c(ggplot2::geom_point(data = samples |> 
-                                 dplyr::mutate(".draw{{hops_id}}" := .draw), 
+      p = c(ggplot2::geom_point(data = samples |>
+                                 dplyr::mutate(".draw{{hops_id}}" := .draw),
                                mapping = ggplot2::aes(y = !!y_var,
-                                                      color = model_color), 
+                                                      color = model_color),
                                ...),
             gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE))
     } else if (is.function(draw)) {
@@ -28,12 +33,12 @@ point_plot = function(..., draw = "collapse") {
       #     uniqv[which.max(tabulate(match(v, uniqv)))]
       #   })
       # }
-      
-      p = ggplot2::geom_point(data = samples |> 
+
+      p = ggplot2::geom_point(data = samples |>
                                dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) |>
-                               dplyr::summarise(y_agg = draw(!!y_var)), 
+                               dplyr::summarise(y_agg = draw(!!y_var)),
                              mapping = ggplot2::aes(y = y_agg,
-                                                    color = model_color), 
+                                                    color = model_color),
                              ...)
     }
     p

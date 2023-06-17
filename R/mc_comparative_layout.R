@@ -27,7 +27,7 @@ mc_comp_layout = function(comparative_layout, ..., exp_op = NULL) {
     } else if (comparative_layout == "nestjux") {
       comp_layout = purrr::partial(comp_layout_nestjux, ...)
     }
-    # TODO: multiple layouts to support
+
     c(list(comparative_layout = comp_layout, explicit_operation = exp_op),
       mc_setting)
   }
