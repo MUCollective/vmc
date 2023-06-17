@@ -1,0 +1,36 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# Modelcheck: An R package for generating model check visualization
+
+<!-- badges: start -->
+```{r}
+usethis::use_cran_badge()
+usethis::use_coverage()
+usethis::use_github_actions()
+```
+[![CRAN status](https://www.r-pkg.org/badges/version/modelcheck)](https://CRAN.R-project.org/package=modelcheck)
+[![Codecov test coverage](https://codecov.io/gh/Guoziyang27/modelcheck/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Guoziyang27/modelcheck?branch=main)
+[![R-CMD-check](https://github.com/Guoziyang27/modelcheck/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Guoziyang27/modelcheck/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+## Installation
+
+You can install the development version of modelcheck from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("Guoziyang27/modelcheck")
+```
