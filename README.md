@@ -4,9 +4,7 @@
 # Modelcheck: An R package for generating model check visualization
 
 <!-- badges: start -->
-
-usethis::use_cran_badge() usethis::use_coverage()
-usethis::use_github_actions() <!-- badges: end -->
+<!-- badges: end -->
 
 ## Installation
 

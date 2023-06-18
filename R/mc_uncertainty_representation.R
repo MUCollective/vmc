@@ -1,19 +1,4 @@
 
-#' Define the geom/uncertainty representation for model
-#'
-#' `mc_model()` adds geoms for draws from model posterior distribution, either
-#'  basic geom (e.g. points, lines, and tiles) or uncertainty representations
-#'  (e.g. eye plots, dots plots, and lineribbon plot). `mc_model_*(...)` are
-#'  equivalent to `mc_model("*", ...)`.
-#'
-#' @param uncertainty_representation The uncertainty representation option,
-#'  including ``
-#' @param ... Augments passed to geom function. For example, `mc_model("dots", size = 10)`
-#'  will pass `size = 10` to the geom function [`ggdist::stat_dots()`](https://mjskay.github.io/ggdist/reference/stat_dots.html).
-#'
-#' @export
-#'
-#' @examples
 mc_model = function(uncertainty_representation, ...) {
   p = function(mc_setting = NULL) {
     if (uncertainty_representation == "cdf") {
