@@ -1,13 +1,13 @@
 Package: modelcheck
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Check your model with data observations
+Version: 0.0.0.0
 Authors@R: c(
         person("Ziyang", "Guo", role = c("aut", "cre"), email = "ziyangguo2027@u.northwestern.edu"),
         person("Jessica", "Hullman", role = "aut", email = "jessica.hullman@gmail.com"),
         person("Matthew", "Kay", role = "aut", email = "mjskay@northwestern.edu"),
         person("Alex", "Kale", role = "aut", email = "kalea@uchicago.edu")
     )
-Description: What the package does (one paragraph).
+Description: Check your model with data observations
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
