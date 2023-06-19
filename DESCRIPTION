@@ -25,6 +25,7 @@ Imports:
     zeallot (>= 0.1.0)
 Suggests: 
     brms,
+    gifski,
     knitr,
     rmarkdown,
     rstan,
