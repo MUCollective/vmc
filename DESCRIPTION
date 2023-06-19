@@ -24,8 +24,10 @@ Imports:
     tidybayes (>= 3.0.4),
     zeallot (>= 0.1.0)
 Suggests: 
+    brms,
     knitr,
     rmarkdown,
+    rstan,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 URL: https://guoziyang27.github.io/modelcheck/
