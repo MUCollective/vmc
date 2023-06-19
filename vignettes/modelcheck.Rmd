@@ -23,7 +23,6 @@ This vignette introduces the `modelcheck` package, which facilitates model check
 The following libraries are required to run this vignette:
 
 ```{r setup}
-library(brms)
 library(dplyr)
 library(purrr)
 library(modelcheck)
@@ -31,6 +30,7 @@ library(ggplot2)
 library(ggdist)
 library(cowplot)
 library(rstan)
+library(brms)
 
 theme_set(theme_tidybayes() + panel_border())
 ```
