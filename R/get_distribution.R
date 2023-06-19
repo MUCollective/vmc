@@ -15,15 +15,15 @@ mc_get_distribution <- function(model, distribution,
   x_label = NULL
   
   if (distribution == "predictive") {
-    samples <- model |>
+    samples <- model %>%
       tidybayes::predicted_draws(newdata = input_data, 
                       ndraws = ndraws,
                       seed = seed,
-                      re_formula = re_formula) |>
+                      re_formula = re_formula) %>%
       dplyr::mutate(prediction = .prediction)
     samples$observation = samples[[response_var]]
   } else {
-    samples <- model |>
+    samples <- model %>%
       tidybayes::linpred_draws(newdata = input_data, 
                     dpar = distribution, 
                     transform = is.transform, 

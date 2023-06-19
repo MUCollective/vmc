@@ -5,12 +5,12 @@ comp_layout_nestjux = function(p_obs, ...) {
     p <- p_pred
     
     if ("x_axis" %in% colnames(samples)) {
-      samples = samples |> 
-        dplyr::group_by_at(c(ggplot2::vars(x_axis, observation, .row), row_vars, col_vars)) |>
+      samples = samples %>% 
+        dplyr::group_by_at(c(ggplot2::vars(x_axis, observation, .row), row_vars, col_vars)) %>%
         dplyr::summarise()
     } else {
-      samples = samples |> 
-        dplyr::group_by_at(c(ggplot2::vars(observation, .row), row_vars, col_vars)) |>
+      samples = samples %>% 
+        dplyr::group_by_at(c(ggplot2::vars(observation, .row), row_vars, col_vars)) %>%
         dplyr::summarise()
     }
     samples = samples[!duplicated(samples), ]
@@ -19,7 +19,7 @@ comp_layout_nestjux = function(p_obs, ...) {
       breaks = sort(unique(samples$x_axis))
       labels = as.vector(rbind(breaks, rep("", length(breaks))))
       breaks = as.vector(rbind(paste(breaks, "obs", sep = ""), breaks))
-      samples = samples |> 
+      samples = samples %>% 
         dplyr::mutate(x_axis = paste(x_axis, "obs", sep = ""))
     }
     

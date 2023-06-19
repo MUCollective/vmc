@@ -2,8 +2,9 @@
 uncertainty_rep_ribbon = function(..., n_sample = NA, draw = "collapse") {
   function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var) {
     if (!is.na(n_sample) && ".draw" %in% colnames(samples)) {
+      ndraw <- max(samples$.draw)
       sample_ids = sample(1:ndraw, n_sample)
-      samples <- samples |>
+      samples <- samples %>%
         dplyr::filter(.draw %in% sample_ids)
     }
     if ("x_axis" %in% colnames(samples)) {
@@ -22,8 +23,8 @@ uncertainty_rep_ribbon = function(..., n_sample = NA, draw = "collapse") {
       } else if (draw == "hops") {
         hops_id = get_unique_id()
         draw_col = paste(".draw", hops_id, sep = "")
-        p = c(ggdist::stat_ribbon(data = samples |>
-                                      dplyr::mutate(".draw{{hops_id}}" := .draw),
+        p = c(ggdist::stat_ribbon(data = samples %>%
+                                      dplyr::mutate(!!draw_col := .draw),
                                     ggplot2::aes(x = x_axis, y = !!y_var, group = .draw,
                                                  color = model_color),
                                     ...,
@@ -34,8 +35,8 @@ uncertainty_rep_ribbon = function(..., n_sample = NA, draw = "collapse") {
         #   agg_func = mean
         # }
 
-        p = ggdist::stat_ribbon(data = samples |>
-                                      dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) |>
+        p = ggdist::stat_ribbon(data = samples %>%
+                                      dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
                                       dplyr::summarise(y_agg = draw(!!y_var)),
                                     ggplot2::aes(x = x_axis, y = y_agg,
                                                  color = model_color),
@@ -48,14 +49,14 @@ uncertainty_rep_ribbon = function(..., n_sample = NA, draw = "collapse") {
       # if (".draw" %in% colnames(samples)) {
       #   x_seq = function(len) seq(min(samples[[rlang::quo_name(y_var)]]),
       #                             max(samples[[rlang::quo_name(y_var)]]), length.out = len)
-      #   temp_samples <- samples |>
-      #     dplyr::group_by_at(c(ggplot2::vars(.draw), row_vars, col_vars)) |>
-      #     dplyr::filter(dplyr::n()> 1) |>
+      #   temp_samples <- samples %>%
+      #     dplyr::group_by_at(c(ggplot2::vars(.draw), row_vars, col_vars)) %>%
+      #     dplyr::filter(dplyr::n()> 1) %>%
       #     dplyr::summarise(x_ds = list(stats::density(!!y_var)$x),
-      #                      y_ds = list(stats::density(!!y_var)$y)) |>
-      #     dplyr::rowwise() |>
+      #                      y_ds = list(stats::density(!!y_var)$y)) %>%
+      #     dplyr::rowwise() %>%
       #     dplyr::mutate(x_axis = list(x_seq(length(x_ds))),
-      #                   y_axis = list(stats::approx(x_ds, y_ds, x_seq(base::length(x_ds)))$y)) |>
+      #                   y_axis = list(stats::approx(x_ds, y_ds, x_seq(base::length(x_ds)))$y)) %>%
       #     tidyr::unnest(c(x_axis, y_axis))
       #
       #   return(c(ggdist::stat_lineribbon(data = temp_samples,

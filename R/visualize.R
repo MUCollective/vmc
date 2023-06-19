@@ -11,16 +11,14 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
   zeallot::`%<-%`(c(x_axis_type, y_axis_type), axis_type)
   print("Visualizing...")
 
-  ggplot2::theme_set(ggdist::theme_tidybayes() + cowplot::panel_border())
-
   x_var = x_var[[1]]
   if (!is.null(x_var)) {
-    samples = samples |> dplyr::select(x_axis = !!x_var, everything())
+    samples = samples %>% dplyr::select(x_axis = !!x_var, everything())
     labels$x = rlang::quo_name(x_var)
   }
 
   if (!("y_axis" %in% colnames(samples))) {
-    samples = samples |> dplyr::select(y_axis = prediction, everything())
+    samples = samples %>% dplyr::select(y_axis = prediction, everything())
   }
 
   # sampling_by <- function(distribution, number_of_total, number_of_sample, way = "uniform") {
@@ -33,38 +31,38 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
   #       ceiling(torus(nrow, number_of_sample) * number_of_total)
   #   }
   #
-  #   samples <- distribution |>
-  #     dplyr::group_by(.row) |>
-  #     dplyr::mutate(ranks_in_row = order(order(y_axis, decreasing=FALSE))) |>
-  #     dplyr::filter(ranks_in_row %in% sample_rank[.row,]) |>
+  #   samples <- distribution %>%
+  #     dplyr::group_by(.row) %>%
+  #     dplyr::mutate(ranks_in_row = order(order(y_axis, decreasing=FALSE))) %>%
+  #     dplyr::filter(ranks_in_row %in% sample_rank[.row,]) %>%
   #     dplyr::mutate(sample_id = seq_along(.draw))
   #
   #   samples
   # }
-  ndraw <- max(samples$.draw)
-  # samples <- samples |>
+
+  # samples <- samples %>%
   # sampling_by(ndraw, nHOPs_draw, way = "quasi")
   # sample_ids = sample(1:ndraw, n_sample)
-  # samples <- samples |>
+  # samples <- samples %>%
   #   dplyr::filter(.draw %in% sample_ids)
 
   # sample_ids = sample(1:ndraw)
 
   if ("y_axis" %in% colnames(samples) && is.null(y_axis_type)) {
-    y_axis_type = samples$y_axis |> get_type()
+    y_axis_type = samples$y_axis %>% get_type()
   }
   if ("x_axis" %in% colnames(samples) && is.null(x_axis_type)) {
-    x_axis_type = samples$x_axis |> get_type()
+    x_axis_type = samples$x_axis %>% get_type()
   }
 
   colors_legend = c("obs" = observed_color, "model" = model_color)
 
   if ("x_axis" %in% colnames(samples)) {
     if (x_axis_type == "quantitative") {
-      p <- ggplot2::ggplot(mapping = aes(x = x_axis))
+      p <- ggplot2::ggplot(mapping = ggplot2::aes(x = x_axis))
     } else {
       x_axis_order = sort(unique(samples$x_axis))
-      p <- ggplot2::ggplot(mapping = aes(x = factor(x_axis, levels = sort(unique(x_axis)))))
+      p <- ggplot2::ggplot(mapping = ggplot2::aes(x = factor(x_axis, levels = sort(unique(x_axis)))))
     }
   } else {
     p <- ggplot2::ggplot()
@@ -75,7 +73,6 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
 
   call_rep = function(func) {
     func(samples,
-         sample_ids,
          row_vars,
          col_vars,
          labels,

@@ -5,12 +5,12 @@ comp_layout_sup = function(p_obs, ...) {
     p <- p_pred
     
     if ("x_axis" %in% colnames(samples)) {
-      samples = samples |> 
-        dplyr::group_by_at(c(ggplot2::vars(x_axis, observation, .row), row_vars, col_vars)) |>
+      samples = samples %>% 
+        dplyr::group_by_at(c(ggplot2::vars(x_axis, observation, .row), row_vars, col_vars)) %>%
         dplyr::summarise()
     } else {
-      samples = samples |> 
-        dplyr::group_by_at(c(ggplot2::vars(observation, .row), row_vars, col_vars)) |>
+      samples = samples %>% 
+        dplyr::group_by_at(c(ggplot2::vars(observation, .row), row_vars, col_vars)) %>%
         dplyr::summarise()
     }
     samples = samples[!duplicated(samples), ]

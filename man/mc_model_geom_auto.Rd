@@ -8,7 +8,7 @@
 \usage{
 mc_obs_geom_auto(...)
 
-mc_model_geom_auto(...)
+mc_model_geom_auto(..., n_sample = NA, draw = NULL)
 }
 \arguments{
 \item{...}{Augments passed to geom functions (e.g. \href{https://ggplot2.tidyverse.org/reference/geom_point.html}{\code{ggplot2::geom_point}},

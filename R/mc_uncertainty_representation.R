@@ -61,7 +61,7 @@ mc_model = function(uncertainty_representation, ...) {
 #' @examples
 mc_model_cdf = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_cdf(..., n_sample, draw)
+    uncert_rep = uncertainty_rep_cdf(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -92,7 +92,7 @@ mc_model_cdf = function(..., n_sample = NA, draw = "collapse") {
 #' @examples
 mc_model_ccdf = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_ccdf(..., n_sample, draw)
+    uncert_rep = uncertainty_rep_ccdf(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -123,7 +123,7 @@ mc_model_ccdf = function(..., n_sample = NA, draw = "collapse") {
 #' @examples
 mc_model_dots = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_dots(..., n_sample, draw)
+    uncert_rep = uncertainty_rep_dots(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -154,7 +154,7 @@ mc_model_dots = function(..., n_sample = NA, draw = "collapse") {
 #' @examples
 mc_model_dotsinterval = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_dotsinterval(..., n_sample, draw)
+    uncert_rep = uncertainty_rep_dotsinterval(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -185,7 +185,7 @@ mc_model_dotsinterval = function(..., n_sample = NA, draw = "collapse") {
 #' @examples
 mc_model_eye = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_eye(..., n_sample, draw)
+    uncert_rep = uncertainty_rep_eye(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -216,7 +216,7 @@ mc_model_eye = function(..., n_sample = NA, draw = "collapse") {
 #' @examples
 mc_model_halfeye = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_halfeye(..., n_sample, draw)
+    uncert_rep = uncertainty_rep_halfeye(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -247,7 +247,7 @@ mc_model_halfeye = function(..., n_sample = NA, draw = "collapse") {
 #' @examples
 mc_model_slab = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_slab(..., n_sample, draw)
+    uncert_rep = uncertainty_rep_slab(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -278,7 +278,7 @@ mc_model_slab = function(..., n_sample = NA, draw = "collapse") {
 #' @examples
 mc_model_gradientinterval = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_gradient(..., n_sample, draw)
+    uncert_rep = uncertainty_rep_gradient(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -309,7 +309,7 @@ mc_model_gradientinterval = function(..., n_sample = NA, draw = "collapse") {
 #' @examples
 mc_model_histinterval = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_his(..., n_sample, draw)
+    uncert_rep = uncertainty_rep_his(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -340,7 +340,7 @@ mc_model_histinterval = function(..., n_sample = NA, draw = "collapse") {
 #' @examples
 mc_model_pointinterval = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_pointinterval(..., n_sample, draw)
+    uncert_rep = uncertainty_rep_pointinterval(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -371,7 +371,7 @@ mc_model_pointinterval = function(..., n_sample = NA, draw = "collapse") {
 #' @examples
 mc_model_interval = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_interval(..., n_sample, draw)
+    uncert_rep = uncertainty_rep_interval(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -402,7 +402,7 @@ mc_model_interval = function(..., n_sample = NA, draw = "collapse") {
 #' @examples
 mc_model_lineribbon = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_lineribbon(..., n_sample, draw)
+    uncert_rep = uncertainty_rep_lineribbon(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -433,7 +433,7 @@ mc_model_lineribbon = function(..., n_sample = NA, draw = "collapse") {
 #' @examples
 mc_model_ribbon = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_ribbon(..., n_sample, draw)
+    uncert_rep = uncertainty_rep_ribbon(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -490,10 +490,10 @@ mc_model_geom = function(..., base_plot = "auto") {
 #' @export
 #'
 #' @examples
-mc_model_geom_auto = function(...) {
+mc_model_geom_auto = function(..., n_sample = NA, draw = NULL) {
   p = function(mc_setting = NULL) {
 
-    uncert_rep = auto_plot(...)
+    uncert_rep = auto_plot(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -526,7 +526,7 @@ mc_model_geom_auto = function(...) {
 mc_model_geom_point = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
 
-    uncert_rep = point_plot(..., n_sample, draw)
+    uncert_rep = point_plot(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -559,7 +559,7 @@ mc_model_geom_point = function(..., n_sample = NA, draw = "collapse") {
 mc_model_geom_line = function(..., n_sample = NA, draw = "group") {
   p = function(mc_setting = NULL) {
 
-    uncert_rep = line_plot(..., n_sample, draw)
+    uncert_rep = line_plot(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -592,7 +592,7 @@ mc_model_geom_line = function(..., n_sample = NA, draw = "group") {
 mc_model_geom_tile = function(..., n_sample = NA, draw = "hops") {
   p = function(mc_setting = NULL) {
 
-    uncert_rep = tile_plot(..., n_sample, draw)
+    uncert_rep = tile_plot(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -628,7 +628,7 @@ mc_model_geom_tile = function(..., n_sample = NA, draw = "hops") {
 mc_model_geom_custom = function(geom_plot, ..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
 
-    uncert_rep = customized_plot(geom_plot, ..., n_sample, draw)
+    uncert_rep = customized_plot(geom_plot, ..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
