@@ -4,15 +4,10 @@
 \alias{mc_set_order}
 \title{Order ticks on axis, rows, and columns}
 \usage{
-mc_set_order(
-  x_order = NULL,
-  y_order = NULL,
-  row_order = NULL,
-  col_order = NULL
-)
+mc_set_order(x = NULL, y = NULL, row = NULL, col = NULL)
 }
 \arguments{
-\item{x_order, y_order, row_order, col_order}{A list of the order of x ticks, y ticks, rows, and columns.}
+\item{x, y, row, col}{A list of the order of x ticks, y ticks, rows, and columns.}
 }
 \description{
 \code{mc_set_order} orders ticks on axis or grids on rows and columns. To make it ordered,

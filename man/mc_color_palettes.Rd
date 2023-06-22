@@ -12,6 +12,11 @@ mc_set_model_color(model_color = NULL)
 
 mc_set_obs_color(obs_color = NULL)
 }
+\arguments{
+\item{model_color, obs_color}{The color used for model predictions and data
+observations. By default, \code{mcplot()} uses \code{mc_color_palettes()} to define
+colors for model predictions and data observations.}
+}
 \description{
 \code{mc_color_palettes} return a pair of default color for data observations
 and model prediction.

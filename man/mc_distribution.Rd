@@ -6,7 +6,7 @@
 \usage{
 mc_distribution(
   distribution = "predictive",
-  newdata = "obs",
+  newdata = NULL,
   is.transform = TRUE,
   ndraws = 500,
   seed = NULL,
@@ -15,12 +15,13 @@ mc_distribution(
 }
 \arguments{
 \item{distribution}{Which distribution to draw from. The options include \code{"predictive"} and
-and pushforward transformations (e.g. \code{mu}, \code{sigma}, and \code{phi}). For example,
+and push-forward transformations (e.g. \code{mu}, \code{sigma}, and \code{phi}). For example,
 if the model is normal family and \code{distribution = "predictive"}, we draws from
 posterior predictive distribution; if \code{distribution = "mu"}, we draws from
-the linear/link-level predictor (i.e. pushforward transformations).}
+the linear/link-level predictor (i.e. push-forward transformations).}
 
-\item{newdata}{Data frame to generate predictions from.}
+\item{newdata}{Data frame to generate predictions from, or \code{NULL} to use the
+data frame used to fit model, i.e. replicated predictive distribution.}
 
 \item{is.transform}{Should the linear predictor be transformed using the
 inverse-link function? See \href{https://mc-stan.org/rstantools/reference/posterior_linpred.html}{\code{rstanarm::posterior_linpred()}} or
@@ -34,5 +35,8 @@ inverse-link function? See \href{https://mc-stan.org/rstantools/reference/poster
 in the prediction. See \href{http://mjskay.github.io/tidybayes/reference/add_predicted_draws.html}{\code{tidybayes::add_predicted_draws}}.}
 }
 \description{
-Define how to draw from posterior distribution
+\code{modelcheck} uses the R package \href{http://mjskay.github.io/tidybayes/index.html}{\code{tidybayes}}
+to draw from posterior distributions. For posterior predictive distributions,
+\code{modelcheck} uses \code{tidybayes::predicted_draws()}; for posterior distribution
+of push-forward transformation, \code{modelcheck} uses \code{tidybayes::linpred_draws()}.
 }

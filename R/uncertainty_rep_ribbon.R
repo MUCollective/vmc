@@ -1,6 +1,6 @@
 
-uncertainty_rep_ribbon = function(..., n_sample = NA, draw = "collapse") {
-  function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var) {
+uncertainty_rep_ribbon = function(..., scale_fill = ggplot2::scale_fill_brewer(palette = 7), n_sample = NA, draw = "collapse") {
+  function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var, colors_legend) {
     if (!is.na(n_sample) && ".draw" %in% colnames(samples)) {
       ndraw <- max(samples$.draw)
       sample_ids = sample(1:ndraw, n_sample)
@@ -44,7 +44,8 @@ uncertainty_rep_ribbon = function(..., n_sample = NA, draw = "collapse") {
                                     alpha = 0.5)
       }
 
-      return(c(p, ggplot2::scale_fill_brewer(palette = 7)))
+      return(list(ggnewscale::new_scale_fill(), p, scale_fill,
+                  ggnewscale::new_scale_fill(), ggplot2::scale_fill_manual(name = "fill", values = colors_legend)))
     } else {
       # if (".draw" %in% colnames(samples)) {
       #   x_seq = function(len) seq(min(samples[[rlang::quo_name(y_var)]]),

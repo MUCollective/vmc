@@ -1,8 +1,8 @@
 
 mc_operate <- function(prev_ret, operation, x_label = NULL, y_label = NULL) {
   zeallot::`%<-%`(c(samples, model, response_var, labels), prev_ret)
-  print("Operating distributions...")
-  
+
+
   ndraw <- max(samples$.draw)
   n.row <- max(samples$.row)
   if (is.null(operation)) {
@@ -17,12 +17,12 @@ mc_operate <- function(prev_ret, operation, x_label = NULL, y_label = NULL) {
       dplyr::mutate(y_axis = prediction - observation)
     labels$y = paste("prediction - observation:", labels$y)
   } else if (operation == "qq") {
-    samples <- samples %>% 
+    samples <- samples %>%
       dplyr::ungroup() %>%
-      dplyr::select(-.row, -.draw, -.chain, -.iteration) %>% 
-      tidybayes::add_predicted_draws(model, value = ".newprediction", ndraws = 100) %>% 
-      dplyr::summarise(y_axis = mean(.newprediction < mpg)) %>% 
-      dplyr::select(-.row) %>% 
+      dplyr::select(-.row, -.draw, -.chain, -.iteration) %>%
+      tidybayes::add_predicted_draws(model, value = ".newprediction", ndraws = 100) %>%
+      dplyr::summarise(y_axis = mean(.newprediction < observation)) %>%
+      dplyr::select(-.row) %>%
       merge(samples) %>%
       # dplyr::group_by(.draw) %>%
       dplyr::mutate(ranks_in_row = order(order(y_axis, decreasing=FALSE)),
@@ -30,12 +30,12 @@ mc_operate <- function(prev_ret, operation, x_label = NULL, y_label = NULL) {
     labels$x = "theoretical"
     labels$y = paste("prediction < observation:", labels$y)
   } else if (operation == "worm") {
-    samples <- samples %>% 
+    samples <- samples %>%
       dplyr::ungroup() %>%
-      dplyr::select(-.row, -.draw, -.chain, -.iteration) %>% 
-      tidybayes::add_predicted_draws(model, value = ".newprediction", ndraws = 100) %>% 
-      dplyr::summarise(y_axis = mean(.newprediction < mpg)) %>% 
-      dplyr::select(-.row) %>% 
+      dplyr::select(-.row, -.draw, -.chain, -.iteration) %>%
+      tidybayes::add_predicted_draws(model, value = ".newprediction", ndraws = 100) %>%
+      dplyr::summarise(y_axis = mean(.newprediction < observation)) %>%
+      dplyr::select(-.row) %>%
       merge(samples) %>%
       dplyr::group_by(.draw) %>%
       dplyr::mutate(ranks_in_row = order(order(y_axis, decreasing=FALSE)),

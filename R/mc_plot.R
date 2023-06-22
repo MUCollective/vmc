@@ -1,9 +1,13 @@
 
 #' Create a new mcplot
 #'
-#' `mcplot()` initializes a modelcheck object. It's
-#' almost always followed by a plus sign (`+`) to add
-#' components to the plot.
+#' `mcplot()` initializes a modelcheck object. It follows the ggplot syntax,
+#'  which uses a plus sign (`+`) to define features of model check visualization.
+#'
+#' `mcplot()` uses a list of defaults to generate model check visualizations.
+#'  One line of `mcplot(model)` could generate a complete visualization for
+#'  posterior predictive checks. See `vignette("modelcheck")` for a complete
+#'  guidance.
 #'
 #' @param model The model fit object.
 #'
@@ -22,7 +26,7 @@ mcplot = function(model) {
       mc_setting$distribution = "predictive"
     }
     if (!("input_data" %in% names(mc_setting))) {
-      mc_setting$input_data = "obs"
+      mc_setting$input_data = NULL
     }
     if (!("is.transform" %in% names(mc_setting))) {
       mc_setting$is.transform = TRUE

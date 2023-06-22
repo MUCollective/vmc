@@ -1,6 +1,6 @@
 
-uncertainty_rep_interval = function(..., n_sample = NA, draw = "collapse") {
-  function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var) {
+uncertainty_rep_interval = function(..., scale_fill = ggplot2::scale_color_brewer(palette = 7), n_sample = NA, draw = "collapse") {
+  function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var, colors_legend) {
     if (!is.na(n_sample) && ".draw" %in% colnames(samples)) {
       ndraw <- max(samples$.draw)
       sample_ids = sample(1:ndraw, n_sample)
@@ -38,6 +38,7 @@ uncertainty_rep_interval = function(..., n_sample = NA, draw = "collapse") {
                                              ...)
     }
 
-    return(c(p, ggplot2::scale_color_brewer(palette = 7)))
+    return(list(ggnewscale::new_scale_color(), p, scale_fill,
+                ggnewscale::new_scale_color(), ggplot2::scale_color_manual(name = "color", values = colors_legend)))
   }
 }

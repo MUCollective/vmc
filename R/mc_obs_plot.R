@@ -222,11 +222,28 @@ mc_obs_pointinterval = function(...) {
   p
 }
 
+#' @rdname mc_model_interval
+#' @export
+mc_obs_interval = function(..., scale_fill = ggplot2::scale_color_brewer(palette = 1)) {
+  p = function(mc_setting = NULL) {
+    uncert_rep = uncertainty_rep_interval(..., scale_fill = scale_fill, n_sample = NA, draw = "collapse")
+
+    if (!("obs_uncertainty_representation" %in% names(mc_setting))) {
+      mc_setting = c(list(obs_uncertainty_representation = c(uncert_rep)), mc_setting)
+    } else {
+      mc_setting$obs_uncertainty_representation = c(mc_setting$obs_uncertainty_representation, uncert_rep)
+    }
+    mc_setting
+  }
+  class(p) <- 'modelcheck'
+  p
+}
+
 #' @rdname mc_model_lineribbon
 #' @export
-mc_obs_lineribbon = function(...) {
+mc_obs_lineribbon = function(..., scale_fill = ggplot2::scale_fill_brewer(palette = 1)) {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_lineribbon(..., n_sample = NA, draw = "collapse")
+    uncert_rep = uncertainty_rep_lineribbon(..., scale_fill = scale_fill, n_sample = NA, draw = "collapse")
 
     if (!("obs_uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(obs_uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -242,9 +259,9 @@ mc_obs_lineribbon = function(...) {
 
 #' @rdname mc_model_ribbon
 #' @export
-mc_obs_ribbon = function(...) {
+mc_obs_ribbon = function(..., scale_fill = ggplot2::scale_fill_brewer(palette = 1)) {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_ribbon(..., n_sample = NA, draw = "collapse")
+    uncert_rep = uncertainty_rep_ribbon(..., scale_fill = scale_fill, n_sample = NA, draw = "collapse")
 
     if (!("obs_uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(obs_uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -284,7 +301,7 @@ mc_obs_ribbon = function(...) {
 # }
 
 
-mc_obs_geom = function(..., base_plot = "auto") {
+mc_obs = function(..., base_plot = "auto") {
   p = function(mc_setting = NULL) {
 
     if (base_plot == "auto") {
@@ -311,9 +328,9 @@ mc_obs_geom = function(..., base_plot = "auto") {
 }
 
 
-#' @rdname mc_model_geom_auto
+#' @rdname mc_model_auto
 #' @export
-mc_obs_geom_auto = function(...) {
+mc_obs_auto = function(...) {
   p = function(mc_setting = NULL) {
 
     uncert_rep = auto_plot(..., n_sample = NA, draw = "collapse")
@@ -329,9 +346,9 @@ mc_obs_geom_auto = function(...) {
   p
 }
 
-#' @rdname mc_model_geom_point
+#' @rdname mc_model_point
 #' @export
-mc_obs_geom_point = function(...) {
+mc_obs_point = function(...) {
   p = function(mc_setting = NULL) {
 
     uncert_rep = point_plot(..., n_sample = NA, draw = "collapse")
@@ -347,9 +364,9 @@ mc_obs_geom_point = function(...) {
   p
 }
 
-#' @rdname mc_model_geom_line
+#' @rdname mc_model_line
 #' @export
-mc_obs_geom_line = function(...) {
+mc_obs_line = function(...) {
   p = function(mc_setting = NULL) {
 
     uncert_rep = line_plot(..., n_sample = NA, draw = "collapse")
@@ -365,9 +382,9 @@ mc_obs_geom_line = function(...) {
   p
 }
 
-#' @rdname mc_model_geom_tile
+#' @rdname mc_model_tile
 #' @export
-mc_obs_geom_tile = function(...) {
+mc_obs_tile = function(...) {
   p = function(mc_setting = NULL) {
 
     uncert_rep = tile_plot(..., n_sample = NA, draw = "collapse")
@@ -384,9 +401,9 @@ mc_obs_geom_tile = function(...) {
 }
 
 
-#' @rdname mc_model_geom_custom
+#' @rdname mc_model_custom
 #' @export
-mc_obs_geom_custom = function(plot, ...) {
+mc_obs_custom = function(plot, ...) {
   p = function(mc_setting = NULL) {
 
     uncert_rep = customized_plot(plot, ..., n_sample = NA, draw = "collapse")

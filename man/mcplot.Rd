@@ -10,7 +10,12 @@ mcplot(model)
 \item{model}{The model fit object.}
 }
 \description{
-\code{mcplot()} initializes a modelcheck object. It's
-almost always followed by a plus sign (\code{+}) to add
-components to the plot.
+\code{mcplot()} initializes a modelcheck object. It follows the ggplot syntax,
+which uses a plus sign (\code{+}) to define features of model check visualization.
+}
+\details{
+\code{mcplot()} uses a list of defaults to generate model check visualizations.
+One line of \code{mcplot(model)} could generate a complete visualization for
+posterior predictive checks. See \code{vignette("modelcheck")} for a complete
+guidance.
 }

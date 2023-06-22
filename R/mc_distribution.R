@@ -1,12 +1,18 @@
 
 #' Define how to draw from posterior distribution
 #'
+#' `modelcheck` uses the R package [`tidybayes`](http://mjskay.github.io/tidybayes/index.html)
+#'  to draw from posterior distributions. For posterior predictive distributions,
+#'  `modelcheck` uses `tidybayes::predicted_draws()`; for posterior distribution
+#'  of push-forward transformation, `modelcheck` uses `tidybayes::linpred_draws()`.
+#'
 #' @param distribution Which distribution to draw from. The options include `"predictive"` and
-#'  and pushforward transformations (e.g. `mu`, `sigma`, and `phi`). For example,
+#'  and push-forward transformations (e.g. `mu`, `sigma`, and `phi`). For example,
 #'  if the model is normal family and `distribution = "predictive"`, we draws from
 #'  posterior predictive distribution; if `distribution = "mu"`, we draws from
-#'  the linear/link-level predictor (i.e. pushforward transformations).
-#' @param newdata Data frame to generate predictions from.
+#'  the linear/link-level predictor (i.e. push-forward transformations).
+#' @param newdata Data frame to generate predictions from, or `NULL` to use the
+#'  data frame used to fit model, i.e. replicated predictive distribution.
 #' @param is.transform Should the linear predictor be transformed using the
 #'  inverse-link function? See [`rstanarm::posterior_linpred()`](https://mc-stan.org/rstantools/reference/posterior_linpred.html) or
 #'  [`brms::posterior_linpred()`](https://mc-stan.org/rstantools/reference/posterior_linpred.html).
@@ -18,7 +24,7 @@
 #' @export
 #'
 #' @examples
-mc_distribution = function(distribution = "predictive", newdata = "obs", is.transform = TRUE, ndraws = 500,
+mc_distribution = function(distribution = "predictive", newdata = NULL, is.transform = TRUE, ndraws = 500,
                            seed = NULL, re_formula = NULL) {
   p = function(mc_setting = NULL) {
     c(list(distribution = distribution, input_data = newdata, is.transform = is.transform,

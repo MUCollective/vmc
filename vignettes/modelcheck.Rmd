@@ -31,6 +31,7 @@ library(ggdist)
 library(cowplot)
 library(rstan)
 library(brms)
+library(gganimate)
 
 theme_set(theme_tidybayes() + panel_border())
 ```
@@ -77,10 +78,10 @@ model %>%
 ```{r}
 model %>% 
   mcplot() +
-  mc_distribution("predictive", newdata = "obs") +
-  mc_model_geom_line(stat = "density", alpha = .1) +
-  mc_obs_geom_line(stat = "density") +
-  mc_comp_layout("sup") +
+  mc_distribution("predictive") +
+  mc_model_line(stat = "density", alpha = .1) +
+  mc_obs_line(stat = "density") +
+  mc_layout_superposition() +
   mc_gglayer(coord_flip())
 ```
 
@@ -93,7 +94,7 @@ Model check not only is about single variable check but also involves conditiona
 ```{r}
 model %>% 
   mcplot() +
-  mc_cond_var(x_var = vars(disp))
+  mc_condition_on(x = vars(disp))
 ```
 
 Then you can easily apply some uncertainty representations to model predictions in `modelcheck`. For example, [lineribbon](https://mjskay.github.io/ggdist/reference/stat_lineribbon.html) and [point+interval](https://mjskay.github.io/ggdist/reference/stat_pointinterval.html) are shown below.
@@ -104,7 +105,7 @@ Then you can easily apply some uncertainty representations to model predictions 
 model %>% 
   mcplot() +
   mc_model_lineribbon() +
-  mc_cond_var(x_var = vars(disp))
+  mc_condition_on(x = vars(disp))
 ```
 
 - Point + interval
@@ -113,7 +114,7 @@ model %>%
 model %>% 
   mcplot() +
   mc_model_pointinterval() +
-  mc_cond_var(x_var = vars(disp))
+  mc_condition_on(x = vars(disp))
 ```
 
 You can also show different draws by [HOPs](https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740).
@@ -121,9 +122,15 @@ You can also show different draws by [HOPs](https://medium.com/hci-design-at-uw/
 ```{r}
 model %>% 
   mcplot() +
-  mc_model_geom_auto(draw = "hops") +
-  mc_cond_var(x_var = vars(disp))
+  mc_model_point(draw = "hops") +
+  mc_condition_on(x = vars(disp))
 ```
+
+```{r echo=FALSE, results='asis'}
+# animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
+anim_save("modelcheck-modelcheck_hops_1.gif")
+```
+![](modelcheck-modelcheck_hops_1.gif)
 
 And applying HOPs to uncertainty representations...
 
@@ -131,8 +138,15 @@ And applying HOPs to uncertainty representations...
 model %>% 
   mcplot() +
   mc_model_pointinterval(draw = "hops") +
-  mc_cond_var(x_var = vars(disp))
+  mc_condition_on(x = vars(disp))
 ```
+
+```{r echo=FALSE, results='asis'}
+# animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
+anim_save("modelcheck-modelcheck_hops_2.gif")
+```
+
+![](modelcheck-modelcheck_hops_2.gif)
 
 # Changing comparative layouts
 
@@ -143,7 +157,7 @@ Juxtaposition puts the model predictions and data observations side by side. Jux
 ```{r}
 model %>%
   mcplot() + 
-  mc_comp_layout("jux")
+  mc_layout_juxtaposition()
 ```
 
 Superposition is the default comparative layout by `modelcheck`. It puts the model predictions at the top of data observations and shows them in one plots.
@@ -151,7 +165,7 @@ Superposition is the default comparative layout by `modelcheck`. It puts the mod
 ```{r}
 model %>%
   mcplot() + 
-  mc_comp_layout("sup")
+  mc_layout_superposition()
 ```
 
 When checking model conditional on a discrete variable, you might want the comparative layout neither to be superposition, since that would make data points overlapped, nor to be juxtaposition, since the visual distance between model predictions and data observations would be too large to check through. At this time, nested juxtaposition would be a good choice, which puts model predictions and data observations in one plot but does not make them overlapped.
@@ -161,8 +175,8 @@ model %>%
   mcplot() + 
   mc_model_eye() +
   mc_obs_eye() +
-  mc_comp_layout("nestjux") +
-  mc_cond_var(x_var = vars(carb))
+  mc_layout_nested() +
+  mc_condition_on(x = vars(carb))
 ```
 
 Explicit-encoding focuses on revealing the relationship between model predictions and data observations by explicitly encoding or calculating in visualizations. Some common examples could be residual plot, Q-Q plot, and wormplots. `modelcheck` supports explicitly-encoding by enabling users to pass in the operation (`exp_op`) they want to do in explicitly-encoding comparison. `modelcheck` predefines several common explicitly-encodings (e.g. residual plot and Q-Q plot) but users can still pass in a customized operation function.
@@ -173,8 +187,8 @@ Residual plot with lineribbon:
 model %>%
   mcplot() + 
   mc_model_lineribbon() +
-  mc_comp_layout("exp", exp_op = "residual") +
-  mc_cond_var(x_var = vars(disp)) +
+  mc_layout_encoding(transform = "residual") +
+  mc_condition_on(x = vars(disp)) +
   mc_gglayer(geom_hline(yintercept = 0))
 ```
 
@@ -183,7 +197,7 @@ Q-Q plot:
 ```{r}
 model %>%
   mcplot() + 
-  mc_comp_layout("exp", exp_op = "qq") +
+  mc_layout_encoding(transform = "qq") +
   mc_gglayer(geom_abline())
 ```
 
@@ -202,8 +216,8 @@ std_res_func = function(data) {
 model %>%
   mcplot() + 
   mc_model_lineribbon() +
-  mc_comp_layout("exp", exp_op = std_res_func) +
-  mc_cond_var(x_var = vars(disp)) +
+  mc_layout_encoding(transform = std_res_func) +
+  mc_condition_on(x = vars(disp)) +
   mc_gglayer(geom_hline(yintercept = 0))
 ```
 

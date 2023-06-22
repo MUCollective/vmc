@@ -6,9 +6,14 @@
 \alias{mc_model_lineribbon}
 \title{Line + multiple-ribbon plot for model predictions}
 \usage{
-mc_obs_lineribbon(...)
+mc_obs_lineribbon(..., scale_fill = ggplot2::scale_fill_brewer(palette = 1))
 
-mc_model_lineribbon(..., n_sample = NA, draw = "collapse")
+mc_model_lineribbon(
+  ...,
+  scale_fill = ggplot2::scale_fill_brewer(palette = 7),
+  n_sample = NA,
+  draw = "collapse"
+)
 }
 \arguments{
 \item{...}{Augments passed to \href{https://mjskay.github.io/ggdist/reference/stat_lineribbon.html}{\code{ggdist::stat_lineribbon}}.}

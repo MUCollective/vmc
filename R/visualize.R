@@ -9,7 +9,6 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
   zeallot::`%<-%`(c(samples, response_var, labels), prev_ret)
   zeallot::`%<-%`(c(x_var, row_vars, col_vars), conditional_vars)
   zeallot::`%<-%`(c(x_axis_type, y_axis_type), axis_type)
-  print("Visualizing...")
 
   x_var = x_var[[1]]
   if (!is.null(x_var)) {
@@ -58,11 +57,10 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
   colors_legend = c("obs" = observed_color, "model" = model_color)
 
   if ("x_axis" %in% colnames(samples)) {
-    if (x_axis_type == "quantitative") {
-      p <- ggplot2::ggplot(mapping = ggplot2::aes(x = x_axis))
+    if (x_axis_type == "quantitative" || is.factor(samples$x_axis)) {
+      p <- ggplot2::ggplot(data = samples, mapping = ggplot2::aes(x = x_axis))
     } else {
-      x_axis_order = sort(unique(samples$x_axis))
-      p <- ggplot2::ggplot(mapping = ggplot2::aes(x = factor(x_axis, levels = sort(unique(x_axis)))))
+      p <- ggplot2::ggplot(data = samples, mapping = ggplot2::aes(x = factor(x_axis, levels = sort(unique(x_axis)))))
     }
   } else {
     p <- ggplot2::ggplot()
@@ -79,12 +77,14 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
          list(x_axis_type, y_axis_type),
          "model",
          FALSE,
-         rlang::quo(y_axis))
+         rlang::quo(y_axis),
+         colors_legend)
   }
 
   for (uncert_rep in uncertainty_representation) {
     if (is.function(uncert_rep)) {
-      p <- p + call_rep(uncert_rep)
+      p <- p +
+        call_rep(uncert_rep)
     }
   }
   if ("x_axis" %in% colnames(samples)) {

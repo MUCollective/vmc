@@ -369,9 +369,9 @@ mc_model_pointinterval = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
-mc_model_interval = function(..., n_sample = NA, draw = "collapse") {
+mc_model_interval = function(..., scale_fill = ggplot2::scale_color_brewer(palette = 7), n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_interval(..., n_sample = n_sample, draw = draw)
+    uncert_rep = uncertainty_rep_interval(..., scale_fill = scale_fill, n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -400,9 +400,9 @@ mc_model_interval = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
-mc_model_lineribbon = function(..., n_sample = NA, draw = "collapse") {
+mc_model_lineribbon = function(..., scale_fill = ggplot2::scale_fill_brewer(palette = 7), n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_lineribbon(..., n_sample = n_sample, draw = draw)
+    uncert_rep = uncertainty_rep_lineribbon(..., scale_fill = scale_fill, n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -431,9 +431,9 @@ mc_model_lineribbon = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
-mc_model_ribbon = function(..., n_sample = NA, draw = "collapse") {
+mc_model_ribbon = function(..., scale_fill = ggplot2::scale_fill_brewer(palette = 7), n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_ribbon(..., n_sample = n_sample, draw = draw)
+    uncert_rep = uncertainty_rep_ribbon(..., scale_fill = scale_fill, n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -446,7 +446,7 @@ mc_model_ribbon = function(..., n_sample = NA, draw = "collapse") {
   p
 }
 
-mc_model_geom = function(..., base_plot = "auto") {
+mc_model = function(..., base_plot = "auto") {
   p = function(mc_setting = NULL) {
 
     if (base_plot == "auto") {
@@ -478,19 +478,19 @@ mc_model_geom = function(..., base_plot = "auto") {
 #'  [`ggplot2::geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html), and
 #'  [`ggplot2::geom_tile`](https://ggplot2.tidyverse.org/reference/geom_tile.html)).
 #' @param n_sample The number of sample of draws to show.
-#'  Default `NA`. If `n_sample` is `NA`, then `mc_model_geom_auto()` will use all draws from
+#'  Default `NA`. If `n_sample` is `NA`, then `mc_model_auto()` will use all draws from
 #'  posterior distribution.
 #' @param draw How to show draws? Default `"collapse"`. If `draw` is `"collapse"`,
 #'  then all draws are collapsed together to show in one geom; if `draw`
 #'  is `"group"`, then each draw is shown in an individual geom; if
-#'  `draw` is `"hops"`, then `mc_model_geom_auto()` will use animation to show each
+#'  `draw` is `"hops"`, then `mc_model_auto()` will use animation to show each
 #'  draw in one frame; if `draw` is an function, then all draws are aggregated
 #'  by `draw()`. See examples for more details.
 #'
 #' @export
 #'
 #' @examples
-mc_model_geom_auto = function(..., n_sample = NA, draw = NULL) {
+mc_model_auto = function(..., n_sample = NA, draw = NULL) {
   p = function(mc_setting = NULL) {
 
     uncert_rep = auto_plot(..., n_sample = n_sample, draw = draw)
@@ -510,20 +510,20 @@ mc_model_geom_auto = function(..., n_sample = NA, draw = NULL) {
 #'
 #' @param ... Augments passed to [`ggplot2::geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html).
 #' @param n_sample The number of sample of draws to show.
-#'  Default `NA`. If `n_sample` is `NA`, then `mc_model_geom_point()` will use all draws from
+#'  Default `NA`. If `n_sample` is `NA`, then `mc_model_point()` will use all draws from
 #'  posterior distribution.
 #' @param draw How to show draws? Default `"collapse"`. `"collapse` and `"group`
 #'  are same for point geom, since point geom is just showing each data points.
 #'  If `draw` is `"collapse"` or `"group"`,
 #'  then all draws are collapsed together and each point represents one data point;
-#'  if `draw` is `"hops"`, then `mc_model_geom_point()` will use animation to show each
+#'  if `draw` is `"hops"`, then `mc_model_point()` will use animation to show each
 #'  draw in one frame; if `draw` is an function, then all draws are aggregated
 #'  by `draw()`. See examples for more details.
 #'
 #' @export
 #'
 #' @examples
-mc_model_geom_point = function(..., n_sample = NA, draw = "collapse") {
+mc_model_point = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
 
     uncert_rep = point_plot(..., n_sample = n_sample, draw = draw)
@@ -543,20 +543,20 @@ mc_model_geom_point = function(..., n_sample = NA, draw = "collapse") {
 #'
 #' @param ... Augments passed to [`ggplot2::geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html).
 #' @param n_sample The number of sample of draws to show.
-#'  Default `NA`. If `n_sample` is `NA`, then `mc_model_geom_line()` will use all draws from
+#'  Default `NA`. If `n_sample` is `NA`, then `mc_model_line()` will use all draws from
 #'  posterior distribution.
 #' @param draw How to show draws? Default `"group"`.
 #'  If `draw` is `"collapse"`, then all draws are collapsed together
 #'  and are connected by one line; if `"draw"` is `"group"`, then data from each draw is
 #'  connected by one line;
-#'  if `draw` is `"hops"`, then `mc_model_geom_line()` will use animation to show each
+#'  if `draw` is `"hops"`, then `mc_model_line()` will use animation to show each
 #'  draw in one frame; if `draw` is an function, then all draws are aggregated
 #'  by `draw()`. See examples for more details.
 #'
 #' @export
 #'
 #' @examples
-mc_model_geom_line = function(..., n_sample = NA, draw = "group") {
+mc_model_line = function(..., n_sample = NA, draw = "group") {
   p = function(mc_setting = NULL) {
 
     uncert_rep = line_plot(..., n_sample = n_sample, draw = draw)
@@ -576,20 +576,20 @@ mc_model_geom_line = function(..., n_sample = NA, draw = "group") {
 #'
 #' @param ... Augments passed to [`ggplot2::geom_tile`](https://ggplot2.tidyverse.org/reference/geom_tile.html).
 #' @param n_sample The number of sample of draws to show.
-#'  Default `NA`. If `n_sample` is `NA`, then `mc_model_geom_tile()` will use all draws from
+#'  Default `NA`. If `n_sample` is `NA`, then `mc_model_tile()` will use all draws from
 #'  posterior distribution.
 #' @param draw How to show draws? Default `"hops"`.
 #'  If `draw` is `"collapse"`, then all draws are collapsed together
 #'  and are shown in one tile plot; if `"draw"` is `"group"`, then only one draw
 #'  is shown in tile plot;
-#'  if `draw` is `"hops"`, then `mc_model_geom_tile()` will use animation to show each
+#'  if `draw` is `"hops"`, then `mc_model_tile()` will use animation to show each
 #'  draw in one frame; if `draw` is an function, then all draws are aggregated
 #'  by `draw()`. See examples for more details.
 #'
 #' @export
 #'
 #' @examples
-mc_model_geom_tile = function(..., n_sample = NA, draw = "hops") {
+mc_model_tile = function(..., n_sample = NA, draw = "hops") {
   p = function(mc_setting = NULL) {
 
     uncert_rep = tile_plot(..., n_sample = n_sample, draw = draw)
@@ -612,20 +612,20 @@ mc_model_geom_tile = function(..., n_sample = NA, draw = "hops") {
 #'  and should be able to have `data` and `mapping` augments. See examples for more details.
 #' @param ... Augments passed to `geom_plot`.
 #' @param n_sample The number of sample of draws to show.
-#'  Default `NA`. If `n_sample` is `NA`, then `mc_model_geom_custom()` will use all draws from
+#'  Default `NA`. If `n_sample` is `NA`, then `mc_model_custom()` will use all draws from
 #'  posterior distribution.
 #' @param draw How to show draws? Default `"hops"`.
 #'  If `draw` is `"collapse"`, then all draws are collapsed together
 #'  and are shown in one geom; if `"draw"` is `"group"`, then only one draw
 #'  is shown in one geom;
-#'  if `draw` is `"hops"`, then `mc_model_geom_custom()` will use animation to show each
+#'  if `draw` is `"hops"`, then `mc_model_custom()` will use animation to show each
 #'  draw in one frame; if `draw` is an function, then all draws are aggregated
 #'  by `draw()`. See examples for more details.
 #'
 #' @export
 #'
 #' @examples
-mc_model_geom_custom = function(geom_plot, ..., n_sample = NA, draw = "collapse") {
+mc_model_custom = function(geom_plot, ..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
 
     uncert_rep = customized_plot(geom_plot, ..., n_sample = n_sample, draw = draw)

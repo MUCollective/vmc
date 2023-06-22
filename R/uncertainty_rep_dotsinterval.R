@@ -1,6 +1,6 @@
 
 uncertainty_rep_dotsinterval = function(..., n_sample = NA, draw = "collapse") {
-  function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var) {
+  function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var, colors_legend) {
     if (!is.na(n_sample) && ".draw" %in% colnames(samples)) {
       ndraw <- max(samples$.draw)
       sample_ids = sample(1:ndraw, n_sample)

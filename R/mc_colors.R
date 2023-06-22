@@ -9,7 +9,10 @@
 #'  `mc_set_obs_color` does the same thing as `mc_set_model_color` except setting
 #'  for geoms that represent data observations.
 #'
-#' @return
+#' @param model_color,obs_color The color used for model predictions and data
+#'  observations. By default, `mcplot()` uses `mc_color_palettes()` to define
+#'  colors for model predictions and data observations.
+#'
 #' @export
 #'
 #' @examples
