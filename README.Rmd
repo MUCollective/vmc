@@ -18,6 +18,8 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
+`modelcheck` is a visualization grammar designed for model checking. It provides users designing guidelines about model check visualizations and allows users to create a model check visualization in a concise and interpretable way. The structure of `modelcheck` grammar follows the necessary components we found in model checking. First, the model predictions or model features need to be extracted as a **distribution** of data from model objects, i.e. data tidying. Then **uncertainty representations** should be able to involved to describe the distribution of model, since the uncertainty is natural inherent inside models. The observed data must be somewhere in model checking as the necessity of the ground truth to know the model's performance. We don't want users to check the model with the observed data inside of their mind implicitly, so there is a need to define the observed data in model check, which deduce the need to define **comparative layouts** in model check visualization.
+
 ## Installation
 
 You can install the development version of modelcheck from [GitHub](https://github.com/) with:
@@ -26,3 +28,79 @@ You can install the development version of modelcheck from [GitHub](https://gith
 # install.packages("devtools")
 devtools::install_github("Guoziyang27/modelcheck")
 ```
+
+## Usage
+
+### Background: model
+
+We use a simple model to show the usage of `modelcheck`.
+
+```{r}
+library(brms)
+model = brm(
+  bf(mpg ~ disp),
+  init = "0",
+  data = mtcars,
+  iter = 6000,
+  
+  file = "models/example_model.rds" # cache model (can be removed)  
+)
+```
+
+The results...
+
+```{r}
+model
+```
+
+### Examples
+
+You can create a default model check to do posterior predictive check using only `mcplot()`.
+
+```{r}
+library(modelcheck)
+library(ggplot2)
+library(dplyr)
+model %>%
+  mcplot()
+```
+
+To control the way to draw distribution from model, you can add a `mc_distribution()` to `mcplot()`. Here, we are drawing the posterior distribution of `mu` from the Gaussian model we define earlier.
+
+```{r}
+model %>%
+  mcplot() +
+  mc_distribution("mu")
+```
+
+To add marginal effects check, you can use `mc_condition_on()` to add x axis, row grids, and column grids.
+
+```{r}
+model %>%
+  mcplot() +
+  mc_distribution("mu") +
+  mc_condition_on(x = vars(disp))
+```
+
+Now you may find the distribution of `mpg` margining on `disp` is a little hard to see. Then you can use `mc_model_lineribbon()` to use line + ribbon plot to show the uncertainty of model.
+
+```{r}
+model %>%
+  mcplot() +
+  mc_distribution("mu") +
+  mc_condition_on(x = vars(disp)) +
+  mc_model_lineribbon()
+```
+
+`mcplot()` puts the model predictions and data observations superposed by default. You can change that by using `mc_layout_*()`. Here we change the comparative layout into juxtaposition.
+
+```{r}
+model %>%
+  mcplot() +
+  mc_distribution("mu") +
+  mc_condition_on(x = vars(disp)) +
+  mc_model_lineribbon() +
+  mc_layout_juxtaposition()
+```
+
+
