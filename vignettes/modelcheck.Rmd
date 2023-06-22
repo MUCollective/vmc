@@ -129,8 +129,8 @@ model %>%
 ```{r echo=FALSE, results='asis'}
 # animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
 anim_save("modelcheck-modelcheck_hops_1.gif")
+cat("![](modelcheck-modelcheck_hops_1.gif)\n")
 ```
-![](modelcheck-modelcheck_hops_1.gif)
 
 And applying HOPs to uncertainty representations...
 
@@ -144,9 +144,8 @@ model %>%
 ```{r echo=FALSE, results='asis'}
 # animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
 anim_save("modelcheck-modelcheck_hops_2.gif")
+cat("![](modelcheck-modelcheck_hops_2.gif)\n")
 ```
-
-![](modelcheck-modelcheck_hops_2.gif)
 
 # Changing comparative layouts
 
