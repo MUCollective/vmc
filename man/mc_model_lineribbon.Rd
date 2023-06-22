@@ -18,6 +18,8 @@ mc_model_lineribbon(
 \arguments{
 \item{...}{Augments passed to \href{https://mjskay.github.io/ggdist/reference/stat_lineribbon.html}{\code{ggdist::stat_lineribbon}}.}
 
+\item{scale_fill}{The scale_fill_* layer for lineribbon. Default to be \code{ggplot2::scale_fill_brewer()}.}
+
 \item{n_sample}{The number of sample of draws to show in lineribbon plot.
 Default \code{NA}. If \code{n_sample} is \code{NA}, then \code{mc_model_lineribbon()} will use all draws from
 posterior distribution.}

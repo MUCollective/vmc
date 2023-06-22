@@ -18,6 +18,8 @@ mc_model_ribbon(
 \arguments{
 \item{...}{Augments passed to \href{https://mjskay.github.io/ggdist/reference/stat_ribbon.html}{\code{ggdist::stat_ribbon}}.}
 
+\item{scale_fill}{The scale_fill_* layer for ribbon Default to be \code{ggplot2::scale_fill_brewer()}.}
+
 \item{n_sample}{The number of sample of draws to show in ribbon plot.
 Default \code{NA}. If \code{n_sample} is \code{NA}, then \code{mc_model_ribbon()} will use all draws from
 posterior distribution.}

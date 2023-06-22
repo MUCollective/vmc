@@ -6,17 +6,19 @@
 \alias{mc_model_interval}
 \title{Interval plot for model predictions}
 \usage{
-mc_obs_interval(..., scale_fill = ggplot2::scale_color_brewer(palette = 1))
+mc_obs_interval(..., scale_color = ggplot2::scale_color_brewer(palette = 1))
 
 mc_model_interval(
   ...,
-  scale_fill = ggplot2::scale_color_brewer(palette = 7),
+  scale_color = ggplot2::scale_color_brewer(palette = 7),
   n_sample = NA,
   draw = "collapse"
 )
 }
 \arguments{
 \item{...}{Augments passed to \href{https://mjskay.github.io/ggdist/reference/stat_interval.html}{\code{ggdist::stat_interval}}.}
+
+\item{scale_color}{The scale_color_* layer for interval. Default to be \code{ggplot2::scale_color_brewer()}.}
 
 \item{n_sample}{The number of sample of draws to show in interval plot.
 Default \code{NA}. If \code{n_sample} is \code{NA}, then \code{mc_model_interval()} will use all draws from

@@ -224,9 +224,9 @@ mc_obs_pointinterval = function(...) {
 
 #' @rdname mc_model_interval
 #' @export
-mc_obs_interval = function(..., scale_fill = ggplot2::scale_color_brewer(palette = 1)) {
+mc_obs_interval = function(..., scale_color = ggplot2::scale_color_brewer(palette = 1)) {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_interval(..., scale_fill = scale_fill, n_sample = NA, draw = "collapse")
+    uncert_rep = uncertainty_rep_interval(..., scale_fill = scale_color, n_sample = NA, draw = "collapse")
 
     if (!("obs_uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(obs_uncertainty_representation = c(uncert_rep)), mc_setting)
