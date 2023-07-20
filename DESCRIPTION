@@ -32,5 +32,5 @@ Suggests:
     rstan,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-URL: https://guoziyang27.github.io/modelcheck/
+URL: https://mucollective.github.io/modelcheck/
 VignetteBuilder: knitr
