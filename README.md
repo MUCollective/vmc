@@ -24,7 +24,7 @@ You can install the development version of modelcheck from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("Guoziyang27/modelcheck")
+devtools::install_github("MUCollective/modelcheck")
 ```
 
 ## Usage
@@ -83,8 +83,8 @@ model
 
 ### Examples
 
-You can create a default model check to do posterior predictive check
-using only `mcplot()`.
+You can create a default model check to do posterior predictive check by
+`mcplot()` (using `coord_flip()` to flip response variable to x axis).
 
 ``` r
 library(modelcheck)
@@ -99,7 +99,8 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 model %>%
-  mcplot()
+  mcplot() +
+  mc_gglayer(coord_flip())
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
@@ -111,7 +112,8 @@ distribution of `mu` from the Gaussian model we define earlier.
 ``` r
 model %>%
   mcplot() +
-  mc_distribution("mu")
+  mc_distribution("mu") +
+  mc_gglayer(coord_flip())
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
@@ -153,7 +155,7 @@ model %>%
   mc_condition_on(x = vars(disp)) +
   mc_model_lineribbon() +
   mc_layout_juxtaposition()
-#> Warning: Removed 19 rows containing missing values (`stat_slabinterval()`).
+#> Warning: Removed 18 rows containing missing values (`stat_slabinterval()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
