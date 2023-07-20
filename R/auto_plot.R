@@ -1,5 +1,5 @@
 auto_plot = function(..., n_sample = NA, draw = NULL) {
-  function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var, colors_legend) {
+  function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var) {
     if (!is.na(n_sample) && ".draw" %in% colnames(samples)) {
       ndraw <- max(samples$.draw)
       sample_ids = sample(1:ndraw, n_sample)
@@ -42,7 +42,7 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
         if (draw == "collapse") {
           p = ggplot2::geom_point(data = samples,
                                   mapping = ggplot2::aes(y = !!y_var,
-                                                         color = model_color),
+                                                         color = !!model_color),
                                   ...,
                                   shape = shape,
                                   size = size)
@@ -50,7 +50,7 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
           p = ggplot2::geom_point(data = samples,
                                   mapping = ggplot2::aes(y = !!y_var,
                                                          group = .draw,
-                                                         color = model_color),
+                                                         color = !!model_color),
                                   ...,
                                   shape = shape,
                                   size = size)
@@ -60,7 +60,7 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
           p = c(ggplot2::geom_point(data = samples %>%
                                       dplyr::mutate(!!draw_col := .draw),
                                   mapping = ggplot2::aes(y = !!y_var,
-                                                         color = model_color),
+                                                         color = !!model_color),
                                   ...,
                                   shape = shape,
                                   size = size),
@@ -77,7 +77,7 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
                                     dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
                                     dplyr::summarise(y_agg = draw(!!y_var)),
                                   mapping = ggplot2::aes(y = y_agg,
-                                                         color = model_color),
+                                                         color = !!model_color),
                                   ...,
                                   shape = shape,
                                   size = size)
@@ -132,21 +132,21 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
         }
         if (draw == "collapse") {
           p = ggplot2::geom_line(data = samples,
-                                 mapping = ggplot2::aes(x = !!y_var,
-                                                        color = model_color), stat = "density",
+                                 mapping = ggplot2::aes(y = !!y_var,
+                                                        color = !!model_color), stat = "density",
                                  ...)
         } else if (draw == "group") {
           p = ggplot2::geom_line(data = samples,
-                                 mapping = ggplot2::aes(x = !!y_var, group = .draw,
-                                                        color = model_color), stat = "density",
+                                 mapping = ggplot2::aes(y = !!y_var, group = .draw,
+                                                        color = !!model_color), stat = "density",
                                  ..., alpha = .1)
         } else if (draw == "hops") {
           hops_id = get_unique_id()
           draw_col = paste(".draw", hops_id, sep = "")
           p = c(ggplot2::geom_line(data = samples %>%
                                      dplyr::mutate(!!draw_col := .draw),
-                                 mapping = ggplot2::aes(x = !!y_var, group = !!rlang::sym(draw_col),
-                                                        color = model_color), stat = "density",
+                                 mapping = ggplot2::aes(y = !!y_var, group = !!rlang::sym(draw_col),
+                                                        color = !!model_color), stat = "density",
                                  ...),
                 gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE))
         } else if (is.function(draw)) {
@@ -156,8 +156,8 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
           p = ggplot2::geom_line(data = samples %>%
                                    dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
                                    dplyr::summarise(y_agg = draw(!!y_var)),
-                                 mapping = ggplot2::aes(x = y_agg,
-                                                        color = model_color), stat = "density",
+                                 mapping = ggplot2::aes(y = y_agg,
+                                                        color = !!model_color), stat = "density",
                                  ...)
         }
       } else {
@@ -167,9 +167,9 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
         if (draw == "collapse") {
           p = ggplot2::geom_point(data = samples %>%
                                   dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)),
-                                mapping = ggplot2::aes(x = y_axis, y = (..count..)/sum(..count..),
-                                                       color = model_color,
-                                                       fill = model_color),
+                                mapping = ggplot2::aes(y = y_axis, x = (..count..)/sum(..count..),
+                                                       color = !!model_color,
+                                                       fill = !!model_color),
                                 stat = "count",
                                 ...,
                                 shape = "-",
@@ -177,11 +177,11 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
         } else if (draw == "group") {
           p = ggplot2::geom_point(data = samples %>%
                                     dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)),
-                                  mapping = ggplot2::aes(x = y_axis,
-                                                         y = ..prop..,
+                                  mapping = ggplot2::aes(y = y_axis,
+                                                         x = ..prop..,
                                                          group = .draw,
-                                                         color = model_color,
-                                                         fill = model_color),
+                                                         color = !!model_color,
+                                                         fill = !!model_color),
                                   stat = StatDisProp,
                                   ...,
                                   shape = "-",
@@ -192,10 +192,10 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
           p = c(ggplot2::geom_point(data = samples %>%
                                     dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)) %>%
                                     dplyr::mutate(!!draw_col := .draw),
-                                  mapping = ggplot2::aes(x = y_axis, y = (..count..)/sum(..count..),
+                                  mapping = ggplot2::aes(y = y_axis, x = (..count..)/sum(..count..),
                                                          group = !!rlang::sym(draw_col),
-                                                         color = model_color,
-                                                         fill = model_color),
+                                                         color = !!model_color,
+                                                         fill = !!model_color),
                                   stat = "count",
                                   ...,
                                   shape = "-",
@@ -212,9 +212,9 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
                                     dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)) %>%
                                     dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
                                     dplyr::summarise(y_agg = draw(!!y_var)),
-                                  mapping = ggplot2::aes(x = y_agg, y = (..count..)/sum(..count..),
-                                                         color = model_color,
-                                                         fill = model_color),
+                                  mapping = ggplot2::aes(y = y_agg, x = (..count..)/sum(..count..),
+                                                         color = !!model_color,
+                                                         fill = !!model_color),
                                   stat = "count",
                                   ...,
                                   shape = "-",

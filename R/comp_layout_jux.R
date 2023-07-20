@@ -1,15 +1,15 @@
 
 comp_layout_jux = function(p_obs, ...) {
-  function(p_pred, samples, is_animation, row_vars, col_vars, color,
+  function(p_pred, samples, is_animation, color_var, row_vars, col_vars, color,
            x_type, y_type, labels, gglayers, model_color, observed_color) {
-    if (!is_animation) {
+    if (!is_animation && ".row" %in% colnames(samples)) {
       if ("x_axis" %in% colnames(samples)) {
         samples = samples %>%
-          dplyr::group_by_at(c(ggplot2::vars(x_axis, observation, .row), row_vars, col_vars)) %>%
+          dplyr::group_by_at(c(ggplot2::vars(x_axis, observation, .row), color_var, row_vars, col_vars)) %>%
           dplyr::summarise()
       } else {
         samples = samples %>%
-          dplyr::group_by_at(c(ggplot2::vars(observation, .row), row_vars, col_vars)) %>%
+          dplyr::group_by_at(c(ggplot2::vars(observation, .row), color_var, row_vars, col_vars)) %>%
           dplyr::summarise()
       }
       samples = samples[!duplicated(samples), ]
@@ -26,13 +26,15 @@ comp_layout_jux = function(p_obs, ...) {
       obs_p <- ggplot2::ggplot()
     }
     colors_legend = c("obs" = observed_color, "model" = model_color)
-    obs_p <- obs_p + ggplot2::scale_color_manual(name = "color", values = colors_legend) +
-      ggplot2::scale_fill_manual(name = "fill", values = colors_legend)
+    if (is.null(color_var)) {
+      obs_p <- obs_p + ggplot2::scale_color_manual(name = "color", values = colors_legend) +
+        ggplot2::scale_fill_manual(name = "fill", values = colors_legend)
+    }
 
     p_sup = p_pred
     for (obs_uncert_rep in p_obs) {
       obs = obs_uncert_rep(samples, row_vars, col_vars, labels, list(x_type = x_type, y_type = y_type),
-                           color, is_animation, rlang::quo(observation), colors_legend)
+                           color, is_animation, rlang::quo(observation))
       obs_p <- obs_p + obs
       p_sup <- p_sup + obs
     }

@@ -12,14 +12,14 @@ uncertainty_rep_ccdf = function(..., n_sample = NA, draw = "collapse") {
     if (draw == "collapse") {
       return(c(ggdist::stat_ccdfinterval(data = samples,
                                  ggplot2::aes(y = !!y_var,
-                                              color = model_color, fill = model_color),
+                                              color = !!model_color, fill = !!model_color),
                                  ...,
                                 slab_alpha = 0.5)))
     } else if (draw == "group") {
       return(c(ggdist::stat_ccdfinterval(data = samples,
                                  ggplot2::aes(y = !!y_var,
                                               group = .draw,
-                                              color = model_color, fill = model_color),
+                                              color = !!model_color, fill = !!model_color),
                                  ..., slab_alpha = 0.5)))
     } else if (draw == "hops") {
       hops_id = get_unique_id()
@@ -27,7 +27,7 @@ uncertainty_rep_ccdf = function(..., n_sample = NA, draw = "collapse") {
       return(c(ggdist::stat_ccdfinterval(data = samples %>%
                                    dplyr::mutate(!!draw_col := .draw),
                                  ggplot2::aes(y = !!y_var,
-                                              color = model_color, fill = model_color),
+                                              color = !!model_color, fill = !!model_color),
                                  ..., slab_alpha = 0.5),
                gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE)))
     } else if (is.function(draw)) {
@@ -39,7 +39,7 @@ uncertainty_rep_ccdf = function(..., n_sample = NA, draw = "collapse") {
                                    dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
                                    dplyr::summarise(y_agg = draw(!!y_var)),
                                  ggplot2::aes(y = y_agg,
-                                              color = model_color, fill = model_color),
+                                              color = !!model_color, fill = !!model_color),
                                  ..., slab_alpha = 0.5)))
     }
 

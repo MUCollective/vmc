@@ -1,6 +1,6 @@
 
-uncertainty_rep_lineribbon = function(..., scale_fill = ggplot2::scale_fill_brewer(palette = 7), n_sample = NA, draw = "collapse") {
-  function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var, colors_legend) {
+uncertainty_rep_lineribbon = function(..., n_sample = NA, draw = "collapse") {
+  function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var) {
     if (!is.na(n_sample) && ".draw" %in% colnames(samples)) {
       ndraw <- max(samples$.draw)
       sample_ids = sample(1:ndraw, n_sample)
@@ -11,13 +11,15 @@ uncertainty_rep_lineribbon = function(..., scale_fill = ggplot2::scale_fill_brew
       if (draw == "collapse") {
         p = list(ggdist::stat_lineribbon(data = samples,
                                     ggplot2::aes(x = x_axis, y = !!y_var,
-                                                 color = model_color),
+                                                 color = !!model_color,
+                                                 fill = !!model_color),
                                     ...,
                                     alpha = 0.5))
       } else if (draw == "group") {
         p = list(ggdist::stat_lineribbon(data = samples,
                                     ggplot2::aes(x = x_axis, y = !!y_var, group = .draw,
-                                                 color = model_color),
+                                                 color = !!model_color,
+                                                 fill = !!model_color),
                                     ...,
                                     alpha = 0.5))
       } else if (draw == "hops") {
@@ -26,7 +28,8 @@ uncertainty_rep_lineribbon = function(..., scale_fill = ggplot2::scale_fill_brew
         p = list(ggdist::stat_lineribbon(data = samples %>%
                                       dplyr::mutate(!!draw_col := .draw),
                                     ggplot2::aes(x = x_axis, y = !!y_var, group = .draw,
-                                                 color = model_color),
+                                                 color = !!model_color,
+                                                 fill = !!model_color),
                                     ...,
                                     alpha = 0.5),
               gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE))
@@ -39,14 +42,16 @@ uncertainty_rep_lineribbon = function(..., scale_fill = ggplot2::scale_fill_brew
                                       dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
                                       dplyr::summarise(y_agg = draw(!!y_var)),
                                     ggplot2::aes(x = x_axis, y = y_agg,
-                                                 color = model_color),
+                                                 color = !!model_color,
+                                                 fill = !!model_color),
                                     ...,
                                     alpha = 0.5))
       }
-
-      return(list(ggnewscale::new_scale_fill(), p, scale_fill,
-                  ggnewscale::new_scale_fill(), ggplot2::scale_fill_manual(name = "fill", values = colors_legend)))
+      return(p)
+      # return(list(ggnewscale::new_scale_fill(), p, scale_fill,
+                  # ggnewscale::new_scale_fill(), ggplot2::scale_fill_manual(name = "fill", values = colors_legend)))
     } else {
+      warning("Conditional variable on x axis needs to be specified to draw lineribbon geometry.")
       # if (".draw" %in% colnames(samples)) {
       #   x_seq = function(len) seq(min(samples[[rlang::quo_name(y_var)]]),
       #                             max(samples[[rlang::quo_name(y_var)]]), length.out = len)

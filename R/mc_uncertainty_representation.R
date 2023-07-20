@@ -356,7 +356,6 @@ mc_model_pointinterval = function(..., n_sample = NA, draw = "collapse") {
 #' Interval plot for model predictions
 #'
 #' @param ... Augments passed to [`ggdist::stat_interval`](https://mjskay.github.io/ggdist/reference/stat_interval.html).
-#' @param scale_color The scale_color_* layer for interval. Default to be `ggplot2::scale_color_brewer()`.
 #' @param n_sample The number of sample of draws to show in interval plot.
 #'  Default `NA`. If `n_sample` is `NA`, then `mc_model_interval()` will use all draws from
 #'  posterior distribution.
@@ -370,9 +369,9 @@ mc_model_pointinterval = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
-mc_model_interval = function(..., scale_color = ggplot2::scale_color_brewer(palette = 7), n_sample = NA, draw = "collapse") {
+mc_model_interval = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_interval(..., scale_fill = scale_color, n_sample = n_sample, draw = draw)
+    uncert_rep = uncertainty_rep_interval(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -388,7 +387,6 @@ mc_model_interval = function(..., scale_color = ggplot2::scale_color_brewer(pale
 #' Line + multiple-ribbon plot for model predictions
 #'
 #' @param ... Augments passed to [`ggdist::stat_lineribbon`](https://mjskay.github.io/ggdist/reference/stat_lineribbon.html).
-#' @param scale_fill The scale_fill_* layer for lineribbon. Default to be `ggplot2::scale_fill_brewer()`.
 #' @param n_sample The number of sample of draws to show in lineribbon plot.
 #'  Default `NA`. If `n_sample` is `NA`, then `mc_model_lineribbon()` will use all draws from
 #'  posterior distribution.
@@ -402,9 +400,9 @@ mc_model_interval = function(..., scale_color = ggplot2::scale_color_brewer(pale
 #' @export
 #'
 #' @examples
-mc_model_lineribbon = function(..., scale_fill = ggplot2::scale_fill_brewer(palette = 7), n_sample = NA, draw = "collapse") {
+mc_model_lineribbon = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_lineribbon(..., scale_fill = scale_fill, n_sample = n_sample, draw = draw)
+    uncert_rep = uncertainty_rep_lineribbon(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -420,7 +418,6 @@ mc_model_lineribbon = function(..., scale_fill = ggplot2::scale_fill_brewer(pale
 #' Multiple-ribbon plot for model predictions
 #'
 #' @param ... Augments passed to [`ggdist::stat_ribbon`](https://mjskay.github.io/ggdist/reference/stat_ribbon.html).
-#' @param scale_fill The scale_fill_* layer for ribbon Default to be `ggplot2::scale_fill_brewer()`.
 #' @param n_sample The number of sample of draws to show in ribbon plot.
 #'  Default `NA`. If `n_sample` is `NA`, then `mc_model_ribbon()` will use all draws from
 #'  posterior distribution.
@@ -434,9 +431,9 @@ mc_model_lineribbon = function(..., scale_fill = ggplot2::scale_fill_brewer(pale
 #' @export
 #'
 #' @examples
-mc_model_ribbon = function(..., scale_fill = ggplot2::scale_fill_brewer(palette = 7), n_sample = NA, draw = "collapse") {
+mc_model_ribbon = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_ribbon(..., scale_fill = scale_fill, n_sample = n_sample, draw = draw)
+    uncert_rep = uncertainty_rep_ribbon(..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)

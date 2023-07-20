@@ -6,21 +6,16 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-`modelcheck` is a visualization grammar designed for model checking. It
-provides users designing guidelines about model check visualizations and
-allows users to create a model check visualization in a concise and
-interpretable way. The structure of `modelcheck` grammar follows the
-necessary components we found in model checking. First, the model
-predictions or model features need to be extracted as a **distribution**
-of data from model objects, i.e. data tidying. Then **uncertainty
-representations** should be able to involved to describe the
-distribution of model, since the uncertainty is natural inherent inside
-models. The observed data must be somewhere in model checking as the
-necessity of the ground truth to know the model’s performance. We don’t
-want users to check the model with the observed data inside of their
-mind implicitly, so there is a need to define the observed data in model
-check, which deduce the need to define **comparative layouts** in model
-check visualization.
+`modelcheck` is a visualization grammar designed to make it easy to
+generate informative visualizations for model checking. The `modelcheck`
+grammar assumes a basic workflow for creating model checks. First, the
+model predictions or model features need to be extracted as a
+**distribution** of data from a model object, i.e. data tidying. Then
+the user must specify an **uncertainty representation** to describe the
+selected distribution(s). They must also specify the presentation of the
+observed data. The user can choose among multiple **comparative
+layouts** to structure their comparison between observed data and model
+predictions.
 
 ## Installation
 
@@ -50,7 +45,7 @@ library(brms)
 #> 
 #>     ar
 model = brm(
-  bf(mpg ~ disp),
+  bf(mpg ~ disp + vs + am),
   init = "0",
   data = mtcars,
   iter = 6000,
@@ -140,7 +135,7 @@ line + ribbon plot to show the uncertainty of model.
 ``` r
 model %>%
   mcplot() +
-  mc_distribution("mu") +
+  mc_distribution("mu", ndraws = 500) +
   mc_condition_on(x = vars(disp)) +
   mc_model_lineribbon()
 ```
@@ -154,11 +149,11 @@ the comparative layout into juxtaposition.
 ``` r
 model %>%
   mcplot() +
-  mc_distribution("mu") +
+  mc_distribution("mu", ndraws = 500) +
   mc_condition_on(x = vars(disp)) +
   mc_model_lineribbon() +
   mc_layout_juxtaposition()
-#> Warning: Removed 16 rows containing missing values (`stat_slabinterval()`).
+#> Warning: Removed 19 rows containing missing values (`stat_slabinterval()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />

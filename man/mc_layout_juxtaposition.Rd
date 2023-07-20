@@ -32,8 +32,7 @@ model predictions by a residual plot.
 \item \code{"worm"}, then \code{mcplot()} will show the comparison by a detrended Q-Q plot (worm plot).
 \item A function, then \code{mcplot()} will transform the data by that function.
 The input of the function is a data frame generated from the \code{newdata} data frame
-passed to \code{mc_distribution()} using \code{tidybayes::predicted_draws()} and
-\code{tidybayes::linpred_draws()}, which includes a .row column (a factor
+passed to \code{mc_distribution()}, which includes a .row column (a factor
 grouping rows from the input newdata), .chain column (the chain each draw
 came from, or NA if the model does not provide chain information),
 .iteration column (the iteration the draw came from, or NA if the model

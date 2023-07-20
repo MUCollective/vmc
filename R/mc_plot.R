@@ -10,11 +10,15 @@
 #'  guidance.
 #'
 #' @param model The model fit object.
+#' @param observation A data frame standing for data observations. Default to be
+#'  `NULL`. If `NULL`, `modelcheck` will use the observations in the model fit
+#'  data set. The input data frame should include the variables in model formula.
+#'
 #'
 #' @export
 #'
 #' @examples
-mcplot = function(model) {
+mcplot = function(model, observation = NULL) {
   p = function(mc_setting = NULL) {
     if (is.null(mc_setting)) {
       mc_setting = list()
@@ -22,23 +26,26 @@ mcplot = function(model) {
 
     mc = NULL
 
-    if (!("distribution" %in% names(mc_setting))) {
-      mc_setting$distribution = "predictive"
-    }
-    if (!("input_data" %in% names(mc_setting))) {
-      mc_setting$input_data = NULL
-    }
-    if (!("is.transform" %in% names(mc_setting))) {
-      mc_setting$is.transform = TRUE
-    }
-    if (!("ndraws" %in% names(mc_setting))) {
-      mc_setting$ndraws = 500
-    }
-    if (!("seed" %in% names(mc_setting))) {
-      mc_setting$seed = NULL
-    }
-    if (!("re_formula" %in% names(mc_setting))) {
-      mc_setting$re_formula = NULL
+    # if (!("distribution" %in% names(mc_setting))) {
+    #   mc_setting$distribution = "predictive"
+    # }
+    # if (!("input_data" %in% names(mc_setting))) {
+    #   mc_setting$input_data = NULL
+    # }
+    # if (!("is.transform" %in% names(mc_setting))) {
+    #   mc_setting$is.transform = TRUE
+    # }
+    # if (!("ndraws" %in% names(mc_setting))) {
+    #   mc_setting$ndraws = 500
+    # }
+    # if (!("seed" %in% names(mc_setting))) {
+    #   mc_setting$seed = NULL
+    # }
+    # if (!("re_formula" %in% names(mc_setting))) {
+    #   mc_setting$re_formula = NULL
+    # }
+    if (!("get_distribution" %in% names(mc_setting))) {
+      mc_setting$get_distribution = mc_get_distribution()
     }
     if (!("n_sample" %in% names(mc_setting))) {
       mc_setting$n_sample = 100
@@ -54,7 +61,7 @@ mcplot = function(model) {
     }
 
     if (!("conditional_vars" %in% names(mc_setting))) {
-      mc_setting$conditional_vars = list(x_var = NULL, row_vars = NULL, col_vars = NULL)
+      mc_setting$conditional_vars = list(x_var = NULL, color_var = NULL, row_vars = NULL, col_vars = NULL)
     }
     if (!("gglayers" %in% names(mc_setting))) {
       mc_setting$gglayers = NULL
@@ -73,13 +80,8 @@ mcplot = function(model) {
     }
 
 
-    mc = model %>%
-      mc_get_distribution(distribution = mc_setting$distribution,
-                          input_data = mc_setting$input_data,
-                          is.transform = mc_setting$is.transform,
-                          ndraws = mc_setting$ndraws,
-                          seed = mc_setting$seed,
-                          re_formula = mc_setting$re_formula) %>%
+    mc =
+      mc_setting$get_distribution(model) %>%
       mc_operate(operation = mc_setting$explicit_operation,
                  x_label = mc_setting$x_label, y_label = mc_setting$y_label) %>%
       mc_visualize(uncertainty_representation = mc_setting$uncertainty_representation,
@@ -89,7 +91,8 @@ mcplot = function(model) {
                    model_color = mc_setting$model_color,
                    observed_color = mc_setting$obs_color,
                    show_draw = mc_setting$show_draw) %>%
-      mc_compare(comparative_layout = mc_setting$comparative_layout,
+      mc_compare(obs_data = observation,
+                 comparative_layout = mc_setting$comparative_layout,
                  obs_uncertainty_representation = mc_setting$obs_uncertainty_representation,
                  gglayers = mc_setting$gglayers,
                  model_color = mc_setting$model_color,

@@ -20,8 +20,7 @@
 #'  * `"worm"`, then `mcplot()` will show the comparison by a detrended Q-Q plot (worm plot).
 #'  * A function, then `mcplot()` will transform the data by that function.
 #'    The input of the function is a data frame generated from the `newdata` data frame
-#'    passed to `mc_distribution()` using `tidybayes::predicted_draws()` and
-#'    `tidybayes::linpred_draws()`, which includes a .row column (a factor
+#'    passed to `mc_distribution()`, which includes a .row column (a factor
 #'    grouping rows from the input newdata), .chain column (the chain each draw
 #'    came from, or NA if the model does not provide chain information),
 #'    .iteration column (the iteration the draw came from, or NA if the model

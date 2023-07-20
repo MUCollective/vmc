@@ -1,13 +1,13 @@
 
 mc_visualize <- function(prev_ret, uncertainty_representation,
-                         conditional_vars = list(NULL, NULL, NULL),
+                         conditional_vars = list(NULL, NULL, NULL, NULL),
                          n_sample = 100,
                          axis_type = list(NULL, NULL),
                          model_color = NULL,
                          observed_color = NULL,
                          show_draw = "all") {
   zeallot::`%<-%`(c(samples, response_var, labels), prev_ret)
-  zeallot::`%<-%`(c(x_var, row_vars, col_vars), conditional_vars)
+  zeallot::`%<-%`(c(x_var, color_var, row_vars, col_vars), conditional_vars)
   zeallot::`%<-%`(c(x_axis_type, y_axis_type), axis_type)
 
   x_var = x_var[[1]]
@@ -65,9 +65,16 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
   } else {
     p <- ggplot2::ggplot()
   }
+  if (is.null(color_var)) {
+    p <- p + ggplot2::scale_color_manual(name = "color", values = colors_legend) +
+      ggplot2::scale_fill_manual(name = "fill", values = colors_legend)
+  }
 
-  p <- p + ggplot2::scale_color_manual(name = "color", values = colors_legend) +
-    ggplot2::scale_fill_manual(name = "fill", values = colors_legend)
+  if (is.null(color_var)) {
+    model_color = "model"
+  } else {
+    model_color = color_var[[1]]
+  }
 
   call_rep = function(func) {
     func(samples,
@@ -75,10 +82,9 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
          col_vars,
          labels,
          list(x_axis_type, y_axis_type),
-         "model",
+         model_color,
          FALSE,
-         rlang::quo(y_axis),
-         colors_legend)
+         rlang::quo(y_axis))
   }
 
   for (uncert_rep in uncertainty_representation) {
@@ -90,11 +96,11 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
   if ("x_axis" %in% colnames(samples)) {
     p <- p + ggplot2::labs(x = labels$x, y = labels$y)
   } else {
-    p <- p + ggplot2::labs(x = "density", y = labels$y)
+    p <- p + ggplot2::labs(y = labels$y)
   }
   is_animation = "gganim" %in% class(p)
 
   p <- p + ggplot2::facet_grid(rows = row_vars, cols = col_vars, labeller = ggplot2::label_both)
 
-  list(samples, p, labels, conditional_vars, is_animation, x_axis_type, y_axis_type)
+  list(samples, p, labels, response_var, conditional_vars, is_animation, x_axis_type, y_axis_type)
 }

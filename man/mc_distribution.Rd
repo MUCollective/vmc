@@ -7,10 +7,10 @@
 mc_distribution(
   distribution = "predictive",
   newdata = NULL,
-  is.transform = TRUE,
+  draw_function = NULL,
+  response_var = NULL,
   ndraws = 500,
-  seed = NULL,
-  re_formula = NULL
+  ...
 )
 }
 \arguments{
@@ -18,25 +18,61 @@ mc_distribution(
 and push-forward transformations (e.g. \code{mu}, \code{sigma}, and \code{phi}). For example,
 if the model is normal family and \code{distribution = "predictive"}, we draws from
 posterior predictive distribution; if \code{distribution = "mu"}, we draws from
-the linear/link-level predictor (i.e. push-forward transformations).}
+the distribution of linear/link-level predictor (i.e. push-forward transformations).}
 
-\item{newdata}{Data frame to generate predictions from, or \code{NULL} to use the
+\item{newdata}{Data frame to generate predictions from, or \code{NULL} to reuse the
 data frame used to fit model, i.e. replicated predictive distribution.}
 
-\item{is.transform}{Should the linear predictor be transformed using the
-inverse-link function? See \href{https://mc-stan.org/rstantools/reference/posterior_linpred.html}{\code{rstanarm::posterior_linpred()}} or
-\href{https://mc-stan.org/rstantools/reference/posterior_linpred.html}{\code{brms::posterior_linpred()}}.}
+\item{draw_function}{The function used to draw from model's posterior distributions.
+Default to be \code{NULL}. If \code{draw_function} is \code{NULL}, then \code{modelcheck} will
+use \code{tidybayes::predicted_draws()} for \code{distribution = "predictive"} and
+use \code{tidybayes::linpred_draws()} for other distributions of
+linear/link-level predictors. If \code{draw_function} is not \code{NULL}, it should be
+a function that takes \code{model}, \code{newdata}, and \code{ndraws} as inputs and output a data
+frame that sampled from \code{model} on \code{newdata} with at least a \code{prediction}
+column (the draws from the model's distribution), a \code{.row} column (a factor grouping rows from
+the input newdata), and a \code{.draw} column (a unique index corresponding to
+each draw from the distribution).}
+
+\item{response_var}{A string for the response variable in model. Default to
+be \code{NULL}. If \code{NULL}, \code{modelcheck} will find the response variable in
+\code{model$formula}.}
 
 \item{ndraws}{The number of draws to return, or \code{NULL} to return all draws.}
 
-\item{seed}{A seed to use when subsampling draws (i.e. when ndraws is not NULL).}
-
-\item{re_formula}{Formula containing group-level effects to be considered
-in the prediction. See \href{http://mjskay.github.io/tidybayes/reference/add_predicted_draws.html}{\code{tidybayes::add_predicted_draws}}.}
+\item{...}{Augments passed to \code{draw_function}. If \code{draw_function} is \code{NULL},
+then \code{...} will be passed to \code{tidybayes::predicted_draws()} or \code{tidybayes::linpred_draws()}}
 }
 \description{
 \code{modelcheck} uses the R package \href{http://mjskay.github.io/tidybayes/index.html}{\code{tidybayes}}
 to draw from posterior distributions. For posterior predictive distributions,
 \code{modelcheck} uses \code{tidybayes::predicted_draws()}; for posterior distribution
 of push-forward transformation, \code{modelcheck} uses \code{tidybayes::linpred_draws()}.
+}
+\examples{
+library(brms)
+library(modelr)
+model = brm(
+  bf(mpg ~ disp),
+  init = "0",
+  data = mtcars,
+  iter = 6000,
+  file = "models/example_model.rds" # cache model (can be removed)
+)
+mcplot(model) +
+  mc_distribution()
+
+mcplot(model) +
+  mc_distribution("mu")
+
+mcplot(model) +
+  mc_distribution("mu", data_grid(model$data, disp, carb, vs, am, mpg))
+
+library(tidybayes)
+draw_function = function(model, newdata, ...) {
+  epred_draws(model, newdata, dpar = "mu", ...)
+}
+
+mcplot(model) +
+  mc_distribution(draw_function = draw_function)
 }

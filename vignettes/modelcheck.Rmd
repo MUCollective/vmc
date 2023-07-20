@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette introduces the `modelcheck` package, which facilitates model check visualizations (check whether the model predicts well compared with data observations) for Bayesian models in R. This vignette follows the basic workflow in model check to show how `modelcheck` can fulfill the requirements by minimal changes in code. For more detail description on geoms and comparative layouts, see `vignette("uncert-rep")` and `vignette("comp-layout")`.
+This vignette introduces the `modelcheck` package, which facilitates model check visualizations (i.e., comparing observed data to model predictions) for Bayesian models in R. This vignette follows the basic workflow in model check to show how `modelcheck` can fulfill the requirements by minimal changes in code. For more detail description on geoms and comparative layouts, see `vignette("uncert-rep")` and `vignette("comp-layout")`.
 
 # Setup
 
@@ -45,7 +45,11 @@ options(mc.cores = parallel::detectCores())
 
 # Model
 
-Let’s fit a simple model on `datasets::mtcars` with four predictors:
+Let’s fit a simple model on `datasets::mtcars` with default priors and four predictors:
+
+```{r}
+get_prior(bf(mpg ~ disp + carb + vs + am), data = mtcars)
+```
 
 ```{r}
 model = brm(
@@ -53,8 +57,8 @@ model = brm(
   init = "0",
   data = mtcars,
   iter = 6000,
-  
-  file = "models/get-started_model.rds" # cache model (can be removed)  
+  sample_prior = TRUE,
+  file = "models/get-started_model.rds" # cache model (can be removed)
 )
 ```
 
@@ -71,6 +75,14 @@ Now that we have the model, the model check begins: it usually starts with a den
 ```{r}
 model %>% 
   mcplot()
+```
+
+`modelcheck` puts the response variable on y axis by default. You can flip the plot to generate a canonical posterior predictive check by density plot. `modelcheck` enables you to do this by `mc_gglayer` to add a `ggplot2` layer to model check.
+
+```{r}
+model %>% 
+  mcplot() +
+  mc_gglayer(coord_flip())
 ```
 
 `mcplot()` uses a lot of defaults to make a model check visualization when users don't explicitly define everything. The above lines are roughly equivalent to following:
@@ -117,7 +129,7 @@ model %>%
   mc_condition_on(x = vars(disp))
 ```
 
-You can also show different draws by [HOPs](https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740).
+You can also show different draws by animation ([HOPs](https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740).).
 
 ```{r}
 model %>% 
@@ -132,7 +144,7 @@ anim_save("modelcheck-modelcheck_hops_1.gif")
 cat("![](modelcheck-modelcheck_hops_1.gif)\n")
 ```
 
-And applying HOPs to uncertainty representations...
+Or you can even use HOPs and other uncertainty representations together.
 
 ```{r}
 model %>% 
@@ -156,6 +168,9 @@ Juxtaposition puts the model predictions and data observations side by side. Jux
 ```{r}
 model %>%
   mcplot() + 
+  mc_model_eye() +
+  mc_obs_eye() +
+  mc_condition_on(x = vars(carb)) +
   mc_layout_juxtaposition()
 ```
 
@@ -164,6 +179,9 @@ Superposition is the default comparative layout by `modelcheck`. It puts the mod
 ```{r}
 model %>%
   mcplot() + 
+  mc_model_eye() +
+  mc_obs_eye() +
+  mc_condition_on(x = vars(carb)) +
   mc_layout_superposition()
 ```
 
@@ -174,13 +192,13 @@ model %>%
   mcplot() + 
   mc_model_eye() +
   mc_obs_eye() +
-  mc_layout_nested() +
-  mc_condition_on(x = vars(carb))
+  mc_condition_on(x = vars(carb)) +
+  mc_layout_nested()
 ```
 
 Explicit-encoding focuses on revealing the relationship between model predictions and data observations by explicitly encoding or calculating in visualizations. Some common examples could be residual plot, Q-Q plot, and wormplots. `modelcheck` supports explicitly-encoding by enabling users to pass in the operation (`exp_op`) they want to do in explicitly-encoding comparison. `modelcheck` predefines several common explicitly-encodings (e.g. residual plot and Q-Q plot) but users can still pass in a customized operation function.
 
-Residual plot with lineribbon:
+Residual plot with uncertainty representation lineribbon:
 
 ```{r}
 model %>%

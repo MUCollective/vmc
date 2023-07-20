@@ -7,9 +7,9 @@
 #' @export
 #'
 #' @examples
-mc_condition_on = function(x = NULL, row = NULL, col = NULL) {
+mc_condition_on = function(x = NULL, color = NULL, row = NULL, col = NULL) {
   p = function(mc_setting = NULL) {
-    c(list(conditional_vars = list(x_var = x, row_vars = row, col_vars = col)), mc_setting)
+    c(list(conditional_vars = list(x_var = x, color_var = color, row_vars = row, col_vars = col)), mc_setting)
   }
   class(p) <- 'modelcheck'
   p
