@@ -35,7 +35,7 @@ the input newdata), and a \code{.draw} column (a unique index corresponding to
 each draw from the distribution).}
 
 \item{response_var}{A string for the response variable in model. Default to
-be \code{NULL}. If \code{NULL}, \code{modelcheck} will find the response variable in
+be \code{NULL}. If \code{NULL}, \code{modelcheck} will infer the response variable from
 \code{model$formula}.}
 
 \item{ndraws}{The number of draws to return, or \code{NULL} to return all draws.}
@@ -57,7 +57,6 @@ model = brm(
   init = "0",
   data = mtcars,
   iter = 6000,
-  file = "models/example_model.rds" # cache model (can be removed)
 )
 mcplot(model) +
   mc_distribution()
@@ -69,8 +68,10 @@ mcplot(model) +
   mc_distribution("mu", data_grid(model$data, disp, carb, vs, am, mpg))
 
 library(tidybayes)
+library(dplyr)
 draw_function = function(model, newdata, ...) {
-  epred_draws(model, newdata, dpar = "mu", ...)
+  epred_draws(model, newdata, dpar = "mu", ...) \%>\%
+    mutate(prediction = mu)
 }
 
 mcplot(model) +

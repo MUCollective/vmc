@@ -4,10 +4,14 @@
 \alias{mcplot}
 \title{Create a new mcplot}
 \usage{
-mcplot(model)
+mcplot(model, observation = NULL)
 }
 \arguments{
 \item{model}{The model fit object.}
+
+\item{observation}{A data frame standing for data observations. Default to be
+\code{NULL}. If \code{NULL}, \code{modelcheck} will use the observations in the model fit
+data set. The input data frame should include the variables in model formula.}
 }
 \description{
 \code{mcplot()} initializes a modelcheck object. It follows the ggplot syntax,

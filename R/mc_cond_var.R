@@ -3,6 +3,7 @@
 #'
 #' @param x A variable quoted by `ggplot2::vars()` and defining the conditional variable on x axis.
 #' @param row,col A set of variables quoted by `ggplot2::vars()` and defining faceting groups on the rows or columns
+#' @param color A variable quoted by `ggplot2::vars()` and defining the color aesthetic in model check.
 #'
 #' @export
 #'
