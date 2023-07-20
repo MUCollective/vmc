@@ -48,13 +48,19 @@ which uses a plus sign (<code>+</code>) to define features of model check visual
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mcplot</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mcplot</span><span class="op">(</span><span class="va">model</span>, observation <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>model</dt>
 <dd><p>The model fit object.</p></dd>
+
+
+<dt>observation</dt>
+<dd><p>A data frame standing for data observations. Default to be
+<code>NULL</code>. If <code>NULL</code>, <code>modelcheck</code> will use the observations in the model fit
+data set. The input data frame should include the variables in model formula.</p></dd>
 
 </dl></div>
     <div class="section level2">

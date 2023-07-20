@@ -94,7 +94,7 @@ each draw from the distribution).</p></dd>
 
 <dt>response_var</dt>
 <dd><p>A string for the response variable in model. Default to
-be <code>NULL</code>. If <code>NULL</code>, <code>modelcheck</code> will find the response variable in
+be <code>NULL</code>. If <code>NULL</code>, <code>modelcheck</code> will infer the response variable from
 <code>model$formula</code>.</p></dd>
 
 
@@ -127,9 +127,9 @@ then <code>...</code> will be passed to <code><a href="http://mjskay.github.io/t
 <span class="r-in"><span>  init <span class="op">=</span> <span class="st">"0"</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">mtcars</span>,</span></span>
 <span class="r-in"><span>  iter <span class="op">=</span> <span class="fl">6000</span>,</span></span>
-<span class="r-in"><span>  file <span class="op">=</span> <span class="st">"models/example_model.rds"</span> <span class="co"># cache model (can be removed)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> The directory 'models' does not exist. Please choose an existing directory where the model can be saved after fitting.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Compiling Stan program...</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in .fun(model_code = .x1):</span> Boost not found; call install.packages('BH')</span>
 <span class="r-in"><span><span class="fu"><a href="mcplot.html">mcplot</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu">mc_distribution</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in mc_setting %&gt;% e2() %&gt;% e1():</span> could not find function "%&gt;%"</span>
@@ -148,13 +148,23 @@ then <code>...</code> will be passed to <code><a href="http://mjskay.github.io/t
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:brms’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     dstudent_t, pstudent_t, qstudent_t, rstudent_t</span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘dplyr’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     filter, lag</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     intersect, setdiff, setequal, union</span>
 <span class="r-in"><span><span class="va">draw_function</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">newdata</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="http://mjskay.github.io/tidybayes/reference/add_predicted_draws.html" class="external-link">epred_draws</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">newdata</span>, dpar <span class="op">=</span> <span class="st">"mu"</span>, <span class="va">...</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="http://mjskay.github.io/tidybayes/reference/add_predicted_draws.html" class="external-link">epred_draws</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">newdata</span>, dpar <span class="op">=</span> <span class="st">"mu"</span>, <span class="va">...</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>prediction <span class="op">=</span> <span class="va">mu</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="mcplot.html">mcplot</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu">mc_distribution</span><span class="op">(</span>draw_function <span class="op">=</span> <span class="va">draw_function</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in mc_setting %&gt;% e2() %&gt;% e1():</span> could not find function "%&gt;%"</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'model' not found</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
