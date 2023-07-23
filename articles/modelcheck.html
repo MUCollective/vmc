@@ -72,10 +72,9 @@
 </h2>
 <p>This vignette introduces the <code>modelcheck</code> package, which
 facilitates model check visualizations (i.e., comparing observed data to
-model predictions) for Bayesian models in R. This vignette follows the
-basic workflow in model check to show how <code>modelcheck</code> can
-fulfill the requirements by minimal changes in code. For more detail
-description on geoms and comparative layouts, see
+model predictions) for Bayesian models in R. This vignette follows a
+standard model checking workflow to show how <code>modelcheck</code>.
+For more detailed description of geoms and comparative layouts, see
 <code>vignette("uncert-rep")</code> and
 <code>vignette("comp-layout")</code>.</p>
 </div>
@@ -161,7 +160,7 @@ default priors and four predictors:</p>
 <span>  sample_prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  file <span class="op">=</span> <span class="st">"models/get-started_model.rds"</span> <span class="co"># cache model (can be removed)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>The results look like this:</p>
+<p>The result looks like this:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span></span>
 <span><span class="co">#&gt;  Family: gaussian </span></span>
@@ -190,25 +189,25 @@ default priors and four predictors:</p>
 <div class="section level2">
 <h2 id="generate-graphical-posterior-predictive-checks">Generate graphical posterior predictive checks<a class="anchor" aria-label="anchor" href="#generate-graphical-posterior-predictive-checks"></a>
 </h2>
-<p>Now that we have the model, the model check begins: it usually starts
-with a density plot for posterior predictive distribution and data
-observed distribution. <code><a href="../reference/mcplot.html">mcplot()</a></code> here generates a density
-plot for model check by default if no other options defined.</p>
+<p>Now that we have the model, we can begin to construct model checks.
+This often starts with a density plot comparing the posterior predictive
+distribution and observed data distribution. <code><a href="../reference/mcplot.html">mcplot()</a></code> here
+generates a density plot by default if no other options are defined.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modelcheck_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
-<p><code>modelcheck</code> puts the response variable on y axis by
+<p><code>modelcheck</code> puts the response variable on the y-axis by
 default. You can flip the plot to generate a canonical posterior
-predictive check by density plot. <code>modelcheck</code> enables you to
-do this by <code>mc_gglayer</code> to add a <code>ggplot2</code> layer
-to model check.</p>
+predictive check using a density plot. <code>modelcheck</code> enables
+you to do this by using <code>mc_gglayer</code> to add a
+<code>ggplot2</code> layer to model check.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modelcheck_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
-<p><code><a href="../reference/mcplot.html">mcplot()</a></code> uses a lot of defaults to make a model check
+<p><code><a href="../reference/mcplot.html">mcplot()</a></code> uses defaults to make a model check
 visualization when users don’t explicitly define everything. The above
 lines are roughly equivalent to following:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -221,9 +220,9 @@ lines are roughly equivalent to following:</p>
 <span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modelcheck_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 <p><code><a href="../reference/mc_distribution.html">mc_distribution()</a></code> defines how <code>modelcheck</code>
-would draw posterior distribution, where <code>"predictive"</code> says
-to draw from posterior predictive distribution and
-<code>newdata = "obs"</code> says to use the observation dataset to
+would draw the posterior distribution, where <code>"predictive"</code>
+says to draw from the posterior predictive distribution and
+<code>newdata = "obs"</code> says to use the observed dataset to
 generate. <code>mc_model_geom_line()</code> and
 <code>mc_obs_geom_line()</code> define the geom of model predictions and
 data observations and choose a suitable geom for users based on data
@@ -238,18 +237,18 @@ in later sections.</p>
 <div class="section level2">
 <h2 id="add-conditional-predictions-for-posterior-predictive-checks">Add conditional predictions for posterior predictive checks<a class="anchor" aria-label="anchor" href="#add-conditional-predictions-for-posterior-predictive-checks"></a>
 </h2>
-<p>Model check not only is about single variable check but also involves
-conditional variables and checks the response variable’s marginal
-effects on them. For example, we want to check the impact of
+<p>Model checking is not restricted to a single variable check, but can
+also involve conditional variables for checking the response variable’s
+marginal effects on them. For example, we want to check the impact of
 <code>disp</code> on <code>mpg</code> in the above model. By using
 <code>modelcheck</code>, it’s pretty easy to do this by just adding one
-line code:</p>
+line of code:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modelcheck_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
-<p>Then you can easily apply some uncertainty representations to model
+<p>Then you canapply some uncertainty representations to model
 predictions in <code>modelcheck</code>. For example, <a href="https://mjskay.github.io/ggdist/reference/stat_lineribbon.html" class="external-link">lineribbon</a>
 and <a href="https://mjskay.github.io/ggdist/reference/stat_pointinterval.html" class="external-link">point+interval</a>
 are shown below.</p>
@@ -278,7 +277,7 @@ are shown below.</p>
 <span>  <span class="fu"><a href="../reference/mc_model_point.html">mc_model_point</a></span><span class="op">(</span>draw <span class="op">=</span> <span class="st">"hops"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modelcheck-modelcheck_hops_1.gif"></p>
-<p>Or you can even use HOPs and other uncertainty representations
+<p>Or you can use HOPs and other uncertainty representations
 together.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
@@ -290,15 +289,16 @@ together.</p>
 <div class="section level2">
 <h2 id="changing-comparative-layouts">Changing comparative layouts<a class="anchor" aria-label="anchor" href="#changing-comparative-layouts"></a>
 </h2>
-<p>Since model check is checking the model’s performance by comparing
-with observed data, <code>modelcheck</code> package also enables users
-to change comparative layouts for model prediction and data observations
-through function <code>mc_comp_layout()</code>. <code>modelcheck</code>
-has four predefined comparative layouts: juxtaposition, superposition,
-nested juxtaposition, and explicit-encoding.</p>
+<p>Since model check visualizations involve checking the model’s
+performance by comparing model predictions with observed data,
+<code>modelcheck</code> also enables users to change comparative layouts
+for the model predictions and data observations using the function
+<code>mc_comp_layout()</code>. <code>modelcheck</code> has four
+predefined comparative layouts: juxtaposition, superposition, nested
+juxtaposition, and explicit-encoding.</p>
 <p>Juxtaposition puts the model predictions and data observations side
 by side. Juxtaposition is especially useful when model predictions and
-data observations are overlapped in superposition so they can not be
+data observations overlap in superposition so they can not be
 distinguished well.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -309,8 +309,8 @@ distinguished well.</p>
 <span>  <span class="fu"><a href="../reference/mc_layout_juxtaposition.html">mc_layout_juxtaposition</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modelcheck_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
 <p>Superposition is the default comparative layout by
-<code>modelcheck</code>. It puts the model predictions at the top of
-data observations and shows them in one plots.</p>
+<code>modelcheck</code>. It superimposes the model predictions and data
+observations in a single plot.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -319,13 +319,13 @@ data observations and shows them in one plots.</p>
 <span>  <span class="fu"><a href="../reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">carb</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_layout_juxtaposition.html">mc_layout_superposition</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modelcheck_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
-<p>When checking model conditional on a discrete variable, you might
-want the comparative layout neither to be superposition, since that
-would make data points overlapped, nor to be juxtaposition, since the
-visual distance between model predictions and data observations would be
-too large to check through. At this time, nested juxtaposition would be
-a good choice, which puts model predictions and data observations in one
-plot but does not make them overlapped.</p>
+<p>When checking model conditional on a discrete variable, there may be
+cases where you want to avoid superposition, since that would make data
+points overlap, as well as juxtaposition, since the visual distance
+betweenthe model predictions and data observations would be too large.
+In these cases, nested juxtaposition can be a good choice, which plots
+model predictions and data observations in one plot but dodges them to
+avoid overlap.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -335,14 +335,14 @@ plot but does not make them overlapped.</p>
 <span>  <span class="fu"><a href="../reference/mc_layout_juxtaposition.html">mc_layout_nested</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modelcheck_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
 <p>Explicit-encoding focuses on revealing the relationship between model
-predictions and data observations by explicitly encoding or calculating
-in visualizations. Some common examples could be residual plot, Q-Q
-plot, and wormplots. <code>modelcheck</code> supports
-explicitly-encoding by enabling users to pass in the operation
-(<code>exp_op</code>) they want to do in explicitly-encoding comparison.
-<code>modelcheck</code> predefines several common explicitly-encodings
-(e.g. residual plot and Q-Q plot) but users can still pass in a
-customized operation function.</p>
+predictions and data observations by explicitly encoding and plotting
+the difference. Some common examples are residual plots, Q-Q plots, and
+wormplots. <code>modelcheck</code> supports explicitly-encoding by
+enabling users to pass in the operation (<code>exp_op</code>) when they
+want to do in explicitly-encoding comparison. <code>modelcheck</code>
+predefines several common explicitly-encodings (e.g. residual plot and
+Q-Q plot) but users can also pass in a customized operation
+function.</p>
 <p>Residual plot with uncertainty representation lineribbon:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -360,11 +360,10 @@ customized operation function.</p>
 <span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_abline</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modelcheck_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
 <p>You can also cutomize the operation function to make the
-explicitly-encoding into any explicit comparison you want. The
-customized function should take an data frame including two columns for
-predictions and observations as input and return a data frame with
-columns named <code>y_axis</code> and <code>x_axis</code>
-(optional).</p>
+explicitly-encoding into any desired explicit comparison. The customized
+function should take a data frame including two columns for predictions
+and observations as input and return a data frame with columns named
+<code>y_axis</code> and <code>x_axis</code> (optional).</p>
 <p>Standardized residual plot (using customized operation function):</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">std_res_func</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">{</span></span>
