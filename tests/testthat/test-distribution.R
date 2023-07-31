@@ -24,6 +24,6 @@ test_that("vanilla distribution", {
   vdiffr::expect_doppelganger("vanilla sigma distribution",
                               model_df %>% mcplot(observation_transform = sd_function) +
                                 mc_distribution("sigma") +
-                                mc_condition_on(x = vars(disp))
+                                mc_condition_on(x = ggplot2::vars(disp))
   )
 })

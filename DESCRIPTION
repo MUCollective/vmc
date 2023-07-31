@@ -17,9 +17,7 @@ Imports:
     dplyr (>= 1.1.1),
     gganimate (>= 1.0.8),
     ggdist (>= 3.2.1),
-    ggnewscale,
     ggplot2 (>= 3.4.2),
-    gifski (>= 1.6.6.1),
     insight (>= 0.19.1),
     magick (>= 2.7.4),
     rlang (>= 1.1.0),
@@ -29,11 +27,14 @@ Suggests:
     brms,
     knitr,
     modelr,
+    purrr,
+    gifski (>= 1.6.6.1),
     rmarkdown,
     rstan,
     testthat (>= 3.0.0),
     tidyr (>= 1.3.0),
-    vdiffr (>= 1.0.5)
+    vdiffr (>= 1.0.5),
+    BH
 Config/testthat/edition: 3
 URL: https://mucollective.github.io/modelcheck/
 VignetteBuilder: knitr

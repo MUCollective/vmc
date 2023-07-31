@@ -29,6 +29,7 @@
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
 #' library(brms)
 #' library(modelr)
 #' model = brm(
@@ -150,6 +151,6 @@ mcplot = function(model, observation = NULL, observation_transform = NULL) {
 }
 
 #' @export
-print.modelcheck <- function(p, ...) {
-  print(p())
+print.modelcheck <- function(x, ...) {
+  print(x())
 }
