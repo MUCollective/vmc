@@ -36,6 +36,7 @@ posterior predictive checks. See \code{vignette("modelcheck")} for a complete
 guidance.
 }
 \examples{
+library(ggplot2)
 library(brms)
 library(modelr)
 model = brm(

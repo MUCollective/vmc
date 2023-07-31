@@ -57,7 +57,7 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
   }
 
   if ("x_axis" %in% colnames(samples) && x_axis_type != "quantitative" && !is.factor(samples$x_axis)) {
-    samples = samples %>% mutate(x_axis = factor(x_axis, levels = sort(unique(x_axis))))
+    samples = samples %>% dplyr::mutate(x_axis = factor(x_axis, levels = sort(unique(x_axis))))
   }
 
   colors_legend = c("obs" = observed_color, "model" = model_color)

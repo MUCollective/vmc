@@ -13,7 +13,7 @@ test_that("vanilla geom plot", {
                               model_df %>% mcplot())
 
   vdiffr::expect_doppelganger("vanilla auto point plot",
-                              model_df %>% mcplot() + mc_condition_on(x = vars(disp)))
+                              model_df %>% mcplot() + mc_condition_on(x = ggplot2::vars(disp)))
 
   vdiffr::expect_doppelganger("vanilla density plot",
                               model_df %>% mcplot() +
@@ -25,13 +25,13 @@ test_that("vanilla geom plot", {
                               model_df %>% mcplot() +
                                 mc_model_line() +
                                 mc_obs_line() +
-                                mc_condition_on(x = vars(disp))
+                                mc_condition_on(x = ggplot2::vars(disp))
   )
 
   vdiffr::expect_doppelganger("vanilla point plot",
                               model_df %>% mcplot() +
                                 mc_model_point() +
                                 mc_obs_point() +
-                                mc_condition_on(x = vars(disp))
+                                mc_condition_on(x = ggplot2::vars(disp))
   )
 })

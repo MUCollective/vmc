@@ -18,7 +18,7 @@ test_that("vanilla distribution", {
   )
 
   sd_function = function(df) {
-    df %>% mutate(observation = sd(observation))
+    df %>% dplyr::mutate(observation = sd(observation))
   }
 
   vdiffr::expect_doppelganger("vanilla sigma distribution",

@@ -16,7 +16,7 @@ comp_layout_jux = function(p_obs, ...) {
     }
 
     if ("x_axis" %in% colnames(samples) && x_type != "quantitative" && !is.factor(samples$x_axis)) {
-      samples = samples %>% mutate(x_axis = factor(x_axis, levels = sort(unique(x_axis))))
+      samples = samples %>% dplyr::mutate(x_axis = factor(x_axis, levels = sort(unique(x_axis))))
     }
 
 
