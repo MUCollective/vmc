@@ -47,17 +47,17 @@
 #'   mc_distribution("mu")
 #'
 #' mcplot(model) +
-#'   mc_distribution("mu", data_grid(model$data, disp, carb, vs, am, mpg))
+#'   mc_distribution("mu", data_grid(model$data, disp))
 #'
 #' library(tidybayes)
 #' library(dplyr)
-#' draw_function = function(model, newdata, ...) {
+#' epred_draws_mu = function(model, newdata, ...) {
 #'   epred_draws(model, newdata, dpar = "mu", ...) %>%
 #'     mutate(prediction = mu)
 #' }
 #'
 #' mcplot(model) +
-#'   mc_distribution(draw_function = draw_function)
+#'   mc_distribution(draw_function = epred_draws_mu)
 mc_distribution = function(distribution = "predictive", newdata = NULL, draw_function = NULL, response_var = NULL, ndraws = 500, ...) {
   p = function(mc_setting = NULL) {
     c(list(get_distribution = mc_get_distribution(distribution = distribution, newdata = newdata,

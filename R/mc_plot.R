@@ -11,8 +11,8 @@
 #'
 #' @param model The model fit object.
 #' @param observation A data frame standing for data observations. Default to be
-#'  `NULL`. If `NULL`, `modelcheck` will use the observations in the model fit
-#'  data set. The input data frame should include the variables in model formula.
+#'  `NULL`. If `NULL`, `modelcheck` will set the observations as the
+#'  data set that used to fit the model. The input data frame should include the variables in model formula.
 #' @param observation_transform The transform function that is applied on the
 #'  response variable in observed data. Default to be `NULL`. If `NULL`,
 #'  `modelcheck` will use no transformation. The transform function takes an input
@@ -116,6 +116,9 @@ mcplot = function(model, observation = NULL, observation_transform = NULL) {
       mc_setting$show_draw = "all"
     }
 
+    if (is.null(observation)) {
+      observation = model$data
+    }
 
     mc =
       mc_setting$get_distribution(model) %>%
