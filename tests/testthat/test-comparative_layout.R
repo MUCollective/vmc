@@ -1,7 +1,7 @@
 test_that("vanilla comparative layouts", {
   set.seed(1234)
   model_df = mtcars %>%
-    dplyr::mutate(.row = row_number()) %>%
+    dplyr::mutate(.row = dplyr::row_number()) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(.draw = list(1:10),
                   .prediction = list(rnorm(10, mpg, 5)),
