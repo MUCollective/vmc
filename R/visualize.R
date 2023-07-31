@@ -20,6 +20,8 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
     samples = samples %>% dplyr::select(y_axis = prediction, everything())
   }
 
+
+
   # sampling_by <- function(distribution, number_of_total, number_of_sample, way = "uniform") {
   #   nrow <- max(distribution$.row)
   #   if (way == "uniform") {
@@ -54,14 +56,18 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
     x_axis_type = samples$x_axis %>% get_type()
   }
 
+  if ("x_axis" %in% colnames(samples) && x_axis_type != "quantitative" && !is.factor(samples$x_axis)) {
+    samples = samples %>% mutate(x_axis = factor(x_axis, levels = sort(unique(x_axis))))
+  }
+
   colors_legend = c("obs" = observed_color, "model" = model_color)
 
   if ("x_axis" %in% colnames(samples)) {
-    if (x_axis_type == "quantitative" || is.factor(samples$x_axis)) {
+    # if (x_axis_type == "quantitative" || is.factor(samples$x_axis)) {
       p <- ggplot2::ggplot(data = samples, mapping = ggplot2::aes(x = x_axis))
-    } else {
-      p <- ggplot2::ggplot(data = samples, mapping = ggplot2::aes(x = factor(x_axis, levels = sort(unique(x_axis)))))
-    }
+    # } else {
+    #   p <- ggplot2::ggplot(data = samples, mapping = ggplot2::aes(x = factor(x_axis, levels = sort(unique(x_axis)))))
+    # }
   } else {
     p <- ggplot2::ggplot()
   }

@@ -13,12 +13,49 @@
 #' @param observation A data frame standing for data observations. Default to be
 #'  `NULL`. If `NULL`, `modelcheck` will use the observations in the model fit
 #'  data set. The input data frame should include the variables in model formula.
+#' @param observation_transform The transform function that is applied on the
+#'  response variable in observed data. Default to be `NULL`. If `NULL`,
+#'  `modelcheck` will use no transformation. The transform function takes an input
+#'  of a data frame, e.g., the data frame passed to `observation`, containing a
+#'  column named `observation` standing for observations of the response variable
+#'  and several columns standing for the predictors in model (if any). The output
+#'  of the transform function should be in the same form as the input, a data frame
+#'  containing a column named observation and several columns for the predictors.
+#'  This argument is useful when `mc_distribution` is set to a distribution
+#'  that is in a different unit from the raw observation, e.g., `sigma` in Gaussian
+#'  family models describes the variance of observation. See example for more details.
 #'
 #'
 #' @export
 #'
 #' @examples
-mcplot = function(model, observation = NULL) {
+#' library(brms)
+#' library(modelr)
+#' model = brm(
+#'   bf(mpg ~ disp),
+#'   init = "0",
+#'   data = mtcars,
+#'   iter = 6000,
+#' )
+#' mcplot(model)
+#' # note the density is on x axis and the response variable, mpg, is on y axis.
+#' # But you can flip the coordinates by mc_gglayer()
+#' mcplot(model) +
+#'   mc_gglayer(coord_flip())
+#' # you can also choose to use another observed data to show in model checks
+#' new_observed_data = mtcars %>% mutate(mpg = rnorm(nrow(mtcars), 20, 5))
+#' mcplot(model, new_observed_data) +
+#'   mc_gglayer(coord_flip())
+#' # you can also define a transform function on the observed data, which will
+#' # be applied to the observation data frame just before the visualization.
+#' # This function is even more useful when the distribution in model has a
+#' # different unit from observed data.
+#' sd_function = function(df) {df %>% mutate(observation = sd(observation))}
+#' mcplot(model, observation_transform = sd_function) +
+#'   mc_distribution("sigma") +
+#'   mc_condition_on(x = vars(disp)) +
+#'   mc_gglayer(coord_flip())
+mcplot = function(model, observation = NULL, observation_transform = NULL) {
   p = function(mc_setting = NULL) {
     if (is.null(mc_setting)) {
       mc_setting = list()
@@ -59,7 +96,6 @@ mcplot = function(model, observation = NULL) {
     if (!("comparative_layout" %in% names(mc_setting))) {
       mc_setting$comparative_layout = comp_layout_sup
     }
-
     if (!("conditional_vars" %in% names(mc_setting))) {
       mc_setting$conditional_vars = list(x_var = NULL, color_var = NULL, row_vars = NULL, col_vars = NULL)
     }
@@ -92,6 +128,7 @@ mcplot = function(model, observation = NULL) {
                    observed_color = mc_setting$obs_color,
                    show_draw = mc_setting$show_draw) %>%
       mc_compare(obs_data = observation,
+                 obs_transform = observation_transform,
                  comparative_layout = mc_setting$comparative_layout,
                  obs_uncertainty_representation = mc_setting$obs_uncertainty_representation,
                  gglayers = mc_setting$gglayers,

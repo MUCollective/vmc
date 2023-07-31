@@ -39,7 +39,30 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
           draw = "collapse"
         }
 
-        if (draw == "collapse") {
+        if (is.function(draw)) {
+          # if (is.null(agg_func)) {
+          #   agg_func = ifelse(y_type == "quantitative", mean, function(v) {
+          #     uniqv <- unique(v)
+          #     uniqv[which.max(tabulate(match(v, uniqv)))]
+          #   })
+          # }
+
+          if ("x_axis" %in% colnames(samples)) {
+            agg_sample = samples %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
+              dplyr::summarise(y_agg = draw(!!y_var))
+          } else {
+            agg_sample = samples %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+              dplyr::summarise(y_agg = draw(!!y_var))
+          }
+          p = ggplot2::geom_point(data = agg_sample,
+                                  mapping = ggplot2::aes(y = y_agg,
+                                                         color = !!model_color),
+                                  ...,
+                                  shape = shape,
+                                  size = size)
+        } else if (draw == "collapse") {
           p = ggplot2::geom_point(data = samples,
                                   mapping = ggplot2::aes(y = !!y_var,
                                                          color = !!model_color),
@@ -65,28 +88,34 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
                                   shape = shape,
                                   size = size),
                    gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE))
-        } else if (is.function(draw)) {
-          # if (is.null(agg_func)) {
-          #   agg_func = ifelse(y_type == "quantitative", mean, function(v) {
-          #     uniqv <- unique(v)
-          #     uniqv[which.max(tabulate(match(v, uniqv)))]
-          #   })
-          # }
-
-          p = ggplot2::geom_point(data = samples %>%
-                                    dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
-                                    dplyr::summarise(y_agg = draw(!!y_var)),
-                                  mapping = ggplot2::aes(y = y_agg,
-                                                         color = !!model_color),
-                                  ...,
-                                  shape = shape,
-                                  size = size)
         }
       } else {
         if (is.null(draw)) {
           draw = "hops"
         }
-        if (draw == "collapse") {
+        if (is.function(draw)) {
+          # if (is.null(agg_func)) {
+          #   agg_func = function(v) {
+          #     uniqv <- unique(v)
+          #     uniqv[which.max(tabulate(match(v, uniqv)))]
+          #   }
+          # }
+
+          if ("x_axis" %in% colnames(samples)) {
+            agg_sample = samples %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
+              dplyr::summarise(y_agg = draw(!!y_var))
+          } else {
+            agg_sample = samples %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+              dplyr::summarise(y_agg = draw(!!y_var))
+          }
+          p = c(ggplot2::geom_bin2d(data = agg_sample,
+                                    mapping = ggplot2::aes(y = factor(y_agg, levels = y_axis_order),
+                                                           fill = ggplot2::after_stat(count)),
+                                    ...),
+                ggplot2::scale_fill_gradient2(name = 'Count of Records', low="white", high=model_color))
+        } else if (draw == "collapse") {
           p = c(ggplot2::geom_bin2d(data = samples,
                                     mapping = ggplot2::aes(y = factor(!!y_var, levels = y_axis_order),
                                                            fill = ggplot2::after_stat(count)),
@@ -109,20 +138,6 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
                                     ...),
                 ggplot2::scale_fill_gradient2(name = 'Count of Records', low="white", high=model_color),
                 gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE))
-        } else if (is.function(draw)) {
-          # if (is.null(agg_func)) {
-          #   agg_func = function(v) {
-          #     uniqv <- unique(v)
-          #     uniqv[which.max(tabulate(match(v, uniqv)))]
-          #   }
-          # }
-          p = c(ggplot2::geom_bin2d(data = samples %>%
-                                      dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
-                                      dplyr::summarise(y_agg = draw(y_axis)),
-                                    mapping = ggplot2::aes(y = factor(y_agg, levels = y_axis_order),
-                                                           fill = ggplot2::after_stat(count)),
-                                    ...),
-                ggplot2::scale_fill_gradient2(name = 'Count of Records', low="white", high=model_color))
         }
       }
     } else {
@@ -130,7 +145,25 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
         if (is.null(draw)) {
           draw = "group"
         }
-        if (draw == "collapse") {
+        if (is.function(draw)) {
+          # if (is.null(agg_func)) {
+          #   agg_func = mean
+          # }
+
+          if ("x_axis" %in% colnames(samples)) {
+            agg_sample = samples %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
+              dplyr::summarise(y_agg = draw(!!y_var))
+          } else {
+            agg_sample = samples %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+              dplyr::summarise(y_agg = draw(!!y_var))
+          }
+          p = ggplot2::geom_line(data = agg_sample,
+                                 mapping = ggplot2::aes(y = y_agg,
+                                                        color = !!model_color), stat = "density",
+                                 ...)
+        } else if (draw == "collapse") {
           p = ggplot2::geom_line(data = samples,
                                  mapping = ggplot2::aes(y = !!y_var,
                                                         color = !!model_color), stat = "density",
@@ -149,22 +182,36 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
                                                         color = !!model_color), stat = "density",
                                  ...),
                 gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE))
-        } else if (is.function(draw)) {
-          # if (is.null(agg_func)) {
-          #   agg_func = mean
-          # }
-          p = ggplot2::geom_line(data = samples %>%
-                                   dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
-                                   dplyr::summarise(y_agg = draw(!!y_var)),
-                                 mapping = ggplot2::aes(y = y_agg,
-                                                        color = !!model_color), stat = "density",
-                                 ...)
         }
       } else {
         if (is.null(draw)) {
           draw = "collapse"
         }
-        if (draw == "collapse") {
+        if (is.function(draw)) {
+          # if (is.null(agg_func)) {
+          #   agg_func = function(v) {
+          #     uniqv <- unique(v)
+          #     uniqv[which.max(tabulate(match(v, uniqv)))]
+          #   }
+          # }
+          if ("x_axis" %in% colnames(samples)) {
+            agg_sample = samples %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
+              dplyr::summarise(y_agg = draw(!!y_var))
+          } else {
+            agg_sample = samples %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+              dplyr::summarise(y_agg = draw(!!y_var))
+          }
+          p = ggplot2::geom_point(data = agg_sample,
+                                  mapping = ggplot2::aes(y = y_agg, x = (..count..)/sum(..count..),
+                                                         color = !!model_color,
+                                                         fill = !!model_color),
+                                  stat = "count",
+                                  ...,
+                                  shape = "-",
+                                  size = 10)
+        } else if (draw == "collapse") {
           p = ggplot2::geom_point(data = samples %>%
                                   dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)),
                                 mapping = ggplot2::aes(y = y_axis, x = (..count..)/sum(..count..),
@@ -201,24 +248,6 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
                                   shape = "-",
                                   size = 10),
                 gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE))
-        } else if (is.function(draw)) {
-          # if (is.null(agg_func)) {
-          #   agg_func = function(v) {
-          #     uniqv <- unique(v)
-          #     uniqv[which.max(tabulate(match(v, uniqv)))]
-          #   }
-          # }
-          p = ggplot2::geom_point(data = samples %>%
-                                    dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)) %>%
-                                    dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
-                                    dplyr::summarise(y_agg = draw(!!y_var)),
-                                  mapping = ggplot2::aes(y = y_agg, x = (..count..)/sum(..count..),
-                                                         color = !!model_color,
-                                                         fill = !!model_color),
-                                  stat = "count",
-                                  ...,
-                                  shape = "-",
-                                  size = 10)
         }
       }
     }

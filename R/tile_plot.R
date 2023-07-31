@@ -10,7 +10,30 @@ tile_plot = function(..., n_sample = NA, draw = "hops") {
 
     y_axis_order = sort(unique(samples[[rlang::quo_name(y_var)]]))
 
-    if (draw == "collapse") {
+    if (is.function(draw)) {
+      # if (is.null(agg_func)) {
+      #   agg_func = function(v) {
+      #     uniqv <- unique(v)
+      #     uniqv[which.max(tabulate(match(v, uniqv)))]
+      #   }
+      # }
+      if ("x_axis" %in% colnames(samples)) {
+        agg_sample = samples %>%
+          dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)) %>%
+          dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
+          dplyr::summarise(y_agg = draw(y_axis))
+      } else {
+        agg_sample = samples %>%
+          dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)) %>%
+          dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+          dplyr::summarise(y_agg = draw(y_axis))
+      }
+      p = c(ggplot2::geom_bin2d(data = agg_sample,
+                                mapping = ggplot2::aes(x = x_axis, y = y_agg,
+                                                       fill = ggplot2::after_stat(count)),
+                                ...),
+            ggplot2::scale_fill_gradient2(name = 'Count of Records', low="white", high=model_color))
+    } else if (draw == "collapse") {
       p = c(ggplot2::geom_bin2d(data = samples %>%
                                   dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)),
                                 mapping = ggplot2::aes(x = x_axis, y = y_axis,
@@ -35,21 +58,6 @@ tile_plot = function(..., n_sample = NA, draw = "hops") {
                                 ...),
             ggplot2::scale_fill_gradient2(name = 'Count of Records', low="white", high=model_color),
             gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE))
-    } else if (is.function(draw)) {
-      # if (is.null(agg_func)) {
-      #   agg_func = function(v) {
-      #     uniqv <- unique(v)
-      #     uniqv[which.max(tabulate(match(v, uniqv)))]
-      #   }
-      # }
-      p = c(ggplot2::geom_bin2d(data = samples %>%
-                                  dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)) %>%
-                                  dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
-                                  dplyr::summarise(y_agg = draw(y_axis)),
-                                mapping = ggplot2::aes(x = x_axis, y = y_agg,
-                                                       fill = ggplot2::after_stat(count)),
-                                ...),
-            ggplot2::scale_fill_gradient2(name = 'Count of Records', low="white", high=model_color))
     }
     p
   }

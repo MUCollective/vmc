@@ -9,7 +9,25 @@ uncertainty_rep_pointinterval = function(..., n_sample = NA, draw = "collapse") 
     }
     zeallot::`%<-%`(c(x_type, y_type), axis_type)
 
-    if (draw == "collapse") {
+    if (is.function(draw)) {
+      # if (is.null(agg_func)) {
+      #   agg_func = mean
+      # }
+
+      if ("x_axis" %in% colnames(samples)) {
+        agg_sample = samples %>%
+          dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
+          dplyr::summarise(y_agg = draw(!!y_var))
+      } else {
+        agg_sample = samples %>%
+          dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+          dplyr::summarise(y_agg = draw(!!y_var))
+      }
+      p = ggdist::stat_pointinterval(data = agg_sample,
+                                     ggplot2::aes(y = y_agg,
+                                                  color = !!model_color),
+                                     ...)
+    } else if (draw == "collapse") {
       p = ggdist::stat_pointinterval(data = samples,
                                   ggplot2::aes(y = !!y_var,
                                                color = !!model_color),
@@ -28,17 +46,6 @@ uncertainty_rep_pointinterval = function(..., n_sample = NA, draw = "collapse") 
                                                  color = !!model_color),
                                     ...),
             gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE))
-    } else if (is.function(draw)) {
-      # if (is.null(agg_func)) {
-      #   agg_func = mean
-      # }
-
-      p = ggdist::stat_pointinterval(data = samples %>%
-                                    dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
-                                    dplyr::summarise(y_agg = draw(!!y_var)),
-                                  ggplot2::aes(y = y_agg,
-                                               color = !!model_color),
-                                  ...)
     }
     p
   }

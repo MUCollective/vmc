@@ -625,6 +625,7 @@ mc_model_tile = function(..., n_sample = NA, draw = "hops") {
 #' @export
 #'
 #' @examples
+#'
 mc_model_custom = function(geom_plot, ..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
 

@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette introduces the `modelcheck` package, which facilitates model check visualizations (i.e., comparing observed data to model predictions) for Bayesian models in R. This vignette follows the basic workflow in model check to show how `modelcheck` can fulfill the requirements by minimal changes in code. For more detail description on geoms and comparative layouts, see `vignette("uncert-rep")` and `vignette("comp-layout")`.
+This vignette introduces the `modelcheck` package, which facilitates model check visualizations (i.e., comparing observed data to model predictions) for Bayesian models in R. This vignette follows the basic workflow in model check to show how `modelcheck` can fulfill the requirements by minimal changes in code. For more detail description on geoms and comparative layouts, see `vignette("uncertainty-representation")` and `vignette("comparative-layout")`.
 
 # Setup
 

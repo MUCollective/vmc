@@ -30,7 +30,8 @@ Suggests:
     knitr,
     rmarkdown,
     rstan,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    vdiffr (>= 1.0.5)
 Config/testthat/edition: 3
 URL: https://mucollective.github.io/modelcheck/
 VignetteBuilder: knitr

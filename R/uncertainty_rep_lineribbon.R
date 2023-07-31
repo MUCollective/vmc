@@ -8,7 +8,27 @@ uncertainty_rep_lineribbon = function(..., n_sample = NA, draw = "collapse") {
         dplyr::filter(.draw %in% sample_ids)
     }
     if ("x_axis" %in% colnames(samples)) {
-      if (draw == "collapse") {
+      if (is.function(draw)) {
+        # if (is.null(agg_func)) {
+        #   agg_func = mean
+        # }
+
+        if ("x_axis" %in% colnames(samples)) {
+          agg_sample = samples %>%
+            dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
+            dplyr::summarise(y_agg = draw(!!y_var))
+        } else {
+          agg_sample = samples %>%
+            dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+            dplyr::summarise(y_agg = draw(!!y_var))
+        }
+        p = list(ggdist::stat_lineribbon(data = agg_sample,
+                                         ggplot2::aes(x = x_axis, y = y_agg,
+                                                      color = !!model_color,
+                                                      fill = !!model_color),
+                                         ...,
+                                         alpha = 0.5))
+      } else if (draw == "collapse") {
         p = list(ggdist::stat_lineribbon(data = samples,
                                     ggplot2::aes(x = x_axis, y = !!y_var,
                                                  color = !!model_color,
@@ -33,19 +53,6 @@ uncertainty_rep_lineribbon = function(..., n_sample = NA, draw = "collapse") {
                                     ...,
                                     alpha = 0.5),
               gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE))
-      } else if (is.function(draw)) {
-        # if (is.null(agg_func)) {
-        #   agg_func = mean
-        # }
-
-        p = list(ggdist::stat_lineribbon(data = samples %>%
-                                      dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
-                                      dplyr::summarise(y_agg = draw(!!y_var)),
-                                    ggplot2::aes(x = x_axis, y = y_agg,
-                                                 color = !!model_color,
-                                                 fill = !!model_color),
-                                    ...,
-                                    alpha = 0.5))
       }
       return(p)
       # return(list(ggnewscale::new_scale_fill(), p, scale_fill,

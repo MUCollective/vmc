@@ -9,7 +9,25 @@ uncertainty_rep_slab = function(..., n_sample = NA, draw = "collapse") {
     }
     y_axis_order = sort(unique(samples[[rlang::quo_name(y_var)]]))
 
-    if (draw == "collapse") {
+    if (is.function(draw)) {
+      # if (is.null(agg_func)) {
+      #   agg_func = mean
+      # }
+      if ("x_axis" %in% colnames(samples)) {
+        agg_sample = samples %>%
+          dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
+          dplyr::summarise(y_agg = draw(!!y_var))
+      } else {
+        agg_sample = samples %>%
+          dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+          dplyr::summarise(y_agg = draw(!!y_var))
+      }
+
+      return(c(ggdist::stat_slab(data = agg_sample,
+                                 mapping = ggplot2::aes(y = y_agg,
+                                                        color = !!model_color, fill = !!model_color),
+                                 ...)))
+    } else if (draw == "collapse") {
       return(c(ggdist::stat_slab(data = samples,
                                 mapping = ggplot2::aes(y = !!y_var,
                                                       color = !!model_color, fill = !!model_color),
@@ -29,17 +47,6 @@ uncertainty_rep_slab = function(..., n_sample = NA, draw = "collapse") {
                                                       color = !!model_color, fill = !!model_color),
                                          ...),
                gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE)))
-    } else if (is.function(draw)) {
-      # if (is.null(agg_func)) {
-      #   agg_func = mean
-      # }
-
-      return(c(ggdist::stat_slab(data = samples %>%
-                                           dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
-                                           dplyr::summarise(y_agg = draw(!!y_var)),
-                                mapping = ggplot2::aes(y = y_agg,
-                                                      color = !!model_color, fill = !!model_color),
-                                         ...)))
     }
   }
 }
