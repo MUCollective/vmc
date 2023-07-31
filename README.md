@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Modelcheck: An R package for generating model check visualization
+# Modelcheck: An R package for generating model check visualizations
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -83,8 +83,9 @@ model
 
 ### Examples
 
-You can create a default model check to do posterior predictive check by
-`mcplot()` (using `coord_flip()` to flip response variable to x axis).
+You can create a default model check to do a posterior predictive check
+by using `mcplot()` (using `coord_flip()` to flip the response variable
+to the x-axis).
 
 ``` r
 library(modelcheck)
@@ -105,9 +106,9 @@ model %>%
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
-To control the way to draw distribution from model, you can add a
+To control how the distribution is drawn from model, you can add a
 `mc_distribution()` to `mcplot()`. Here, we are drawing the posterior
-distribution of `mu` from the Gaussian model we define earlier.
+distribution of `mu` from the Gaussian model we defined earlier.
 
 ``` r
 model %>%
@@ -118,8 +119,8 @@ model %>%
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
-To add marginal effects check, you can use `mc_condition_on()` to add x
-axis, row grids, and column grids.
+To add marginal effects check, you can use `mc_condition_on()` to add an
+x-axis, row grid, and column grid.
 
 ``` r
 model %>%
@@ -130,9 +131,9 @@ model %>%
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
-Now you may find the distribution of `mpg` margining on `disp` is a
-little hard to see. Then you can use `mc_model_lineribbon()` to use
-line + ribbon plot to show the uncertainty of model.
+You may find the distribution of `mpg` margining on `disp` is a little
+hard to see. You can use `mc_model_lineribbon()` to use line + ribbon
+plot to show the uncertainty of model.
 
 ``` r
 model %>%
@@ -155,7 +156,7 @@ model %>%
   mc_condition_on(x = vars(disp)) +
   mc_model_lineribbon() +
   mc_layout_juxtaposition()
-#> Warning: Removed 18 rows containing missing values (`stat_slabinterval()`).
+#> Warning: Removed 22 rows containing missing values (`stat_slabinterval()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />

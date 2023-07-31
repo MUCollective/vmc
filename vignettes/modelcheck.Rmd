@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette introduces the `modelcheck` package, which facilitates model check visualizations (i.e., comparing observed data to model predictions) for Bayesian models in R. This vignette follows the basic workflow in model check to show how `modelcheck` can fulfill the requirements by minimal changes in code. For more detail description on geoms and comparative layouts, see `vignette("uncertainty-representation")` and `vignette("comparative-layout")`.
+This vignette introduces the `modelcheck` package, which facilitates model check visualizations (i.e., comparing observed data to model predictions) for Bayesian models in R. This vignette follows a standard model checking workflow to show how `modelcheck`. For more detailed description of geoms and comparative layouts, see `vignette("uncert-rep")` and `vignette("comp-layout")`.
 
 # Setup
 
@@ -62,7 +62,7 @@ model = brm(
 )
 ```
 
-The results look like this:
+The result looks like this:
 
 ```{r}
 model
@@ -70,14 +70,14 @@ model
 
 # Generate graphical posterior predictive checks
 
-Now that we have the model, the model check begins: it usually starts with a density plot for posterior predictive distribution and data observed distribution. `mcplot()` here generates a density plot for model check by default if no other options defined. 
+Now that we have the model, we can begin to construct model checks. This often starts with a density plot comparing the posterior predictive distribution and observed data distribution. `mcplot()` here generates a density plot by default if no other options are defined. 
 
 ```{r}
 model %>% 
   mcplot()
 ```
 
-`modelcheck` puts the response variable on y axis by default. You can flip the plot to generate a canonical posterior predictive check by density plot. `modelcheck` enables you to do this by `mc_gglayer` to add a `ggplot2` layer to model check.
+`modelcheck` puts the response variable on the y-axis by default. You can flip the plot to generate a canonical posterior predictive check using a density plot. `modelcheck` enables you to do this by using `mc_gglayer` to add a `ggplot2` layer to model check.
 
 ```{r}
 model %>% 
@@ -85,7 +85,7 @@ model %>%
   mc_gglayer(coord_flip())
 ```
 
-`mcplot()` uses a lot of defaults to make a model check visualization when users don't explicitly define everything. The above lines are roughly equivalent to following:
+`mcplot()` uses defaults to make a model check visualization when users don't explicitly define everything. The above lines are roughly equivalent to following:
 
 ```{r}
 model %>% 
@@ -97,11 +97,11 @@ model %>%
   mc_gglayer(coord_flip())
 ```
 
-`mc_distribution()` defines how `modelcheck` would draw posterior distribution, where `"predictive"` says to draw from posterior predictive distribution and `newdata = "obs"` says to use the observation dataset to generate. `mc_model_geom_line()` and `mc_obs_geom_line()` define the geom of model predictions and data observations and choose a suitable geom for users based on data types. `mc_comp_layout()` defines the comparative layout of the model check, i.e. how to compare model predictions and data observations. The option `"sup"` is for superposition, which overlaps the predictions and observations in one plot. `mc_gglayer()` adds `ggplot2::layer()` to model check visualization. We will discuss more details about these functions in later sections.
+`mc_distribution()` defines how `modelcheck` would draw the posterior distribution, where `"predictive"` says to draw from the posterior predictive distribution and `newdata = "obs"` says to use the observed dataset to generate. `mc_model_geom_line()` and `mc_obs_geom_line()` define the geom of model predictions and data observations and choose a suitable geom for users based on data types. `mc_comp_layout()` defines the comparative layout of the model check, i.e. how to compare model predictions and data observations. The option `"sup"` is for superposition, which overlaps the predictions and observations in one plot. `mc_gglayer()` adds `ggplot2::layer()` to model check visualization. We will discuss more details about these functions in later sections.
 
 # Add conditional predictions for posterior predictive checks
 
-Model check not only is about single variable check but also involves conditional variables and checks the response variable's marginal effects on them. For example, we want to check the impact of `disp` on `mpg` in the above model. By using `modelcheck`, it's pretty easy to do this by just adding one line code:
+Model checking is not restricted to a single variable check, but can also involve conditional variables for checking the response variable's marginal effects on them. For example, we want to check the impact of `disp` on `mpg` in the above model. By using `modelcheck`, it's pretty easy to do this by just adding one line of code:
 
 ```{r}
 model %>% 
@@ -109,7 +109,7 @@ model %>%
   mc_condition_on(x = vars(disp))
 ```
 
-Then you can easily apply some uncertainty representations to model predictions in `modelcheck`. For example, [lineribbon](https://mjskay.github.io/ggdist/reference/stat_lineribbon.html) and [point+interval](https://mjskay.github.io/ggdist/reference/stat_pointinterval.html) are shown below.
+Then you canapply some uncertainty representations to model predictions in `modelcheck`. For example, [lineribbon](https://mjskay.github.io/ggdist/reference/stat_lineribbon.html) and [point+interval](https://mjskay.github.io/ggdist/reference/stat_pointinterval.html) are shown below.
 
 - Lineribbon:
 
@@ -144,7 +144,7 @@ anim_save("modelcheck-modelcheck_hops_1.gif")
 cat("![](modelcheck-modelcheck_hops_1.gif)\n")
 ```
 
-Or you can even use HOPs and other uncertainty representations together.
+Or you can use HOPs and other uncertainty representations together.
 
 ```{r}
 model %>% 
@@ -161,9 +161,9 @@ cat("![](modelcheck-modelcheck_hops_2.gif)\n")
 
 # Changing comparative layouts
 
-Since model check is checking the model's performance by comparing with observed data, `modelcheck` package also enables users to change comparative layouts for model prediction and data observations through function `mc_comp_layout()`. `modelcheck` has four predefined comparative layouts: juxtaposition, superposition, nested juxtaposition, and explicit-encoding.
+Since model check visualizations involve checking the model's performance by comparing model predictions with observed data, `modelcheck` also enables users to change comparative layouts for the model predictions and data observations using the function `mc_comp_layout()`. `modelcheck` has four predefined comparative layouts: juxtaposition, superposition, nested juxtaposition, and explicit-encoding.
 
-Juxtaposition puts the model predictions and data observations side by side. Juxtaposition is especially useful when model predictions and data observations are overlapped in superposition so they can not be distinguished well.
+Juxtaposition puts the model predictions and data observations side by side. Juxtaposition is especially useful when model predictions and data observations overlap in superposition so they can not be distinguished well.
 
 ```{r}
 model %>%
@@ -174,7 +174,7 @@ model %>%
   mc_layout_juxtaposition()
 ```
 
-Superposition is the default comparative layout by `modelcheck`. It puts the model predictions at the top of data observations and shows them in one plots.
+Superposition is the default comparative layout by `modelcheck`. It superimposes the model predictions and data observations in a single plot.
 
 ```{r}
 model %>%
@@ -185,7 +185,7 @@ model %>%
   mc_layout_superposition()
 ```
 
-When checking model conditional on a discrete variable, you might want the comparative layout neither to be superposition, since that would make data points overlapped, nor to be juxtaposition, since the visual distance between model predictions and data observations would be too large to check through. At this time, nested juxtaposition would be a good choice, which puts model predictions and data observations in one plot but does not make them overlapped.
+When checking model conditional on a discrete variable, there may be cases where you want to avoid superposition, since that would make data points overlap, as well as juxtaposition, since the visual distance betweenthe  model predictions and data observations would be too large. In these cases, nested juxtaposition can be a good choice, which plots model predictions and data observations in one plot but dodges them to avoid overlap.
 
 ```{r}
 model %>%
@@ -196,7 +196,7 @@ model %>%
   mc_layout_nested()
 ```
 
-Explicit-encoding focuses on revealing the relationship between model predictions and data observations by explicitly encoding or calculating in visualizations. Some common examples could be residual plot, Q-Q plot, and wormplots. `modelcheck` supports explicitly-encoding by enabling users to pass in the operation (`exp_op`) they want to do in explicitly-encoding comparison. `modelcheck` predefines several common explicitly-encodings (e.g. residual plot and Q-Q plot) but users can still pass in a customized operation function.
+Explicit-encoding focuses on revealing the relationship between model predictions and data observations by explicitly encoding and plotting the difference. Some common examples are residual plots, Q-Q plots, and wormplots. `modelcheck` supports explicitly-encoding by enabling users to pass in the operation (`exp_op`) when they want to do in explicitly-encoding comparison. `modelcheck` predefines several common explicitly-encodings (e.g. residual plot and Q-Q plot) but users can also pass in a customized operation function.
 
 Residual plot with uncertainty representation lineribbon:
 
@@ -218,7 +218,7 @@ model %>%
   mc_gglayer(geom_abline())
 ```
 
-You can also cutomize the operation function to make the explicitly-encoding into any explicit comparison you want. The customized function should take an data frame including two columns for predictions and observations as input and return a data frame with columns named `y_axis` and `x_axis` (optional).
+You can also cutomize the operation function to make the explicitly-encoding into any desired explicit comparison. The customized function should take a data frame including two columns for predictions and observations as input and return a data frame with columns named `y_axis` and `x_axis` (optional).
 
 
 Standardized residual plot (using customized operation function):
