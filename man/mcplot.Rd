@@ -10,8 +10,8 @@ mcplot(model, observation = NULL, observation_transform = NULL)
 \item{model}{The model fit object.}
 
 \item{observation}{A data frame standing for data observations. Default to be
-\code{NULL}. If \code{NULL}, \code{modelcheck} will use the observations in the model fit
-data set. The input data frame should include the variables in model formula.}
+\code{NULL}. If \code{NULL}, \code{modelcheck} will set the observations as the
+data set that used to fit the model. The input data frame should include the variables in model formula.}
 
 \item{observation_transform}{The transform function that is applied on the
 response variable in observed data. Default to be \code{NULL}. If \code{NULL},
@@ -37,29 +37,22 @@ guidance.
 }
 \examples{
 library(ggplot2)
-library(brms)
-library(modelr)
-model = brm(
-  bf(mpg ~ disp),
-  init = "0",
-  data = mtcars,
-  iter = 6000,
-)
-mcplot(model)
+
+mcplot(mpg_model)
 # note the density is on x axis and the response variable, mpg, is on y axis.
 # But you can flip the coordinates by mc_gglayer()
-mcplot(model) +
+mcplot(mpg_model) +
   mc_gglayer(coord_flip())
 # you can also choose to use another observed data to show in model checks
 new_observed_data = mtcars \%>\% mutate(mpg = rnorm(nrow(mtcars), 20, 5))
-mcplot(model, new_observed_data) +
+mcplot(mpg_model, new_observed_data) +
   mc_gglayer(coord_flip())
 # you can also define a transform function on the observed data, which will
 # be applied to the observation data frame just before the visualization.
 # This function is even more useful when the distribution in model has a
 # different unit from observed data.
 sd_function = function(df) {df \%>\% mutate(observation = sd(observation))}
-mcplot(model, observation_transform = sd_function) +
+mcplot(mpg_model, observation_transform = sd_function) +
   mc_distribution("sigma") +
   mc_condition_on(x = vars(disp)) +
   mc_gglayer(coord_flip())

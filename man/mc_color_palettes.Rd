@@ -27,3 +27,11 @@ predictions. It change all color related aesthetics (e.g. color or fill).
 \code{mc_set_obs_color} does the same thing as \code{mc_set_model_color} except setting
 for geoms that represent data observations.
 }
+\examples{
+
+mc_color_palettes()
+
+mcplot(mpg_model) +
+  mc_set_model_color(model_color = "#d95f02")
+  mc_set_obs_color(model_color = "#1b9e77")
+}

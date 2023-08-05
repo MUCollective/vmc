@@ -35,6 +35,32 @@
 #' @export
 #'
 #' @examples
+#' mcplot(mpg_model) +
+#'   mc_layout_juxtaposition()
+#'
+#' mcplot(mpg_model) +
+#'   mc_layout_superposition()
+#'
+#' mcplot(mpg_model) +
+#'   mc_layout_nested() +
+#'   mc_condition_on(x = vars(vs))
+#'
+#' mcplot(mpg_model) +
+#'   mc_layout_encoding("qq")
+#'
+#' # Defining a explicit encoding by a customized transform function to check
+#' # stdandard residuals of model and data.
+#'
+#' std_res_func = function(data) {
+#'   data %>%
+#'     mutate(y_axis = prediction - observation) %>%
+#'     mutate(y_axis = y_axis / sd(y_axis))
+#' }
+#'
+#' mcplot(mpg_model) +
+#'   mc_layout_encoding(std_res_func) +
+#'   mc_condition_on(x = vars(disp)) +
+#'   mc_gglayer(geom_hline(yintercept = 0))
 mc_layout_juxtaposition = function(...) {
   p = function(mc_setting = NULL) {
     comp_layout = purrr::partial(comp_layout_jux, ...)

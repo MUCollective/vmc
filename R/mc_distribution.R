@@ -32,31 +32,24 @@
 #' @export
 #'
 #' @examples
-#' library(brms)
-#' library(modelr)
-#' model = brm(
-#'   bf(mpg ~ disp),
-#'   init = "0",
-#'   data = mtcars,
-#'   iter = 6000,
-#' )
-#' mcplot(model) +
-#'   mc_distribution()
-#'
-#' mcplot(model) +
-#'   mc_distribution("mu")
-#'
-#' mcplot(model) +
-#'   mc_distribution("mu", data_grid(model$data, disp))
-#'
 #' library(tidybayes)
 #' library(dplyr)
+#'
+#' mcplot(mpg_model) +
+#'   mc_distribution()
+#'
+#' mcplot(mpg_model) +
+#'   mc_distribution("mu")
+#'
+#' mcplot(mpg_model) +
+#'   mc_distribution("mu", data_grid(mpg_model$data, disp))
+#'
 #' epred_draws_mu = function(model, newdata, ...) {
 #'   epred_draws(model, newdata, dpar = "mu", ...) %>%
 #'     mutate(prediction = mu)
 #' }
 #'
-#' mcplot(model) +
+#' mcplot(mpg_model) +
 #'   mc_distribution(draw_function = epred_draws_mu)
 mc_distribution = function(distribution = "predictive", newdata = NULL, draw_function = NULL, response_var = NULL, ndraws = 500, ...) {
   p = function(mc_setting = NULL) {

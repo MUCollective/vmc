@@ -39,3 +39,6 @@ Suggests:
 Config/testthat/edition: 3
 URL: https://mucollective.github.io/modelcheck/
 VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)
+LazyData: true

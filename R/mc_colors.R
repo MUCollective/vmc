@@ -16,6 +16,12 @@
 #' @export
 #'
 #' @examples
+#'
+#' mc_color_palettes()
+#'
+#' mcplot(mpg_model) +
+#'   mc_set_model_color(model_color = "#d95f02")
+#'   mc_set_obs_color(model_color = "#1b9e77")
 mc_color_palettes = function() { list(observed = "#4d7aa8", model = "#f18e28") }
 
 #' @rdname mc_color_palettes
