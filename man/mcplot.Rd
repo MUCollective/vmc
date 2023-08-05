@@ -37,6 +37,7 @@ guidance.
 }
 \examples{
 library(ggplot2)
+library(dplyr)
 
 mcplot(mpg_model)
 # note the density is on x axis and the response variable, mpg, is on y axis.

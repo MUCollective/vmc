@@ -29,6 +29,8 @@
 #' @rdname modelcheck-add
 #' @example
 #'
+#' library(ggplot2)
+#'
 #' mcplot(mpg_model) +
 #'   mc_distribution("mu") +
 #'   mc_condition_on(x = vars(disp))
