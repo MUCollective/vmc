@@ -43,7 +43,7 @@
 #'   mc_distribution("mu")
 #'
 #' mcplot(mpg_model) +
-#'   mc_distribution("mu", data_grid(mpg_model$data, disp))
+#'   mc_distribution("mu", data_grid(mpg_model$data, disp, vs, am))
 #'
 #' epred_draws_mu = function(model, newdata, ...) {
 #'   epred_draws(model, newdata, dpar = "mu", ...) %>%
