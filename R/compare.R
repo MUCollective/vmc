@@ -16,7 +16,7 @@ mc_compare <- function(prev_ret, obs_data, obs_transform, comparative_layout, ob
   }
 
   if (!is.null(obs_transform)) {
-    obs_data = obs_transform(obs_data %>% ungroup())
+    obs_data = obs_transform(obs_data %>% dplyr::ungroup())
   }
 
   if ("x_axis" %in% colnames(obs_data) && x_type != "quantitative" && !is.factor(obs_data$x_axis)) {
