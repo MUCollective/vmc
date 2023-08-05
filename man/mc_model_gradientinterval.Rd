@@ -27,3 +27,16 @@ by \code{draw()}. See examples for more details.}
 \description{
 Gradient + interval plot for model predictions
 }
+\examples{
+library(ggplot2)
+
+mcplot(mpg_model) +
+  mc_model_gradientinterval(n_sample = 50) +
+  mc_obs_gradientinterval() +
+  mc_gglayer(coord_flip())
+
+mcplot(mpg_model) +
+  mc_model_gradientinterval(n_sample = 50) +
+  mc_obs_gradientinterval() +
+  mc_condition_on(x = vars(vs))
+}

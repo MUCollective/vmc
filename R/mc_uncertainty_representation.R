@@ -59,6 +59,17 @@ mc_model = function(uncertainty_representation, ...) {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_cdf(n_sample = 50) +
+#'   mc_obs_cdf() +
+#'   mc_gglayer(coord_flip())
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_cdf(n_sample = 50) +
+#'   mc_obs_cdf() +
+#'   mc_condition_on(x = vars(vs))
 mc_model_cdf = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_cdf(..., n_sample = n_sample, draw = draw)
@@ -90,6 +101,17 @@ mc_model_cdf = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_ccdf(n_sample = 50) +
+#'   mc_obs_ccdf() +
+#'   mc_gglayer(coord_flip())
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_ccdf(n_sample = 50) +
+#'   mc_obs_ccdf() +
+#'   mc_condition_on(x = vars(vs))
 mc_model_ccdf = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_ccdf(..., n_sample = n_sample, draw = draw)
@@ -121,6 +143,17 @@ mc_model_ccdf = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_dots(n_sample = 50) +
+#'   mc_obs_dots() +
+#'   mc_gglayer(coord_flip())
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_dots(n_sample = 50) +
+#'   mc_obs_dots() +
+#'   mc_condition_on(x = vars(vs))
 mc_model_dots = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_dots(..., n_sample = n_sample, draw = draw)
@@ -152,6 +185,17 @@ mc_model_dots = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_dotsinterval(n_sample = 50) +
+#'   mc_obs_dotsinterval() +
+#'   mc_gglayer(coord_flip())
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_dotsinterval(n_sample = 50) +
+#'   mc_obs_dotsinterval() +
+#'   mc_condition_on(x = vars(vs))
 mc_model_dotsinterval = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_dotsinterval(..., n_sample = n_sample, draw = draw)
@@ -183,6 +227,17 @@ mc_model_dotsinterval = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_eye(n_sample = 50) +
+#'   mc_obs_eye() +
+#'   mc_gglayer(coord_flip())
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_eye(n_sample = 50) +
+#'   mc_obs_eye() +
+#'   mc_condition_on(x = vars(vs))
 mc_model_eye = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_eye(..., n_sample = n_sample, draw = draw)
@@ -214,6 +269,17 @@ mc_model_eye = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_halfeye(n_sample = 50) +
+#'   mc_obs_halfeye() +
+#'   mc_gglayer(coord_flip())
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_halfeye(n_sample = 50) +
+#'   mc_obs_halfeye() +
+#'   mc_condition_on(x = vars(vs))
 mc_model_halfeye = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_halfeye(..., n_sample = n_sample, draw = draw)
@@ -245,6 +311,17 @@ mc_model_halfeye = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_slab(n_sample = 50) +
+#'   mc_obs_slab() +
+#'   mc_gglayer(coord_flip())
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_slab(n_sample = 50) +
+#'   mc_obs_slab() +
+#'   mc_condition_on(x = vars(vs))
 mc_model_slab = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_slab(..., n_sample = n_sample, draw = draw)
@@ -276,6 +353,17 @@ mc_model_slab = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_gradientinterval(n_sample = 50) +
+#'   mc_obs_gradientinterval() +
+#'   mc_gglayer(coord_flip())
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_gradientinterval(n_sample = 50) +
+#'   mc_obs_gradientinterval() +
+#'   mc_condition_on(x = vars(vs))
 mc_model_gradientinterval = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_gradient(..., n_sample = n_sample, draw = draw)
@@ -307,6 +395,17 @@ mc_model_gradientinterval = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_histinterval(n_sample = 50) +
+#'   mc_obs_histinterval() +
+#'   mc_gglayer(coord_flip())
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_histinterval(n_sample = 50) +
+#'   mc_obs_histinterval() +
+#'   mc_condition_on(x = vars(vs))
 mc_model_histinterval = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_his(..., n_sample = n_sample, draw = draw)
@@ -338,6 +437,17 @@ mc_model_histinterval = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_pointinterval(n_sample = 50) +
+#'   mc_obs_pointinterval() +
+#'   mc_gglayer(coord_flip())
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_pointinterval(n_sample = 50) +
+#'   mc_obs_pointinterval() +
+#'   mc_condition_on(x = vars(disp))
 mc_model_pointinterval = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_pointinterval(..., n_sample = n_sample, draw = draw)
@@ -369,6 +479,17 @@ mc_model_pointinterval = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_interval(n_sample = 50) +
+#'   mc_obs_interval() +
+#'   mc_gglayer(coord_flip())
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_interval(n_sample = 50) +
+#'   mc_obs_interval() +
+#'   mc_condition_on(x = vars(vs))
 mc_model_interval = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_interval(..., n_sample = n_sample, draw = draw)
@@ -400,6 +521,12 @@ mc_model_interval = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_lineribbon(n_sample = 50) +
+#'   mc_obs_lineribbon() +
+#'   mc_condition_on(x = vars(disp))
 mc_model_lineribbon = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_lineribbon(..., n_sample = n_sample, draw = draw)
@@ -431,6 +558,12 @@ mc_model_lineribbon = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_ribbon(n_sample = 50) +
+#'   mc_obs_ribbon() +
+#'   mc_condition_on(x = vars(disp))
 mc_model_ribbon = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_ribbon(..., n_sample = n_sample, draw = draw)
@@ -490,6 +623,21 @@ mc_model = function(..., base_plot = "auto") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_auto(n_sample = 50) +
+#'   mc_obs_auto()
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_auto(n_sample = 50) +
+#'   mc_obs_auto() +
+#'   mc_condition_on(x = vars(disp))
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_auto(n_sample = 50) +
+#'   mc_obs_auto() +
+#'   mc_condition_on(x = vars(vs))
 mc_model_auto = function(..., n_sample = NA, draw = NULL) {
   p = function(mc_setting = NULL) {
 
@@ -523,6 +671,12 @@ mc_model_auto = function(..., n_sample = NA, draw = NULL) {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_point(n_sample = 50) +
+#'   mc_obs_point() +
+#'   mc_condition_on(x = vars(disp))
 mc_model_point = function(..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
 
@@ -556,6 +710,12 @@ mc_model_point = function(..., n_sample = NA, draw = "collapse") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_model_line(n_sample = 50) +
+#'   mc_obs_line() +
+#'   mc_condition_on(x = vars(disp))
 mc_model_line = function(..., n_sample = NA, draw = "group") {
   p = function(mc_setting = NULL) {
 

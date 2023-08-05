@@ -16,3 +16,13 @@ mc_condition_on(x = NULL, color = NULL, row = NULL, col = NULL)
 \description{
 Add marginal check to model check
 }
+\examples{
+library(ggplot2)
+library(dplyr)
+
+mcplot(mpg_model) +
+  mc_condition_on(x = vars(disp))
+
+mcplot(mpg_model) +
+  mc_condition_on(x = vars(disp), row = vars(vs), col = vars(am))
+}

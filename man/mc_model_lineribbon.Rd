@@ -27,3 +27,11 @@ by \code{draw()}. See examples for more details.}
 \description{
 Line + multiple-ribbon plot for model predictions
 }
+\examples{
+library(ggplot2)
+
+mcplot(mpg_model) +
+  mc_model_lineribbon(n_sample = 50) +
+  mc_obs_lineribbon() +
+  mc_condition_on(x = vars(disp))
+}
