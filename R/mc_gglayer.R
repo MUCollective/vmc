@@ -9,6 +9,10 @@
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#'
+#' mcplot(mpg_model) +
+#'   mc_gglayer(coord_flip())
 mc_gglayer = function(layers) {
   p = function(mc_setting = NULL) {
     if (!("gglayers" %in% names(mc_setting))) {

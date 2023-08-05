@@ -29,3 +29,20 @@ by \code{draw()}. See examples for more details.}
 \description{
 Recommend a geom
 }
+\examples{
+library(ggplot2)
+
+mcplot(mpg_model) +
+  mc_model_auto(n_sample = 50) +
+  mc_obs_auto()
+
+mcplot(mpg_model) +
+  mc_model_auto(n_sample = 50) +
+  mc_obs_auto() +
+  mc_condition_on(x = vars(disp))
+
+mcplot(mpg_model) +
+  mc_model_auto(n_sample = 50) +
+  mc_obs_auto() +
+  mc_condition_on(x = vars(vs))
+}

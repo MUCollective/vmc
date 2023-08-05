@@ -28,3 +28,11 @@ by \code{draw()}. See examples for more details.}
 \description{
 Points geom
 }
+\examples{
+library(ggplot2)
+
+mcplot(mpg_model) +
+  mc_model_point(n_sample = 50) +
+  mc_obs_point() +
+  mc_condition_on(x = vars(disp))
+}

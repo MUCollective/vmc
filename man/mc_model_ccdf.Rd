@@ -27,3 +27,16 @@ by \code{draw()}. See examples for more details.}
 \description{
 CCDF bar plot for model predictions
 }
+\examples{
+library(ggplot2)
+
+mcplot(mpg_model) +
+  mc_model_ccdf(n_sample = 50) +
+  mc_obs_ccdf() +
+  mc_gglayer(coord_flip())
+
+mcplot(mpg_model) +
+  mc_model_ccdf(n_sample = 50) +
+  mc_obs_ccdf() +
+  mc_condition_on(x = vars(vs))
+}
