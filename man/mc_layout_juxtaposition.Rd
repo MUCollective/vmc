@@ -53,6 +53,8 @@ if using \code{mc_layout_encoding}, \code{mcplot()} will show comparison by expl
 if using \code{mc_layout_nested}, \code{mcplot()} will show comparison side by side in one plot.
 }
 \examples{
+library(ggplot2)
+library(dplyr)
 mcplot(mpg_model) +
   mc_layout_juxtaposition()
 
