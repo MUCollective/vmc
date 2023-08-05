@@ -8,12 +8,12 @@
 \usage{
 mc_color_palettes()
 
-mc_set_model_color(model_color = NULL)
+mc_set_model_color(color = NULL)
 
-mc_set_obs_color(obs_color = NULL)
+mc_set_obs_color(color = NULL)
 }
 \arguments{
-\item{model_color, obs_color}{The color used for model predictions and data
+\item{color}{The color used for model predictions and data
 observations. By default, \code{mcplot()} uses \code{mc_color_palettes()} to define
 colors for model predictions and data observations.}
 }
@@ -26,4 +26,12 @@ and model prediction.
 predictions. It change all color related aesthetics (e.g. color or fill).
 \code{mc_set_obs_color} does the same thing as \code{mc_set_model_color} except setting
 for geoms that represent data observations.
+}
+\examples{
+
+mc_color_palettes()
+
+mcplot(mpg_model) +
+  mc_set_model_color(color = "#d95f02")
+  mc_set_obs_color(color = "#1b9e77")
 }

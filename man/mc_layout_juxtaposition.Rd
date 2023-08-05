@@ -52,3 +52,33 @@ if using \code{mc_layout_superposition()}, \code{mcplot()} overlays data observa
 if using \code{mc_layout_encoding}, \code{mcplot()} will show comparison by explicit-encoding;
 if using \code{mc_layout_nested}, \code{mcplot()} will show comparison side by side in one plot.
 }
+\examples{
+library(ggplot2)
+library(dplyr)
+mcplot(mpg_model) +
+  mc_layout_juxtaposition()
+
+mcplot(mpg_model) +
+  mc_layout_superposition()
+
+mcplot(mpg_model) +
+  mc_layout_nested() +
+  mc_condition_on(x = vars(vs))
+
+mcplot(mpg_model) +
+  mc_layout_encoding("qq")
+
+# Defining a explicit encoding by a customized transform function to check
+# stdandard residuals of model and data.
+
+std_res_func = function(data) {
+  data \%>\%
+    mutate(y_axis = prediction - observation) \%>\%
+    mutate(y_axis = y_axis / sd(y_axis))
+}
+
+mcplot(mpg_model) +
+  mc_layout_encoding(std_res_func) +
+  mc_condition_on(x = vars(disp)) +
+  mc_gglayer(geom_hline(yintercept = 0))
+}

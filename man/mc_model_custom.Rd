@@ -8,14 +8,14 @@
 \usage{
 mc_obs_custom(plot, ...)
 
-mc_model_custom(geom_plot, ..., n_sample = NA, draw = "collapse")
+mc_model_custom(plot, ..., n_sample = NA, draw = "collapse")
 }
 \arguments{
-\item{...}{Augments passed to \code{geom_plot}.}
-
-\item{geom_plot}{The geom plot to use. \code{"geom_plot"} should be a geom function
+\item{plot}{The plot to use. It should be a geom function
 like \href{https://ggplot2.tidyverse.org/reference/index.html#geoms}{geoms in \code{ggplots}}
 and should be able to have \code{data} and \code{mapping} augments. See examples for more details.}
+
+\item{...}{Augments passed to \code{plot}.}
 
 \item{n_sample}{The number of sample of draws to show.
 Default \code{NA}. If \code{n_sample} is \code{NA}, then \code{mc_model_custom()} will use all draws from

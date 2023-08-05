@@ -607,10 +607,10 @@ mc_model_tile = function(..., n_sample = NA, draw = "hops") {
 
 #' Customized geom
 #'
-#' @param geom_plot The geom plot to use. `"geom_plot"` should be a geom function
+#' @param plot The plot to use. It should be a geom function
 #'  like [geoms in `ggplots`](https://ggplot2.tidyverse.org/reference/index.html#geoms)
 #'  and should be able to have `data` and `mapping` augments. See examples for more details.
-#' @param ... Augments passed to `geom_plot`.
+#' @param ... Augments passed to `plot`.
 #' @param n_sample The number of sample of draws to show.
 #'  Default `NA`. If `n_sample` is `NA`, then `mc_model_custom()` will use all draws from
 #'  posterior distribution.
@@ -625,10 +625,10 @@ mc_model_tile = function(..., n_sample = NA, draw = "hops") {
 #' @export
 #'
 #' @examples
-mc_model_custom = function(geom_plot, ..., n_sample = NA, draw = "collapse") {
+mc_model_custom = function(plot, ..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
 
-    uncert_rep = customized_plot(geom_plot, ..., n_sample = n_sample, draw = draw)
+    uncert_rep = customized_plot(plot, ..., n_sample = n_sample, draw = draw)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)

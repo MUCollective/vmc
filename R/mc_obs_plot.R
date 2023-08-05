@@ -169,9 +169,9 @@ mc_obs_slab = function(...) {
   p
 }
 
-#' @rdname mc_model_gradient
+#' @rdname mc_model_gradientinterval
 #' @export
-mc_obs_gradient = function(...) {
+mc_obs_gradientinterval = function(...) {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_gradient(..., n_sample = NA, draw = "collapse")
 
