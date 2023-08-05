@@ -52,6 +52,7 @@ of push-forward transformation, \code{modelcheck} uses \code{tidybayes::linpred_
 \examples{
 library(tidybayes)
 library(dplyr)
+library(modelr)
 
 mcplot(mpg_model) +
   mc_distribution()

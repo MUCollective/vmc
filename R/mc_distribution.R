@@ -34,6 +34,7 @@
 #' @examples
 #' library(tidybayes)
 #' library(dplyr)
+#' library(modelr)
 #'
 #' mcplot(mpg_model) +
 #'   mc_distribution()
