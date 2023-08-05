@@ -98,3 +98,11 @@ reference:
     modelcheck.
   content:
   - mc_gglayer
+
+
+- title: Model
+  desc: >
+    modelcheck comes with a selection of built-in models that are used in
+    examples to illustrate various model checks.
+  content:
+  - mpg_model
