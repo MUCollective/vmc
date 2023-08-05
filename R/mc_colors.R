@@ -9,7 +9,7 @@
 #'  `mc_set_obs_color` does the same thing as `mc_set_model_color` except setting
 #'  for geoms that represent data observations.
 #'
-#' @param model_color,obs_color The color used for model predictions and data
+#' @param color The color used for model predictions and data
 #'  observations. By default, `mcplot()` uses `mc_color_palettes()` to define
 #'  colors for model predictions and data observations.
 #'
@@ -20,15 +20,15 @@
 #' mc_color_palettes()
 #'
 #' mcplot(mpg_model) +
-#'   mc_set_model_color(model_color = "#d95f02")
-#'   mc_set_obs_color(model_color = "#1b9e77")
+#'   mc_set_model_color(color = "#d95f02")
+#'   mc_set_obs_color(color = "#1b9e77")
 mc_color_palettes = function() { list(observed = "#4d7aa8", model = "#f18e28") }
 
 #' @rdname mc_color_palettes
 #' @export
-mc_set_model_color = function(model_color = NULL) {
+mc_set_model_color = function(color = NULL) {
   p = function(mc_setting = NULL) {
-    c(list(model_color = model_color), mc_setting)
+    c(list(model_color = color), mc_setting)
   }
   class(p) <- 'modelcheck'
   p
@@ -36,9 +36,9 @@ mc_set_model_color = function(model_color = NULL) {
 
 #' @rdname mc_color_palettes
 #' @export
-mc_set_obs_color = function(obs_color = NULL) {
+mc_set_obs_color = function(color = NULL) {
   p = function(mc_setting = NULL) {
-    c(list(obs_color = obs_color), mc_setting)
+    c(list(obs_color = color), mc_setting)
   }
   class(p) <- 'modelcheck'
   p

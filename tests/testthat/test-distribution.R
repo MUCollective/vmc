@@ -10,11 +10,11 @@ test_that("vanilla distribution", {
     tidyr::unnest(cols = c(.draw, .prediction, mu, sigma))
 
   vdiffr::expect_doppelganger("vanilla predictive distribution",
-                              model_df %>% mcplot()
+                              model_df %>% mcplot(observation = mtcars)
                               )
 
   vdiffr::expect_doppelganger("vanilla mu distribution",
-                              model_df %>% mcplot() + mc_distribution("mu")
+                              model_df %>% mcplot(observation = mtcars) + mc_distribution("mu")
   )
 
   sd_function = function(df) {
@@ -22,7 +22,7 @@ test_that("vanilla distribution", {
   }
 
   vdiffr::expect_doppelganger("vanilla sigma distribution",
-                              model_df %>% mcplot(observation_transform = sd_function) +
+                              model_df %>% mcplot(observation = mtcars, observation_transform = sd_function) +
                                 mc_distribution("sigma") +
                                 mc_condition_on(x = ggplot2::vars(disp))
   )

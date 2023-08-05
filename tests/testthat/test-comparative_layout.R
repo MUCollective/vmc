@@ -10,28 +10,28 @@ test_that("vanilla comparative layouts", {
     tidyr::unnest(cols = c(.draw, .prediction, mu, sigma))
 
   vdiffr::expect_doppelganger("vanilla superposition",
-                              model_df %>% mcplot() +
+                              model_df %>% mcplot(observation = mtcars) +
                                 mc_model_ccdf() +
                                 mc_obs_ccdf() +
                                 mc_condition_on(x = ggplot2::vars(cyl)) +
                                 mc_layout_superposition())
 
   vdiffr::expect_doppelganger("vanilla juxtaposition",
-                              model_df %>% mcplot() +
+                              model_df %>% mcplot(observation = mtcars) +
                                 mc_model_ccdf() +
                                 mc_obs_ccdf() +
                                 mc_condition_on(x = ggplot2::vars(cyl)) +
                                 mc_layout_juxtaposition())
 
   vdiffr::expect_doppelganger("vanilla nested juxtaposition",
-                              model_df %>% mcplot() +
+                              model_df %>% mcplot(observation = mtcars) +
                                 mc_model_ccdf() +
                                 mc_obs_ccdf() +
                                 mc_condition_on(x = ggplot2::vars(cyl)) +
                                 mc_layout_nested())
 
   vdiffr::expect_doppelganger("vanilla residual plot",
-                              model_df %>% mcplot() +
+                              model_df %>% mcplot(observation = mtcars) +
                                 mc_model_dots() +
                                 mc_obs_dots() +
                                 mc_condition_on(x = ggplot2::vars(cyl)) +

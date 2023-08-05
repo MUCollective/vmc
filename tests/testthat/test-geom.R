@@ -10,26 +10,26 @@ test_that("vanilla geom plot", {
     tidyr::unnest(cols = c(.draw, .prediction, mu, sigma))
 
   vdiffr::expect_doppelganger("vanilla auto density plot",
-                              model_df %>% mcplot())
+                              model_df %>% mcplot(observation = mtcars))
 
   vdiffr::expect_doppelganger("vanilla auto point plot",
-                              model_df %>% mcplot() + mc_condition_on(x = ggplot2::vars(disp)))
+                              model_df %>% mcplot(observation = mtcars) + mc_condition_on(x = ggplot2::vars(disp)))
 
   vdiffr::expect_doppelganger("vanilla density plot",
-                              model_df %>% mcplot() +
+                              model_df %>% mcplot(observation = mtcars) +
                                 mc_model_line(stat = "density") +
                                 mc_obs_line(stat = "density")
                               )
 
   vdiffr::expect_doppelganger("vanilla line plot",
-                              model_df %>% mcplot() +
+                              model_df %>% mcplot(observation = mtcars) +
                                 mc_model_line() +
                                 mc_obs_line() +
                                 mc_condition_on(x = ggplot2::vars(disp))
   )
 
   vdiffr::expect_doppelganger("vanilla point plot",
-                              model_df %>% mcplot() +
+                              model_df %>% mcplot(observation = mtcars) +
                                 mc_model_point() +
                                 mc_obs_point() +
                                 mc_condition_on(x = ggplot2::vars(disp))
