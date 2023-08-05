@@ -91,9 +91,15 @@
     <loc>https://mucollective.github.io/modelcheck/reference/mc_model_tile.html</loc>
   </url>
   <url>
-    <loc>https://mucollective.github.io/modelcheck/reference/mc_set_order.html</loc>
+    <loc>https://mucollective.github.io/modelcheck/reference/mcplot.html</loc>
   </url>
   <url>
-    <loc>https://mucollective.github.io/modelcheck/reference/mcplot.html</loc>
+    <loc>https://mucollective.github.io/modelcheck/reference/modelcheck-add.html</loc>
+  </url>
+  <url>
+    <loc>https://mucollective.github.io/modelcheck/reference/modelcheck-package.html</loc>
+  </url>
+  <url>
+    <loc>https://mucollective.github.io/modelcheck/reference/mpg_model.html</loc>
   </url>
 </urlset>
