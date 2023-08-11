@@ -36,8 +36,7 @@ Customized geom
 library(ggplot2)
 library(ggdist)
 
-mpg_model \%>\%
-  mcplot() +
+mcplot(mpg_model) +
   mc_model_custom(stat_boxplot, notch = TRUE) +
   mc_obs_custom(geom_swarm) +
   mc_condition_on(x = vars(vs)) +
