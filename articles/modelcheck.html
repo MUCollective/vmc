@@ -45,6 +45,24 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="../articles/comparative-layout.html">Comparing the model prediction and observed data using modelcheck</a>
+    </li>
+    <li>
+      <a href="../articles/distribution.html">Extracting arbitrary distributions from the model using modelcheck</a>
+    </li>
+    <li>
+      <a href="../articles/uncertainty-representation.html">Visualizing the distribution of model prediction and observed data using modelcheck</a>
+    </li>
+  </ul>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
 </div>
@@ -78,8 +96,8 @@ facilitates model check visualizations (i.e., comparing observed data to
 model predictions) for Bayesian models in R. This vignette follows a
 standard model checking workflow to show how <code>modelcheck</code>.
 For more detailed description of geoms and comparative layouts, see
-<code>vignette("uncert-rep")</code> and
-<code>vignette("comp-layout")</code>.</p>
+<code><a href="../articles/uncertainty-representation.html">vignette("uncertainty-representation")</a></code> and
+<code><a href="../articles/comparative-layout.html">vignette("comparative-layout")</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
@@ -216,14 +234,14 @@ lines are roughly equivalent to following:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span><span class="st">"predictive"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span><span class="st">"prediction"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_model_line.html">mc_model_line</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"density"</span>, alpha <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_model_line.html">mc_obs_line</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"density"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_layout_juxtaposition.html">mc_layout_superposition</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="modelcheck_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 <p><code><a href="../reference/mc_distribution.html">mc_distribution()</a></code> defines how <code>modelcheck</code>
-would draw the posterior distribution, where <code>"predictive"</code>
+would draw the posterior distribution, where <code>"prediction"</code>
 says to draw from the posterior predictive distribution and
 <code>newdata = "obs"</code> says to use the observed dataset to
 generate. <code>mc_model_geom_line()</code> and
