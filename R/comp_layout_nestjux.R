@@ -19,9 +19,9 @@ comp_layout_nestjux = function(p_obs, ..., justification = .2) {
     if ("x_axis" %in% colnames(samples) && x_type != "quantitative") {
       for (layer in p$layers) {
         if (is.factor(samples$x_axis)) {
-          layer$mapping$x = quo(as.numeric(x_axis) + 0.2)
+          layer$mapping$x = rlang::quo(as.numeric(x_axis) + 0.2)
         } else {
-          layer$mapping$x = quo(as.numeric(factor(x_axis, levels = sort(unique(x_axis)))) + justification)
+          layer$mapping$x = rlang::quo(as.numeric(factor(x_axis, levels = sort(unique(x_axis)))) + justification)
         }
       }
     }
@@ -36,18 +36,18 @@ comp_layout_nestjux = function(p_obs, ..., justification = .2) {
           for (layer in obs) {
             if ("mapping" %in% names(layer)) {
               if (is.factor(samples$x_axis)) {
-                layer$mapping$x = quo(as.numeric(x_axis) - 0.2)
+                layer$mapping$x = rlang::quo(as.numeric(x_axis) - 0.2)
               } else {
-                layer$mapping$x = quo(as.numeric(factor(x_axis, levels = sort(unique(x_axis)))) - justification)
+                layer$mapping$x = rlang::quo(as.numeric(factor(x_axis, levels = sort(unique(x_axis)))) - justification)
               }
             }
           }
         } else {
           if ("mapping" %in% names(obs)) {
             if (is.factor(samples$x_axis)) {
-              obs$mapping$x = quo(as.numeric(x_axis) - 0.2)
+              obs$mapping$x = rlang::quo(as.numeric(x_axis) - 0.2)
             } else {
-              obs$mapping$x = quo(as.numeric(factor(x_axis, levels = sort(unique(x_axis)))) - justification)
+              obs$mapping$x = rlang::quo(as.numeric(factor(x_axis, levels = sort(unique(x_axis)))) - justification)
             }
           }
         }

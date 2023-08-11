@@ -788,8 +788,7 @@ mc_model_tile = function(..., n_sample = NA, draw = "hops") {
 #' library(ggplot2)
 #' library(ggdist)
 #'
-#' mpg_model %>%
-#'   mcplot() +
+#' mcplot(mpg_model) +
 #'   mc_model_custom(stat_boxplot, notch = TRUE) +
 #'   mc_obs_custom(geom_swarm) +
 #'   mc_condition_on(x = vars(vs)) +

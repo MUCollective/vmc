@@ -39,7 +39,8 @@ Suggests:
     vdiffr (>= 1.0.5),
     BH,
     RcppEigen,
-    beeswarm
+    beeswarm,
+    boot
 Config/testthat/edition: 3
 URL: https://mucollective.github.io/modelcheck/
 VignetteBuilder: knitr
