@@ -785,6 +785,15 @@ mc_model_tile = function(..., n_sample = NA, draw = "hops") {
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#' library(ggdist)
+#'
+#' mpg_model %>%
+#'   mcplot() +
+#'   mc_model_custom(stat_boxplot, notch = TRUE) +
+#'   mc_obs_custom(geom_swarm) +
+#'   mc_condition_on(x = vars(vs)) +
+#'   mc_gglayer(coord_flip())
 mc_model_custom = function(plot, ..., n_sample = NA, draw = "collapse") {
   p = function(mc_setting = NULL) {
 

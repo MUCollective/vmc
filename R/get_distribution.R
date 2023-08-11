@@ -35,16 +35,16 @@
 #   list(samples, model, response_var, list(y = y_label, x = x_label))
 # }
 
-mc_get_distribution <- function(distribution = "predictive", newdata = NULL,
+mc_get_distribution <- function(distribution = "prediction", newdata = NULL,
                                 draw_function = NULL, response_var = NULL,
                                 ndraws = 500, ...) {
   function(model) {
-    y_label = response_var
     x_label = NULL
 
     if (is.data.frame(model)) {  # code for testing
       response_var = "mpg"
-      if (distribution == "predictive") {
+      y_label = response_var
+      if (distribution == "prediction") {
         samples <- model %>%
           dplyr::mutate(prediction = .prediction)
       } else {
@@ -53,28 +53,78 @@ mc_get_distribution <- function(distribution = "predictive", newdata = NULL,
       }
     } else {
       if (is.null(response_var)) {
-        response_var = insight::find_response(model$formula)[1]
+        response_var = insight::find_response(model)
       }
-      fit_data <- model$data
+      y_label = response_var
+      fit_data <- insight::get_data(model)
 
       if (is.null(newdata)) {
         newdata <- fit_data
       }
 
       if (is.null(draw_function)) {
-        if (distribution == "predictive") {
-          samples <- model %>%
-            tidybayes::predicted_draws(newdata = newdata,
-                                       ndraws = ndraws,
-                                       ...) %>%
-            dplyr::mutate(prediction = .prediction)
+        if (distribution == "prediction") {
+          if(inherits(model, c("brmsfit", "stanreg", "stanmvreg"))) {
+            samples <- model %>%
+              tidybayes::predicted_draws(newdata = newdata,
+                                         ndraws = ndraws,
+                                         ...) %>%
+              dplyr::mutate(prediction = .prediction)
+          } else {
+            samples = get_predicted(model,
+                                        data = newdata,
+                                        predict = "prediction",
+                                        iterations = ndraws) %>%
+              as.data.frame() %>%
+              cbind(newdata) %>%
+              bayestestR::reshape_iterations() %>%
+              mutate(prediction = iter_value,
+                     .row = iter_index,
+                     .draw = iter_group)
+            #   mutate(.row = row_number()) %>%
+            #   tidyr::unite("prediction", contains("iter_")) %>%
+            #   rowwise() %>%
+            #   mutate(prediction = list(as.numeric(unlist(strsplit(prediction, "_")))),
+            #          .draw = list(1:ndraws))
+            #
+            # samples <- insight::get_data(model) %>%
+            #   cbind(predictions) %>%
+            #   tidyr::unnest(c(prediction, .draw))
+          }
         } else {
-          samples <- model %>%
-            tidybayes::linpred_draws(newdata = newdata,
-                                     dpar = distribution,
-                                     ndraws = ndraws,
-                                     ...)
-          samples$prediction = samples[[distribution]]
+          if(inherits(model, c("brmsfit", "stanreg", "stanmvreg"))) {
+            samples <- model %>%
+              tidybayes::linpred_draws(newdata = newdata,
+                                       dpar = distribution,
+                                       ndraws = ndraws,
+                                       ...)
+            samples$prediction = samples[[distribution]]
+          } else {
+            samples = get_predicted(model,
+                                    data = newdata,
+                                    predict = distribution,
+                                    iterations = ndraws) %>%
+              as.data.frame() %>%
+              cbind(newdata) %>%
+              bayestestR::reshape_iterations() %>%
+              mutate(prediction = iter_value,
+                     .row = iter_index,
+                     .draw = iter_group)
+            # predictions = get_predicted(model,
+            #                             data = newdata,
+            #                             predict = distribution,
+            #                             iterations = ndraws) %>%
+            #   as.data.frame() %>%
+            #   mutate(.row = row_number()) %>%
+            #   tidyr::unite("prediction", contains("iter_")) %>%
+            #   rowwise() %>%
+            #   mutate(prediction = list(as.numeric(unlist(strsplit(prediction, "_")))),
+            #          .draw = list(1:ndraws))
+            #
+            # samples <- insight::get_data(model) %>%
+            #   cbind(predictions) %>%
+            #   tidyr::unnest(c(prediction, .draw))
+          }
         }
       } else {
         samples <- model %>%

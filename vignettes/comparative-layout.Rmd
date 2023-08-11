@@ -1,0 +1,135 @@
+---
+title: "Comparing the model prediction and observed data using modelcheck"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Comparing the model prediction and observed data using modelcheck}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+# Introduction
+
+This vignette describes how to use `modelcheck` package to specify the comparative layout that organizes the visual representations of model predictions and observed data into a layout that enhances the visual comparison. We developed `modelcheck` to support comparative layouts in three categories, juxtaposition, superposition, and explicit encoding. For a more general introduction to `modelcheck` and its use on a standard model check workflow, see `vignette("modelcheck")`.
+
+# Setup
+
+The following libraries are required to run this vignette:
+
+```{r setup}
+library(dplyr)
+library(purrr)
+library(modelcheck)
+library(ggplot2)
+library(ggdist)
+library(cowplot)
+library(rstan)
+library(brms)
+library(gganimate)
+
+theme_set(theme_tidybayes() + panel_border())
+```
+
+These options help Stan run faster:
+
+```{r}
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+```
+
+
+# Model
+
+We use the built-in model `mpg_model`, a `brmsfit` object fitted in Gaussian model family with push-forward transformations `mu` and `sigma`, to demonstrate different visual representations `modelcheck` defines to show the distributions in model and observed data. 
+
+```{r example_model}
+mpg_model
+```
+
+# Juxtaposition
+
+Juxtaposition puts the visual representations of model prediction and observed data side by side. This comparative layout presents each object (visual representations for model prediction and observed data) separately, but also relies on the viewer's memory to make connection between objects. We could specify the juxtaposition layout for a model check by `mc_layout_juxtaposition()`.
+
+```{r juxtaposition}
+mpg_model %>%
+  mcplot() +
+  mc_layout_juxtaposition() +
+  mc_gglayer(coord_flip())
+```
+
+`modelcheck` also supports a variant of juxtaposition, nested juxtaposition, which could help to reduce the memory cost of the viewers by nested the juxtaposition layout in the plot when the model check has a discrete conditional variable. We could specify that by `mc_layout_nested()`.
+
+```{r nested juxtaposition}
+mpg_model %>%
+  mcplot() +
+  mc_condition_on(x = vars(vs)) +
+  mc_model_auto(n_sample = 1) +
+  mc_layout_nested()
+```
+
+# Superposition
+
+Superposition overlays the objects (visual representations for model prediction and observed data) and present the objects in the same coordinate system. `modelcheck` uses superposition as the default comparative layout if users don't specify a comparative layout.
+
+```{r superposition}
+mpg_model %>%
+  mcplot() +
+  mc_layout_superposition() +
+  mc_gglayer(coord_flip())
+```
+
+# Explicit encoding
+
+Explicit encoding directly encodes the connections between objects visually and uses computation to determine the comparison between model prediction and observed data. For example, residual plot computes the difference between model prediction and observed data to encode the comparison, and quantile-quantile (QQ) plot computes the quantile of the residual to encode the comparison. Explicit encoding can also explicitly enable to check a model feature but not depends on viewer's perception on the distribution of model prediction and observed data shown in raw coordinates of response variable and independent variables. For example, residual plot conditional on response variable enables to check linearity and QQ plot enables to check the normality of residuals.
+
+Let's check the linearity of the model by drawing a residual plot conditional on response variable `mpg`, where we use two visual representations (`mc_model_lineribbon()` and `mc_model_point()`) for the model prediction to reveal the trend of residual while showing a set of raw data points.
+
+```{r residual}
+mpg_model %>% 
+  mcplot() + 
+  mc_condition_on(x = vars(mpg)) + 
+  mc_layout_encoding("residual") + 
+  mc_model_lineribbon(alpha = .2) + 
+  mc_model_point(n_sample = 1) + 
+  mc_gglayer(geom_hline(yintercept = 0))
+```
+
+Then let's check the normality of the residual by drawing a QQ plot. We could specify this easily by using `mc_layout_encoding(tranform = "qq")`.
+
+```{r qq}
+mpg_model %>% 
+  mcplot() + 
+  mc_layout_encoding("qq") + 
+  mc_model_point(n_sample = 1) + 
+  mc_gglayer(geom_abline())
+```
+
+## Specify your own explicit encoding
+
+Explicit encoding is a layout that encodes the connections between model prediction and observed data visually and uses computation to facilitate the comparison. We could use `modelcheck` to specify a customized transformation function that computes the comparison. The transformation function should take an input as a data frame that is generated from the `newdata` data frame in `mc_distribution()` (if not specified, it's the data used to fit the model, e.g., you can get that by `insight::get_data(model)`) with additional columns: `.row`, `.draw`, `prediction`, and `observation` (if `newdata` has a column for the response variable). We could transform the input data frame to generate a new one that has the columns for the variable shown on y axis and x axis named as `y_axis` and `x_axis` (optional).
+
+Here is an example of a customized explicit encoding, where we want to check the variance of residuals. 
+
+```{r std residual}
+var_res_func = function(data) {
+  data %>%
+    mutate(y_axis = prediction - observation) %>%
+    mutate(y_axis = sqrt(abs(y_axis / sd(y_axis))))
+}
+
+mpg_model %>% 
+  mcplot() + 
+  mc_condition_on(x = vars(mpg)) + 
+  mc_layout_encoding(var_res_func) + 
+  mc_model_lineribbon(alpha = .2) + 
+  mc_model_point(n_sample = 1)
+```
+
+

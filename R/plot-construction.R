@@ -28,7 +28,6 @@
 #' @method + modelcheck
 #' @rdname modelcheck-add
 #' @example
-#'
 #' library(ggplot2)
 #'
 #' mcplot(mpg_model) +

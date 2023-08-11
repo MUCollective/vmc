@@ -5,7 +5,11 @@
 \alias{mpg_model}
 \title{Miles/(US) gallon model}
 \format{
-An object of class \code{brmsfit} of length 22.
+\subsection{\code{mpg_model}}{
+
+A brms model object in Gaussian family predicting a quantitative response
+variable \code{mpg} with \code{disp}, \code{vs}, \code{am} as predictors.
+}
 }
 \usage{
 mpg_model

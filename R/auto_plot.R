@@ -1,3 +1,5 @@
+globalVariables(c(".draw", "x_type", "y_type"))
+
 auto_plot = function(..., n_sample = NA, draw = NULL) {
   function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var) {
     if (!is.na(n_sample) && ".draw" %in% colnames(samples)) {
@@ -208,9 +210,7 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
                                                          color = !!model_color,
                                                          fill = !!model_color),
                                   stat = "count",
-                                  ...,
-                                  shape = "-",
-                                  size = 10)
+                                  ...)
         } else if (draw == "collapse") {
           p = ggplot2::geom_point(data = samples %>%
                                   dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)),
@@ -218,9 +218,7 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
                                                        color = !!model_color,
                                                        fill = !!model_color),
                                 stat = "count",
-                                ...,
-                                shape = "-",
-                                size = 10)
+                                ...)
         } else if (draw == "group") {
           p = ggplot2::geom_point(data = samples %>%
                                     dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)),
@@ -230,9 +228,7 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
                                                          color = !!model_color,
                                                          fill = !!model_color),
                                   stat = StatDisProp,
-                                  ...,
-                                  shape = "-",
-                                  size = 10)
+                                  ...)
         } else if (draw == "hops") {
           hops_id = get_unique_id()
           draw_col = paste(".draw", hops_id, sep = "")
@@ -244,9 +240,7 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
                                                          color = !!model_color,
                                                          fill = !!model_color),
                                   stat = "count",
-                                  ...,
-                                  shape = "-",
-                                  size = 10),
+                                  ...),
                 gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE))
         }
       }

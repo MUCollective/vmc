@@ -1,0 +1,174 @@
+---
+title: "Visualizing the distribution of model prediction and observed data using modelcheck"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Visualizing the distribution of model prediction and observed data using modelcheck}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+This vignette describes how to use `modelcheck` package to specify the visual representations to describe the distribution of model prediction and observed data. We developed `modelcheck` to support visual representations in three categories, area/extent, visual variable, and countable icon, encoding the uncertainty using different cognitive variables.  For a more general introduction to `modelcheck` and its use on a standard model check workflow, see `vignette("modelcheck")`.
+
+# Setup
+
+The following libraries are required to run this vignette:
+
+```{r setup}
+library(dplyr)
+library(purrr)
+library(modelcheck)
+library(ggplot2)
+library(ggdist)
+library(cowplot)
+library(rstan)
+library(brms)
+library(gganimate)
+
+theme_set(theme_tidybayes() + panel_border())
+```
+
+These options help Stan run faster:
+
+```{r}
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+```
+
+# Model
+
+We use the built-in model `mpg_model`, a `brmsfit` object fitted in Gaussian model family with push-forward transformations `mu` and `sigma`, to demonstrate different visual representations `modelcheck` defines to show the distributions in model and observed data. 
+
+
+```{r example_model}
+mpg_model
+```
+
+# Visualizing uncertainty using area/extent
+
+`modelcheck` supports a list of visual representations to encode uncertainty using area/extent variable: 
+- `mc_model_slab()` (`mc_obs_slab()`)
+- `mc_model_ccdf()` (`mc_obs_ccdf()`)
+- `mc_model_cdf()` (`mc_obs_cdf()`)
+- `mc_model_eye()` (`mc_obs_eye()`)
+- `mc_model_halfeye()` (`mc_obs_halfeye()`)
+- `mc_model_histogram()` (`mc_obs_histogram()`)
+- `mc_model_pointinterval()` (`mc_obs_pointinterval()`)
+- `mc_model_interval()` (`mc_obs_interval()`)
+- `mc_model_lineribbbon()` (`mc_obs_lineribbon()`)
+- `mc_model_ribbon()` (`mc_obs_ribbon()`)
+
+Examples:
+
+```{r slab}
+mpg_model %>%
+  mcplot() +
+  mc_model_slab(alpha = .5) +
+  mc_obs_slab(alpha = .5) +
+  mc_gglayer(coord_flip())
+```
+
+```{r slab x}
+mpg_model %>%
+  mcplot() +
+  mc_model_slab(alpha = .5) +
+  mc_obs_slab(alpha = .5) + 
+  mc_condition_on(x = vars(vs)) +
+  mc_gglayer(coord_flip())
+```
+
+```{r slab x interval}
+mpg_model %>%
+  mcplot() +
+  mc_model_slab(alpha = .5) +
+  mc_obs_interval(alpha = .5) + 
+  mc_condition_on(x = vars(vs)) +
+  mc_gglayer(coord_flip())
+```
+
+```{r lineribbon x pointinterval}
+mpg_model %>%
+  mcplot() +
+  mc_model_lineribbon() +
+  mc_obs_pointinterval() + 
+  mc_condition_on(x = vars(disp))
+```
+
+# Visualizing uncertainty using visual variable
+
+`modelcheck` supports a list of visual representations to encode uncertainty using visual variable: 
+- `mc_model_gradientinterval()` (`mc_obs_gradientinterval()`)
+- `mc_model_interval()` (`mc_obs_interval()`)
+- `mc_model_lineribbbon()` (`mc_obs_lineribbon()`)
+- `mc_model_ribbon()` (`mc_obs_ribbon()`)
+- `mc_model_tile()` (`mc_obs_tile()`)
+
+Examples:
+
+```{r gradient x}
+mpg_model %>%
+  mcplot() +
+  mc_model_gradientinterval() +
+  mc_obs_point(shape = '|', size = 10) + 
+  mc_condition_on(x = vars(vs)) +
+  mc_gglayer(coord_flip())
+```
+
+```{r gradient x gradient}
+mpg_model %>%
+  mcplot() +
+  mc_model_gradientinterval() +
+  mc_obs_gradientinterval() + 
+  mc_condition_on(x = vars(vs)) +
+  mc_layout_nested() +
+  mc_gglayer(coord_flip())
+```
+
+# Visualizing uncertainty using countable icon
+
+`modelcheck` supports a list of visual representations to encode uncertainty using countable icon: 
+- `mc_model_dots()` (`mc_obs_dots()`)
+- `mc_model_dotsinterval()` (`mc_obs_dotsinterval()`)
+- `mc_model_point()` (`mc_obs_point()`)
+- `mc_model_line()` (`mc_obs_line()`)
+
+Examples:
+
+```{r dots x}
+mpg_model %>%
+  mcplot() +
+  mc_model_dots(n_sample = 100) +
+  mc_obs_dots() + 
+  mc_gglayer(coord_flip())
+```
+
+```{r dots x raincloud}
+mpg_model %>%
+  mcplot() +
+  mc_model_slab() +
+  mc_obs_interval() +
+  mc_obs_dots(side = "left") + 
+  mc_condition_on(x = vars(vs)) +
+  mc_gglayer(coord_flip())
+```
+
+# Customize the visual representation using modelcheck
+
+If your visual representation is not supported directly by `modelcheck`, you can use `mc_model_custom()` and `mc_obs_custom()` to pass in a geom or stat function to specify the visual representation for model prediction and observed data. For example, we could use `mc_model_custom(stat_boxplot)` to specify a box plot for model prediction and `mc_obs_custom(geom_swarm)` to specify a swarm plot for observed data.
+
+```{r customized plot}
+mpg_model %>%
+  mcplot() +
+  mc_model_custom(stat_boxplot, notch = TRUE) +
+  mc_obs_custom(geom_swarm) +
+  mc_condition_on(x = vars(vs)) +
+  mc_gglayer(coord_flip())
+```
