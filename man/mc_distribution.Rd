@@ -5,29 +5,29 @@
 \title{Define how to draw from posterior distribution}
 \usage{
 mc_distribution(
-  distribution = "predictive",
+  distribution = "prediction",
   newdata = NULL,
-  draw_function = NULL,
+  extract_function = NULL,
   response_var = NULL,
   ndraws = 500,
   ...
 )
 }
 \arguments{
-\item{distribution}{Which distribution to draw from. The options include \code{"predictive"} and
+\item{distribution}{Which distribution to draw from. The options include \code{"prediction"} and
 and push-forward transformations (e.g. \code{mu}, \code{sigma}, and \code{phi}). For example,
-if the model is normal family and \code{distribution = "predictive"}, we draws from
+if the model is normal family and \code{distribution = "prediction"}, we draws from
 posterior predictive distribution; if \code{distribution = "mu"}, we draws from
 the distribution of linear/link-level predictor (i.e. push-forward transformations).}
 
 \item{newdata}{Data frame to generate predictions from, or \code{NULL} to reuse the
 data frame used to fit model, i.e. replicated predictive distribution.}
 
-\item{draw_function}{The function used to draw from model's posterior distributions.
-Default to be \code{NULL}. If \code{draw_function} is \code{NULL}, then \code{modelcheck} will
-use \code{tidybayes::predicted_draws()} for \code{distribution = "predictive"} and
+\item{extract_function}{The function used to draw from model's posterior distributions.
+Default to be \code{NULL}. If \code{extract_function} is \code{NULL}, then \code{modelcheck} will
+use \code{tidybayes::predicted_draws()} for \code{distribution = "prediction"} and
 use \code{tidybayes::linpred_draws()} for other distributions of
-linear/link-level predictors. If \code{draw_function} is not \code{NULL}, it should be
+linear/link-level predictors. If \code{extract_function} is not \code{NULL}, it should be
 a function that takes \code{model}, \code{newdata}, and \code{ndraws} as inputs and output a data
 frame that sampled from \code{model} on \code{newdata} with at least a \code{prediction}
 column (the draws from the model's distribution), a \code{.row} column (a factor grouping rows from
@@ -40,7 +40,7 @@ be \code{NULL}. If \code{NULL}, \code{modelcheck} will infer the response variab
 
 \item{ndraws}{The number of draws to return, or \code{NULL} to return all draws.}
 
-\item{...}{Augments passed to \code{draw_function}. If \code{draw_function} is \code{NULL},
+\item{...}{Augments passed to \code{extract_function}. If \code{extract_function} is \code{NULL},
 then \code{...} will be passed to \code{tidybayes::predicted_draws()} or \code{tidybayes::linpred_draws()}}
 }
 \description{
@@ -69,5 +69,5 @@ epred_draws_mu = function(model, newdata, ...) {
 }
 
 mcplot(mpg_model) +
-  mc_distribution(draw_function = epred_draws_mu)
+  mc_distribution(extract_function = epred_draws_mu)
 }

@@ -32,3 +32,13 @@ by \code{draw()}. See examples for more details.}
 \description{
 Customized geom
 }
+\examples{
+library(ggplot2)
+library(ggdist)
+
+mcplot(mpg_model) +
+  mc_model_custom(stat_boxplot, notch = TRUE) +
+  mc_obs_custom(geom_swarm) +
+  mc_condition_on(x = vars(vs)) +
+  mc_gglayer(coord_flip())
+}

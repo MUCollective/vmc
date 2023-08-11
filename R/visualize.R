@@ -12,12 +12,12 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
 
   x_var = x_var[[1]]
   if (!is.null(x_var)) {
-    samples = samples %>% dplyr::select(x_axis = !!x_var, everything())
+    samples = samples %>% dplyr::mutate(x_axis = !!x_var)
     labels$x = rlang::quo_name(x_var)
   }
 
   if (!("y_axis" %in% colnames(samples))) {
-    samples = samples %>% dplyr::select(y_axis = prediction, everything())
+    samples = samples %>% dplyr::mutate(y_axis = prediction)
   }
 
 

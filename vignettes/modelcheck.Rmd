@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette introduces the `modelcheck` package, which facilitates model check visualizations (i.e., comparing observed data to model predictions) for Bayesian models in R. This vignette follows a standard model checking workflow to show how `modelcheck`. For more detailed description of geoms and comparative layouts, see `vignette("uncert-rep")` and `vignette("comp-layout")`.
+This vignette introduces the `modelcheck` package, which facilitates model check visualizations (i.e., comparing observed data to model predictions) for Bayesian models in R. This vignette follows a standard model checking workflow to show how `modelcheck`. For more detailed description of geoms and comparative layouts, see `vignette("uncertainty-representation")` and `vignette("comparative-layout")`.
 
 # Setup
 
@@ -90,14 +90,14 @@ model %>%
 ```{r}
 model %>% 
   mcplot() +
-  mc_distribution("predictive") +
+  mc_distribution("prediction") +
   mc_model_line(stat = "density", alpha = .1) +
   mc_obs_line(stat = "density") +
   mc_layout_superposition() +
   mc_gglayer(coord_flip())
 ```
 
-`mc_distribution()` defines how `modelcheck` would draw the posterior distribution, where `"predictive"` says to draw from the posterior predictive distribution and `newdata = "obs"` says to use the observed dataset to generate. `mc_model_geom_line()` and `mc_obs_geom_line()` define the geom of model predictions and data observations and choose a suitable geom for users based on data types. `mc_comp_layout()` defines the comparative layout of the model check, i.e. how to compare model predictions and data observations. The option `"sup"` is for superposition, which overlaps the predictions and observations in one plot. `mc_gglayer()` adds `ggplot2::layer()` to model check visualization. We will discuss more details about these functions in later sections.
+`mc_distribution()` defines how `modelcheck` would draw the posterior distribution, where `"prediction"` says to draw from the posterior predictive distribution and `newdata = "obs"` says to use the observed dataset to generate. `mc_model_geom_line()` and `mc_obs_geom_line()` define the geom of model predictions and data observations and choose a suitable geom for users based on data types. `mc_comp_layout()` defines the comparative layout of the model check, i.e. how to compare model predictions and data observations. The option `"sup"` is for superposition, which overlaps the predictions and observations in one plot. `mc_gglayer()` adds `ggplot2::layer()` to model check visualization. We will discuss more details about these functions in later sections.
 
 # Add conditional predictions for posterior predictive checks
 
