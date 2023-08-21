@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Visualizing the distribution of model prediction and observed data using modelcheck • modelcheck</title>
+<title>Specifying visual representations for model predictions and observed data using modelcheck • modelcheck</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Visualizing the distribution of model prediction and observed data using modelcheck">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Specifying visual representations for model predictions and observed data using modelcheck">
 <meta property="og:description" content="modelcheck">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -59,7 +59,7 @@
       <a href="../articles/distribution.html">Extracting arbitrary distributions from a model using modelcheck</a>
     </li>
     <li>
-      <a href="../articles/uncertainty-representation.html">Visualizing the distribution of model prediction and observed data using modelcheck</a>
+      <a href="../articles/uncertainty-representation.html">Specifying visual representations for model predictions and observed data using modelcheck</a>
     </li>
   </ul>
 </li>
@@ -77,8 +77,8 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Visualizing the distribution of model prediction
-and observed data using modelcheck</h1>
+      <h1 data-toc-skip>Specifying visual representations for model
+predictions and observed data using modelcheck</h1>
             
       
       
@@ -91,14 +91,14 @@ and observed data using modelcheck</h1>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This vignette describes how to use <code>modelcheck</code> package to
-specify the visual representations to describe the distribution of model
-prediction and observed data. We developed <code>modelcheck</code> to
-support visual representations in three categories, area/extent, visual
-variable, and countable icon, encoding the uncertainty using different
-cognitive variables. For a more general introduction to
-<code>modelcheck</code> and its use on a standard model check workflow,
-see <code><a href="../articles/modelcheck.html">vignette("modelcheck")</a></code>.</p>
+<p>This vignette describes how to use the <code>modelcheck</code>
+package to specify the visual representations used to describe the
+distribution of model predictions and observed data. We developed
+<code>modelcheck</code> to support visual representations of three
+types: area/extent, visual variable, and countable icon. For a more
+general introduction to <code>modelcheck</code> and its use on a
+standard model check workflow, see
+<code><a href="../articles/modelcheck.html">vignette("modelcheck")</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
@@ -157,7 +157,8 @@ see <code><a href="../articles/modelcheck.html">vignette("modelcheck")</a></code
 <code>brmsfit</code> object fitted in Gaussian model family with
 push-forward transformations <code>mu</code> and <code>sigma</code>, to
 demonstrate different visual representations <code>modelcheck</code>
-defines to show the distributions in model and observed data.</p>
+defines to show the distribution of model predictions and observed
+data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mpg_model</span></span>
 <span><span class="co">#&gt;  Family: gaussian </span></span>
@@ -232,10 +233,10 @@ encode uncertainty using area/extent variable: -
 <p><img src="uncertainty-representation_files/figure-html/lineribbon%20x%20pointinterval-1.png" width="700"></p>
 </div>
 <div class="section level2">
-<h2 id="visualizing-uncertainty-using-visual-variable">Visualizing uncertainty using visual variable<a class="anchor" aria-label="anchor" href="#visualizing-uncertainty-using-visual-variable"></a>
+<h2 id="visualizing-uncertainty-using-visual-variables">Visualizing uncertainty using visual variables<a class="anchor" aria-label="anchor" href="#visualizing-uncertainty-using-visual-variables"></a>
 </h2>
-<p><code>modelcheck</code> supports a list of visual representations to
-encode uncertainty using visual variable: -
+<p><code>modelcheck</code> supports a list of visual representation that
+encode uncertainty using diffferent visual variables: -
 <code><a href="../reference/mc_model_gradientinterval.html">mc_model_gradientinterval()</a></code>
 (<code><a href="../reference/mc_model_gradientinterval.html">mc_obs_gradientinterval()</a></code>) -
 <code><a href="../reference/mc_model_interval.html">mc_model_interval()</a></code> (<code><a href="../reference/mc_model_interval.html">mc_obs_interval()</a></code>) -
@@ -298,11 +299,12 @@ encode uncertainty using visual variable: -
 <p><img src="uncertainty-representation_files/figure-html/gradient%20x%20gradient-1.png" width="700"></p>
 </div>
 <div class="section level2">
-<h2 id="visualizing-uncertainty-using-countable-icon">Visualizing uncertainty using countable icon<a class="anchor" aria-label="anchor" href="#visualizing-uncertainty-using-countable-icon"></a>
+<h2 id="visualizing-uncertainty-using-countable-icons">Visualizing uncertainty using countable icons<a class="anchor" aria-label="anchor" href="#visualizing-uncertainty-using-countable-icons"></a>
 </h2>
-<p><code>modelcheck</code> supports a list of visual representations to
-encode uncertainty using countable icon: - <code><a href="../reference/mc_model_dots.html">mc_model_dots()</a></code>
-(<code><a href="../reference/mc_model_dots.html">mc_obs_dots()</a></code>) - <code><a href="../reference/mc_model_dotsinterval.html">mc_model_dotsinterval()</a></code>
+<p><code>modelcheck</code> supports a list of visual representations
+that encode uncertainty using countable icons: -
+<code><a href="../reference/mc_model_dots.html">mc_model_dots()</a></code> (<code><a href="../reference/mc_model_dots.html">mc_obs_dots()</a></code>) -
+<code><a href="../reference/mc_model_dotsinterval.html">mc_model_dotsinterval()</a></code>
 (<code><a href="../reference/mc_model_dotsinterval.html">mc_obs_dotsinterval()</a></code>) - <code><a href="../reference/mc_model_point.html">mc_model_point()</a></code>
 (<code><a href="../reference/mc_model_point.html">mc_obs_point()</a></code>) - <code><a href="../reference/mc_model_line.html">mc_model_line()</a></code>
 (<code><a href="../reference/mc_model_line.html">mc_obs_line()</a></code>)</p>
@@ -330,11 +332,11 @@ encode uncertainty using countable icon: - <code><a href="../reference/mc_model_
 <p>If your visual representation is not supported directly by
 <code>modelcheck</code>, you can use <code><a href="../reference/mc_model_custom.html">mc_model_custom()</a></code> and
 <code><a href="../reference/mc_model_custom.html">mc_obs_custom()</a></code> to pass in a geom or stat function to
-specify the visual representation for model prediction and observed
+specify the visual representation of model predictions and observed
 data. For example, we could use
 <code>mc_model_custom(stat_boxplot)</code> to specify a box plot for
-model prediction and <code>mc_obs_custom(geom_swarm)</code> to specify a
-swarm plot for observed data.</p>
+model predictions and <code>mc_obs_custom(geom_swarm)</code> to specify
+a swarm plot for observed data.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mpg_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
