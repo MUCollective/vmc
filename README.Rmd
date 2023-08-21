@@ -85,7 +85,7 @@ model %>%
   mc_condition_on(x = vars(disp))
 ```
 
-Or you can check the distribution of `sigma` in the model by specifying `mc_distribution("sigma")`. You may find, however, that the unit of observed data misaligned with the `sigma` distribution. You can add `observation_transform` to `mcplot()` to transform the observed data to a comparable unit to `sigma`.
+Or you can check the distribution of `sigma` in the model by specifying `mc_distribution("sigma")`. You may find, however, that the unit of the observed data is misaligned with the `sigma` distribution. You can add `observation_transform` to `mcplot()` to transform the observed data to a comparable standard deviation unit to `sigma`.
 
 ```{r}
 sd_function = function(df) {df %>% group_by(vs) %>% mutate(observation = sd(observation))}
@@ -96,9 +96,9 @@ model %>%
   mc_condition_on(x = vars(vs))
 ```
 
-For the model checks that have a continuous conditional variable, `modelcheck` implements uncertainty representations, e.g., line + ribbon plot and point + interval plot, that encode the uncertainty in the model and also reveal the trend of response variable over the conditional variable. For those model checks that have no conditional variable or have a discrete conditional variable, `modelcheck` implements a group of uncertainty representations, e.g., dots plot, eye plot, and gradient plot, that show the distribution of the model.
+For model checks that have a continuous conditional variable, `modelcheck` implements uncertainty representations like line + ribbon plot and point + interval plot that encode the uncertainty in the model prediction and reveal the trend of the response variable over values of the conditional variable. For model checks for which no conditional variable is specified, or for which a discrete conditional variable is specified, `modelcheck` implements uncertainty representations like dotplot, eye plot, and gradient plot that show the distribution of the model predictions.
 
-You can use `mc_model_lineribbon()` to use line + ribbon plot to check the trend of `mpg` with uncertainty encoded by ribbon.
+You can use `mc_model_lineribbon()` to use line + ribbon plot to check the trend over values of `mpg` with uncertainty in the model predictions encoded as a ribbon.
 
 ```{r}
 model %>%
@@ -107,7 +107,7 @@ model %>%
   mc_condition_on(x = vars(disp)) +
   mc_model_lineribbon()
 ```
-If conditional on a discrete variable, you can use `mc_model_dots`.
+If the predictions are conditional on a discrete variable, you can use `mc_model_dots`.
 
 ```{r}
 model %>%
@@ -117,7 +117,7 @@ model %>%
   mc_condition_on(x = vars(vs))
 ```
 
-`mcplot()` puts the model predictions and data observations superposed by default. You can change that by using `mc_layout_*()`. Here we change the comparative layout into juxtaposition.
+`mcplot()` superimposes the model predictions and data observations by default. You can change that by using `mc_layout_*()`. Here we change the comparative layout to juxtaposition.
 
 ```{r}
 model %>%
