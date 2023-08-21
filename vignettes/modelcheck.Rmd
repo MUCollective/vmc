@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette introduces the `modelcheck` package, which facilitates model check visualizations (i.e., comparing observed data to model predictions) for Bayesian models in R. This vignette follows a standard model checking workflow to show how `modelcheck`. For more detailed description of geoms and comparative layouts, see `vignette("uncertainty-representation")` and `vignette("comparative-layout")`.
+This vignette introduces the `modelcheck` package, which facilitates model check visualizations (i.e., comparing observed data to model predictions) for Bayesian models in R. This vignette follows a standard model checking workflow to show how to use `modelcheck`. For more detailed description of geoms and comparative layouts, see `vignette("uncertainty-representation")` and `vignette("comparative-layout")`.
 
 # Setup
 
@@ -109,7 +109,7 @@ model %>%
   mc_condition_on(x = vars(disp))
 ```
 
-Then you canapply some uncertainty representations to model predictions in `modelcheck`. For example, [lineribbon](https://mjskay.github.io/ggdist/reference/stat_lineribbon.html) and [point+interval](https://mjskay.github.io/ggdist/reference/stat_pointinterval.html) are shown below.
+Then you can apply some uncertainty representations to model predictions in `modelcheck`. For example, [lineribbon](https://mjskay.github.io/ggdist/reference/stat_lineribbon.html) and [point+interval](https://mjskay.github.io/ggdist/reference/stat_pointinterval.html) are shown below.
 
 - Lineribbon:
 
@@ -185,7 +185,7 @@ model %>%
   mc_layout_superposition()
 ```
 
-When checking model conditional on a discrete variable, there may be cases where you want to avoid superposition, since that would make data points overlap, as well as juxtaposition, since the visual distance betweenthe  model predictions and data observations would be too large. In these cases, nested juxtaposition can be a good choice, which plots model predictions and data observations in one plot but dodges them to avoid overlap.
+When checking model conditional on a discrete variable, there may be cases where you want to avoid superposition, since that would make data points overlap, as well as juxtaposition, since the visual distance between themodel predictions and data observations would be too large. In these cases, nested juxtaposition can be a good choice, which plots model predictions and data observations in one plot but dodges them to avoid overlap.
 
 ```{r}
 model %>%
