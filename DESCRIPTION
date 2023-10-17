@@ -1,6 +1,6 @@
-Package: modelcheck
+Package: vmc
 Title: Check your model with data observations
-Version: 0.0.0.0
+Version: 1.0.0.0
 Authors@R: c(
         person("Ziyang", "Guo", role = c("aut", "cre"), email = "ziyangguo2027@u.northwestern.edu"),
         person("Jessica", "Hullman", role = "aut", email = "jessica.hullman@gmail.com"),
@@ -20,6 +20,7 @@ Imports:
     gganimate (>= 1.0.8),
     ggdist (>= 3.2.1),
     ggplot2 (>= 3.4.2),
+    gifski (>= 1.6.6.1),
     insight (>= 0.19.2),
     magick (>= 2.7.4),
     rlang (>= 1.1.0),
@@ -31,7 +32,6 @@ Suggests:
     knitr,
     modelr,
     purrr,
-    gifski (>= 1.6.6.1),
     rmarkdown,
     rstan,
     testthat (>= 3.0.0),
@@ -42,7 +42,7 @@ Suggests:
     beeswarm,
     boot
 Config/testthat/edition: 3
-URL: https://mucollective.github.io/modelcheck/
+URL: https://mucollective.github.io/vmc/
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)

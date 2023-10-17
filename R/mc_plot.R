@@ -1,30 +1,18 @@
 
 #' Create a new mcplot
 #'
-#' `mcplot()` initializes a modelcheck object. It follows the ggplot syntax,
+#' `mcplot()` initializes a `vmc` object. It follows the ggplot syntax,
 #'  which uses a plus sign (`+`) to define features of model check visualization.
 #'
 #' `mcplot()` uses a list of defaults to generate model check visualizations.
 #'  One line of `mcplot(model)` could generate a complete visualization for
-#'  posterior predictive checks. See `vignette("modelcheck")` for a complete
+#'  posterior predictive checks. See `vignette("vmc")` for a complete
 #'  guidance.
 #'
 #' @param model The model fit object.
 #' @param observation A data frame standing for data observations. Default to be
-#'  `NULL`. If `NULL`, `modelcheck` will set the observations as the
+#'  `NULL`. If `NULL`, `vmc` will set the observations as the
 #'  data set that used to fit the model. The input data frame should include the variables in model formula.
-#' @param observation_transform The transform function that is applied on the
-#'  response variable in observed data. Default to be `NULL`. If `NULL`,
-#'  `modelcheck` will use no transformation. The transform function takes an input
-#'  of a data frame, e.g., the data frame passed to `observation`, containing a
-#'  column named `observation` standing for observations of the response variable
-#'  and several columns standing for the predictors in model (if any). The output
-#'  of the transform function should be in the same form as the input, a data frame
-#'  containing a column named observation and several columns for the predictors.
-#'  This argument is useful when `mc_distribution` is set to a distribution
-#'  that is in a different unit from the raw observation, e.g., `sigma` in Gaussian
-#'  family models describes the variance of observation. See example for more details.
-#'
 #'
 #' @export
 #'
@@ -41,16 +29,7 @@
 #' new_observed_data = mtcars %>% mutate(mpg = rnorm(nrow(mtcars), 20, 5))
 #' mcplot(mpg_model, new_observed_data) +
 #'   mc_gglayer(coord_flip())
-#' # you can also define a transform function on the observed data, which will
-#' # be applied to the observation data frame just before the visualization.
-#' # This function is even more useful when the distribution in model has a
-#' # different unit from observed data.
-#' sd_function = function(df) {df %>% mutate(observation = sd(observation))}
-#' mcplot(mpg_model, observation_transform = sd_function) +
-#'   mc_distribution("sigma") +
-#'   mc_condition_on(x = vars(disp)) +
-#'   mc_gglayer(coord_flip())
-mcplot = function(model, observation = NULL, observation_transform = NULL) {
+mcplot = function(model, observation = NULL) {
   p = function(mc_setting = NULL) {
     if (is.null(mc_setting)) {
       mc_setting = list()
@@ -92,7 +71,7 @@ mcplot = function(model, observation = NULL, observation_transform = NULL) {
       mc_setting$comparative_layout = comp_layout_sup
     }
     if (!("conditional_vars" %in% names(mc_setting))) {
-      mc_setting$conditional_vars = list(x_var = NULL, color_var = NULL, row_vars = NULL, col_vars = NULL)
+      mc_setting$conditional_vars = list(x_var = NULL, color_var = NULL, row_vars = NULL, col_vars = NULL, scales = "fixed")
     }
     if (!("gglayers" %in% names(mc_setting))) {
       mc_setting$gglayers = NULL
@@ -113,6 +92,48 @@ mcplot = function(model, observation = NULL, observation_transform = NULL) {
     if (is.null(observation)) {
       observation = model$data
     }
+    if (("observation_transform_group" %in% names(mc_setting))) {
+      if (is.null(mc_setting$observation_transform_group)) {
+        mc_setting$observation_transform_group = c(mc_setting$conditional_vars$x_var,
+                                                   mc_setting$conditional_vars$color_var,
+                                                   mc_setting$conditional_vars$row_vars,
+                                                   mc_setting$conditional_vars$col_vars)
+        if (!is.null(mc_setting$observation_transform_group)) {
+          class(mc_setting$observation_transform_group) =
+            c(class(mc_setting$observation_transform_group), "quosures")
+        }
+      } else {
+        is_v_in_group_vars = function(v) {
+          for (gv in mc_setting$observation_transform_group) {
+            if (rlang::as_name(gv) == rlang::as_name(v)) {
+              return(TRUE)
+            }
+          }
+          return(FALSE)
+        }
+        for (cond_vars in c(mc_setting$conditional_vars$x_var,
+                            mc_setting$conditional_vars$color_var,
+                            mc_setting$conditional_vars$row_vars,
+                            mc_setting$conditional_vars$col_vars)) {
+          for (v in cond_vars) {
+            if (!is_v_in_group_vars(v)) {
+              mc_setting$observation_transform_group = c(mc_setting$observation_transform_group, v)
+            }
+          }
+        }
+      }
+    }
+    if (!("observation_transform" %in% names(mc_setting))) {
+      transform = NULL
+    } else if (!is.null(mc_setting$observation_transform)) {
+      transform = function(df) {
+        df %>%
+          dplyr::group_by_at(mc_setting$observation_transform_group) %>%
+          dplyr::mutate(observation = mc_setting$observation_transform(observation))
+      }
+    } else {
+      transform = NULL
+    }
 
     mc =
       mc_setting$get_distribution(model) %>%
@@ -126,7 +147,7 @@ mcplot = function(model, observation = NULL, observation_transform = NULL) {
                    observed_color = mc_setting$obs_color,
                    show_draw = mc_setting$show_draw) %>%
       mc_compare(obs_data = observation,
-                 obs_transform = observation_transform,
+                 obs_transform = transform,
                  comparative_layout = mc_setting$comparative_layout,
                  obs_uncertainty_representation = mc_setting$obs_uncertainty_representation,
                  gglayers = mc_setting$gglayers,

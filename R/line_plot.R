@@ -1,4 +1,4 @@
-line_plot = function(..., n_sample = NA, draw = "group") {
+line_plot = function(..., n_sample = NA, draw = "group", group_on = NULL) {
   function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var) {
     if (!is.na(n_sample) && ".draw" %in% colnames(samples)) {
       ndraw <- max(samples$.draw)
@@ -7,6 +7,14 @@ line_plot = function(..., n_sample = NA, draw = "group") {
         dplyr::filter(.draw %in% sample_ids)
     }
     zeallot::`%<-%`(c(x_type, y_type), axis_type)
+    if (is.null(group_on)) {
+      group_on = rlang::quo(.draw)
+    }
+    if (rlang::quo_name(group_on) == ".draw") {
+      group_by_vars = vars(.row)
+    } else {
+      group_by_vars = vars(.draw)
+    }
 
     if (is.function(draw)) {
       # if (is.null(agg_func)) {
@@ -17,11 +25,11 @@ line_plot = function(..., n_sample = NA, draw = "group") {
       # }
       if ("x_axis" %in% colnames(samples)) {
         agg_sample = samples %>%
-          dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
+          dplyr::group_by_at(c(group_by_vars, ggplot2::vars(x_axis), row_vars, col_vars)) %>%
           dplyr::summarise(y_agg = draw(!!y_var))
       } else {
         agg_sample = samples %>%
-          dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+          dplyr::group_by_at(c(group_by_vars, row_vars, col_vars)) %>%
           dplyr::summarise(y_agg = draw(!!y_var))
       }
 
@@ -37,15 +45,16 @@ line_plot = function(..., n_sample = NA, draw = "group") {
     } else if (draw == "group") {
       p = ggplot2::geom_line(data = samples,
                               mapping = ggplot2::aes(y = !!y_var,
-                                                     group = .draw,
+                                                     group = !!group_on,
                                                      color = !!model_color),
                               ...)
     } else if (draw == "hops") {
       hops_id = get_unique_id()
       draw_col = paste(".draw", hops_id, sep = "")
       p = c(ggplot2::geom_line(data = samples %>%
-                                  dplyr::mutate(!!draw_col := .draw),
+                                  dplyr::mutate(!!draw_col := !!group_on),
                                 mapping = ggplot2::aes(y = !!y_var,
+                                                       group = !!draw_col,
                                                        color = !!model_color),
                                 ...),
             gganimate::transition_manual(!!rlang::sym(draw_col), cumulative = FALSE))

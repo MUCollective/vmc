@@ -1,7 +1,7 @@
 
 comp_layout_nestjux = function(p_obs, ..., justification = .2) {
-  function(p_pred, samples, is_animation, color_var, row_vars, col_vars, color,
-           x_type, y_type, labels, gglayers, model_color, observed_color) {
+  function(p_pred, samples, is_animation, color_var, row_vars, col_vars, scales, color,
+           x_type, y_type, labels, gglayers, model_color, observed_color, ndraw) {
     p <- p_pred
     if (".row" %in% colnames(samples)) {
       if ("x_axis" %in% colnames(samples)) {
@@ -19,7 +19,7 @@ comp_layout_nestjux = function(p_obs, ..., justification = .2) {
     if ("x_axis" %in% colnames(samples) && x_type != "quantitative") {
       for (layer in p$layers) {
         if (is.factor(samples$x_axis)) {
-          layer$mapping$x = rlang::quo(as.numeric(x_axis) + 0.2)
+          layer$mapping$x = rlang::quo(as.numeric(x_axis) + justification)
         } else {
           layer$mapping$x = rlang::quo(as.numeric(factor(x_axis, levels = sort(unique(x_axis)))) + justification)
         }
@@ -36,7 +36,7 @@ comp_layout_nestjux = function(p_obs, ..., justification = .2) {
           for (layer in obs) {
             if ("mapping" %in% names(layer)) {
               if (is.factor(samples$x_axis)) {
-                layer$mapping$x = rlang::quo(as.numeric(x_axis) - 0.2)
+                layer$mapping$x = rlang::quo(as.numeric(x_axis) - justification)
               } else {
                 layer$mapping$x = rlang::quo(as.numeric(factor(x_axis, levels = sort(unique(x_axis)))) - justification)
               }
@@ -45,7 +45,7 @@ comp_layout_nestjux = function(p_obs, ..., justification = .2) {
         } else {
           if ("mapping" %in% names(obs)) {
             if (is.factor(samples$x_axis)) {
-              obs$mapping$x = rlang::quo(as.numeric(x_axis) - 0.2)
+              obs$mapping$x = rlang::quo(as.numeric(x_axis) - justification)
             } else {
               obs$mapping$x = rlang::quo(as.numeric(factor(x_axis, levels = sort(unique(x_axis)))) - justification)
             }
@@ -63,9 +63,9 @@ comp_layout_nestjux = function(p_obs, ..., justification = .2) {
       }
     }
 
-    if (is_animation) {
-      p = gganimate::animate(p, renderer = gganimate::gifski_renderer(), fps = 5)
-    }
+    # if (is_animation) {
+    #   p = gganimate::animate(p, renderer = gganimate::gifski_renderer(), duration * .2)
+    # }
     p
   }
 }

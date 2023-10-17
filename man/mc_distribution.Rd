@@ -10,6 +10,7 @@ mc_distribution(
   extract_function = NULL,
   response_var = NULL,
   ndraws = 500,
+  transform = TRUE,
   ...
 )
 }
@@ -24,7 +25,7 @@ the distribution of linear/link-level predictor (i.e. push-forward transformatio
 data frame used to fit model, i.e. replicated predictive distribution.}
 
 \item{extract_function}{The function used to draw from model's posterior distributions.
-Default to be \code{NULL}. If \code{extract_function} is \code{NULL}, then \code{modelcheck} will
+Default to be \code{NULL}. If \code{extract_function} is \code{NULL}, then \code{vmc} will
 use \code{tidybayes::predicted_draws()} for \code{distribution = "prediction"} and
 use \code{tidybayes::linpred_draws()} for other distributions of
 linear/link-level predictors. If \code{extract_function} is not \code{NULL}, it should be
@@ -35,7 +36,7 @@ the input newdata), and a \code{.draw} column (a unique index corresponding to
 each draw from the distribution).}
 
 \item{response_var}{A string for the response variable in model. Default to
-be \code{NULL}. If \code{NULL}, \code{modelcheck} will infer the response variable from
+be \code{NULL}. If \code{NULL}, \code{vmc} will infer the response variable from
 \code{model$formula}.}
 
 \item{ndraws}{The number of draws to return, or \code{NULL} to return all draws.}
@@ -44,10 +45,10 @@ be \code{NULL}. If \code{NULL}, \code{modelcheck} will infer the response variab
 then \code{...} will be passed to \code{tidybayes::predicted_draws()} or \code{tidybayes::linpred_draws()}}
 }
 \description{
-\code{modelcheck} uses the R package \href{http://mjskay.github.io/tidybayes/index.html}{\code{tidybayes}}
+\code{vmc} uses the R package \href{http://mjskay.github.io/tidybayes/index.html}{\code{tidybayes}}
 to draw from posterior distributions. For posterior predictive distributions,
-\code{modelcheck} uses \code{tidybayes::predicted_draws()}; for posterior distribution
-of push-forward transformation, \code{modelcheck} uses \code{tidybayes::linpred_draws()}.
+\code{vmc} uses \code{tidybayes::predicted_draws()}; for posterior distribution
+of push-forward transformation, \code{vmc} uses \code{tidybayes::linpred_draws()}.
 }
 \examples{
 library(tidybayes)

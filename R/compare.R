@@ -2,7 +2,7 @@
 mc_compare <- function(prev_ret, obs_data, obs_transform, comparative_layout, obs_uncertainty_representation,
                        gglayers = NULL, model_color = NULL, observed_color = NULL) {
   zeallot::`%<-%`(c(samples, p_pred, labels, response_var, conditional_vars, is_animation, x_type, y_type), prev_ret)
-  zeallot::`%<-%`(c(x_var, color_var, row_vars, col_vars), conditional_vars)
+  zeallot::`%<-%`(c(x_var, color_var, row_vars, col_vars, scales), conditional_vars)
 
   x_var = x_var[[1]]
 
@@ -37,12 +37,14 @@ mc_compare <- function(prev_ret, obs_data, obs_transform, comparative_layout, ob
     obs_color = color_var[[1]]
   }
 
+  ndraw = max(samples$.draw)
+
   p = comparative_layout(
     obs_uncertainty_representation
     )(p_pred, obs_data, is_animation,
-      color_var, row_vars, col_vars,
+      color_var, row_vars, col_vars, scales,
       obs_color, x_type, y_type, labels,
-      gglayers, model_color, observed_color)
+      gglayers, model_color, observed_color, ndraw)
 
   p
 }
