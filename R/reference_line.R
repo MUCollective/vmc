@@ -10,9 +10,9 @@ reference_line = function(..., n_sample = NA, draw = "collapse", group_on = NULL
       group_on = rlang::quo(.draw)
     }
     if (rlang::quo_name(group_on) == ".draw") {
-      group_by_vars = vars(.row)
+      group_by_vars = ggplot2::vars(.row)
     } else {
-      group_by_vars = vars(.draw)
+      group_by_vars = ggplot2::vars(.draw)
     }
     if (is.function(draw)) {
       # if (is.null(agg_func)) {

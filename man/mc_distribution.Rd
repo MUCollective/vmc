@@ -41,6 +41,9 @@ be \code{NULL}. If \code{NULL}, \code{vmc} will infer the response variable from
 
 \item{ndraws}{The number of draws to return, or \code{NULL} to return all draws.}
 
+\item{transform}{Whether to transform the distribution by its link function.
+Default to be \code{TRUE}.}
+
 \item{...}{Augments passed to \code{extract_function}. If \code{extract_function} is \code{NULL},
 then \code{...} will be passed to \code{tidybayes::predicted_draws()} or \code{tidybayes::linpred_draws()}}
 }

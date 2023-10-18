@@ -29,6 +29,8 @@
 #' @param ... Augments passed to `extract_function`. If `extract_function` is `NULL`,
 #'  then `...` will be passed to `tidybayes::predicted_draws()` or `tidybayes::linpred_draws()`
 #' @param ndraws The number of draws to return, or `NULL` to return all draws.
+#' @param transform Whether to transform the distribution by its link function.
+#'  Default to be `TRUE`.
 #' @export
 #'
 #' @examples

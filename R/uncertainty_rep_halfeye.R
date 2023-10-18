@@ -11,9 +11,9 @@ uncertainty_rep_halfeye = function(..., n_sample = NA, draw = "collapse", group_
       group_on = rlang::quo(.draw)
     }
     if (rlang::quo_name(group_on) == ".draw") {
-      group_by_vars = vars(.row)
+      group_by_vars = ggplot2::vars(.row)
     } else {
-      group_by_vars = vars(.draw)
+      group_by_vars = ggplot2::vars(.draw)
     }
     y_axis_order = sort(unique(samples[[rlang::quo_name(y_var)]]))
 
