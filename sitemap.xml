@@ -16,10 +16,10 @@
     <loc>https://mucollective.github.io/modelcheck/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://mucollective.github.io/modelcheck/articles/modelcheck.html</loc>
+    <loc>https://mucollective.github.io/modelcheck/articles/uncertainty-representation.html</loc>
   </url>
   <url>
-    <loc>https://mucollective.github.io/modelcheck/articles/uncertainty-representation.html</loc>
+    <loc>https://mucollective.github.io/modelcheck/articles/vmc.html</loc>
   </url>
   <url>
     <loc>https://mucollective.github.io/modelcheck/authors.html</loc>
@@ -91,6 +91,9 @@
     <loc>https://mucollective.github.io/modelcheck/reference/mc_model_pointinterval.html</loc>
   </url>
   <url>
+    <loc>https://mucollective.github.io/modelcheck/reference/mc_model_reference_line.html</loc>
+  </url>
+  <url>
     <loc>https://mucollective.github.io/modelcheck/reference/mc_model_ribbon.html</loc>
   </url>
   <url>
@@ -100,15 +103,18 @@
     <loc>https://mucollective.github.io/modelcheck/reference/mc_model_tile.html</loc>
   </url>
   <url>
+    <loc>https://mucollective.github.io/modelcheck/reference/mc_observation_transformation.html</loc>
+  </url>
+  <url>
     <loc>https://mucollective.github.io/modelcheck/reference/mcplot.html</loc>
   </url>
   <url>
     <loc>https://mucollective.github.io/modelcheck/reference/modelcheck-add.html</loc>
   </url>
   <url>
-    <loc>https://mucollective.github.io/modelcheck/reference/modelcheck-package.html</loc>
+    <loc>https://mucollective.github.io/modelcheck/reference/mpg_model.html</loc>
   </url>
   <url>
-    <loc>https://mucollective.github.io/modelcheck/reference/mpg_model.html</loc>
+    <loc>https://mucollective.github.io/modelcheck/reference/vmc-package.html</loc>
   </url>
 </urlset>

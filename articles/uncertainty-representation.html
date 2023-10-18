@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Specifying visual representations for model predictions and observed data using modelcheck • modelcheck</title>
+<title>Specifying visual representations for model predictions and observed data using vmc • vmc</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Specifying visual representations for model predictions and observed data using modelcheck">
-<meta property="og:description" content="modelcheck">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Specifying visual representations for model predictions and observed data using vmc">
+<meta property="og:description" content="vmc">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -32,15 +32,15 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">modelcheck</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.0</span>
+        <a class="navbar-link" href="../index.html">vmc</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../articles/modelcheck.html">Get started</a>
+  <a href="../articles/vmc.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -53,13 +53,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/comparative-layout.html">Comparing model predictions and observed data using modelcheck</a>
+      <a href="../articles/comparative-layout.html">Comparing model predictions and observed data using vmc</a>
     </li>
     <li>
-      <a href="../articles/distribution.html">Extracting arbitrary distributions from a model using modelcheck</a>
+      <a href="../articles/distribution.html">Extracting arbitrary distributions from the model using vmc</a>
     </li>
     <li>
-      <a href="../articles/uncertainty-representation.html">Specifying visual representations for model predictions and observed data using modelcheck</a>
+      <a href="../articles/uncertainty-representation.html">Specifying visual representations for model predictions and observed data using vmc</a>
     </li>
   </ul>
 </li>
@@ -78,7 +78,7 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Specifying visual representations for model
-predictions and observed data using modelcheck</h1>
+predictions and observed data using vmc</h1>
             
       
       
@@ -91,14 +91,13 @@ predictions and observed data using modelcheck</h1>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This vignette describes how to use the <code>modelcheck</code>
-package to specify the visual representations used to describe the
-distribution of model predictions and observed data. We developed
-<code>modelcheck</code> to support visual representations of three
-types: area/extent, visual variable, and countable icon. For a more
-general introduction to <code>modelcheck</code> and its use on a
-standard model check workflow, see
-<code><a href="../articles/modelcheck.html">vignette("modelcheck")</a></code>.</p>
+<p>This vignette describes how to use the <code>vmc</code> package to
+specify the visual representations used to describe the distribution of
+model predictions and observed data. We developed <code>vmc</code> to
+support visual representations of three types: area/extent, visual
+variable, and countable icon. For a more general introduction to
+<code>vmc</code> and its use on a standard model check workflow, see
+<code><a href="../articles/vmc.html">vignette("vmc")</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
@@ -106,43 +105,15 @@ standard model check workflow, see
 <p>The following libraries are required to run this vignette:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mucollective.github.io/modelcheck/">modelcheck</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mucollective.github.io/vmc/" class="external-link">vmc</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mjskay.github.io/ggdist/" class="external-link">ggdist</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/cowplot/" class="external-link">cowplot</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/rstan/" class="external-link">rstan</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: StanHeaders</span></span>
-<span><span class="co">#&gt; rstan (Version 2.21.8, GitRev: 2e1f913d3ca3)</span></span>
-<span><span class="co">#&gt; For execution on a local, multicore CPU with excess RAM we recommend calling</span></span>
-<span><span class="co">#&gt; options(mc.cores = parallel::detectCores()).</span></span>
-<span><span class="co">#&gt; To avoid recompilation of unchanged Stan programs, we recommend calling</span></span>
-<span><span class="co">#&gt; rstan_options(auto_write = TRUE)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms" class="external-link">brms</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: Rcpp</span></span>
-<span><span class="co">#&gt; Loading 'brms' package (version 2.20.1). Useful instructions</span></span>
-<span><span class="co">#&gt; can be found by typing help('brms'). A more detailed introduction</span></span>
-<span><span class="co">#&gt; to the package is available through vignette('brms_overview').</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'brms'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:rstan':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     loo</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:ggdist':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     dstudent_t, pstudent_t, qstudent_t, rstudent_t</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     ar</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gganimate.com" class="external-link">gganimate</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/aroneklund/beeswarm" class="external-link">beeswarm</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html" class="external-link">theme_set</a></span><span class="op">(</span><span class="fu"><a href="http://mjskay.github.io/ggdist/reference/theme_ggdist.html" class="external-link">theme_tidybayes</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://wilkelab.org/cowplot/reference/panel_border.html" class="external-link">panel_border</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>These options help Stan run faster:</p>
@@ -156,9 +127,8 @@ standard model check workflow, see
 <p>We use the built-in model <code>mpg_model</code>, a
 <code>brmsfit</code> object fitted in Gaussian model family with
 push-forward transformations <code>mu</code> and <code>sigma</code>, to
-demonstrate different visual representations <code>modelcheck</code>
-defines to show the distribution of model predictions and observed
-data.</p>
+demonstrate different visual representations <code>vmc</code> defines to
+show the distribution of model predictions and observed data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mpg_model</span></span>
 <span><span class="co">#&gt;  Family: gaussian </span></span>
@@ -186,14 +156,14 @@ data.</p>
 <div class="section level2">
 <h2 id="visualizing-uncertainty-using-areaextent">Visualizing uncertainty using area/extent<a class="anchor" aria-label="anchor" href="#visualizing-uncertainty-using-areaextent"></a>
 </h2>
-<p><code>modelcheck</code> supports a list of visual representations to
-encode uncertainty using area/extent variable: -
-<code><a href="../reference/mc_model_slab.html">mc_model_slab()</a></code> (<code><a href="../reference/mc_model_slab.html">mc_obs_slab()</a></code>) -
-<code><a href="../reference/mc_model_ccdf.html">mc_model_ccdf()</a></code> (<code><a href="../reference/mc_model_ccdf.html">mc_obs_ccdf()</a></code>) -
-<code><a href="../reference/mc_model_cdf.html">mc_model_cdf()</a></code> (<code><a href="../reference/mc_model_cdf.html">mc_obs_cdf()</a></code>) -
-<code><a href="../reference/mc_model_eye.html">mc_model_eye()</a></code> (<code><a href="../reference/mc_model_eye.html">mc_obs_eye()</a></code>) -
-<code><a href="../reference/mc_model_halfeye.html">mc_model_halfeye()</a></code> (<code><a href="../reference/mc_model_halfeye.html">mc_obs_halfeye()</a></code>) -
-<code>mc_model_histogram()</code> (<code>mc_obs_histogram()</code>) -
+<p><code>vmc</code> supports a list of visual representations to encode
+uncertainty using area/extent variable: - <code><a href="../reference/mc_model_slab.html">mc_model_slab()</a></code>
+(<code><a href="../reference/mc_model_slab.html">mc_obs_slab()</a></code>) - <code><a href="../reference/mc_model_ccdf.html">mc_model_ccdf()</a></code>
+(<code><a href="../reference/mc_model_ccdf.html">mc_obs_ccdf()</a></code>) - <code><a href="../reference/mc_model_cdf.html">mc_model_cdf()</a></code>
+(<code><a href="../reference/mc_model_cdf.html">mc_obs_cdf()</a></code>) - <code><a href="../reference/mc_model_eye.html">mc_model_eye()</a></code>
+(<code><a href="../reference/mc_model_eye.html">mc_obs_eye()</a></code>) - <code><a href="../reference/mc_model_halfeye.html">mc_model_halfeye()</a></code>
+(<code><a href="../reference/mc_model_halfeye.html">mc_obs_halfeye()</a></code>) - <code>mc_model_histogram()</code>
+(<code>mc_obs_histogram()</code>) -
 <code><a href="../reference/mc_model_pointinterval.html">mc_model_pointinterval()</a></code>
 (<code><a href="../reference/mc_model_pointinterval.html">mc_obs_pointinterval()</a></code>) - <code><a href="../reference/mc_model_interval.html">mc_model_interval()</a></code>
 (<code><a href="../reference/mc_model_interval.html">mc_obs_interval()</a></code>) - <code>mc_model_lineribbbon()</code>
@@ -235,8 +205,8 @@ encode uncertainty using area/extent variable: -
 <div class="section level2">
 <h2 id="visualizing-uncertainty-using-visual-variables">Visualizing uncertainty using visual variables<a class="anchor" aria-label="anchor" href="#visualizing-uncertainty-using-visual-variables"></a>
 </h2>
-<p><code>modelcheck</code> supports a list of visual representation that
-encode uncertainty using diffferent visual variables: -
+<p><code>vmc</code> supports a list of visual representation that encode
+uncertainty using diffferent visual variables: -
 <code><a href="../reference/mc_model_gradientinterval.html">mc_model_gradientinterval()</a></code>
 (<code><a href="../reference/mc_model_gradientinterval.html">mc_obs_gradientinterval()</a></code>) -
 <code><a href="../reference/mc_model_interval.html">mc_model_interval()</a></code> (<code><a href="../reference/mc_model_interval.html">mc_obs_interval()</a></code>) -
@@ -250,19 +220,7 @@ encode uncertainty using diffferent visual variables: -
 <span>  <span class="fu"><a href="../reference/mc_model_gradientinterval.html">mc_model_gradientinterval</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_model_point.html">mc_obs_point</a></span><span class="op">(</span>shape <span class="op">=</span> <span class="st">'|'</span>, size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="../reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">vs</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `fill_type = "gradient"` is not supported by the current graphics device, which</span></span>
-<span><span class="co">#&gt; is `"agg_png"`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Falling back to `fill_type = "segments"`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> If you believe your current graphics device <span style="font-style: italic;">does</span> support `fill_type =</span></span>
-<span><span class="co">#&gt;   "gradient"` but auto-detection failed, try setting `fill_type = "gradient"`</span></span>
-<span><span class="co">#&gt;   explicitly. If this causes the gradient to display correctly, then this</span></span>
-<span><span class="co">#&gt;   warning is likely a false positive caused by the graphics device failing to</span></span>
-<span><span class="co">#&gt;   properly report its support for the `"LinearGradient"` pattern via</span></span>
-<span><span class="co">#&gt;   `grDevices::dev.capabilities()`. Consider reporting a bug to the author of</span></span>
-<span><span class="co">#&gt;   the graphics device.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> See the documentation for `fill_type` in `ggdist::geom_slabinterval()` for</span></span>
-<span><span class="co">#&gt;   more information.</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="uncertainty-representation_files/figure-html/gradient%20x-1.png" width="700"></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mpg_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -271,40 +229,15 @@ encode uncertainty using diffferent visual variables: -
 <span>  <span class="fu"><a href="../reference/mc_model_gradientinterval.html">mc_obs_gradientinterval</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="../reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">vs</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_layout_juxtaposition.html">mc_layout_nested</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `fill_type = "gradient"` is not supported by the current graphics device, which</span></span>
-<span><span class="co">#&gt; is `"agg_png"`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Falling back to `fill_type = "segments"`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> If you believe your current graphics device <span style="font-style: italic;">does</span> support `fill_type =</span></span>
-<span><span class="co">#&gt;   "gradient"` but auto-detection failed, try setting `fill_type = "gradient"`</span></span>
-<span><span class="co">#&gt;   explicitly. If this causes the gradient to display correctly, then this</span></span>
-<span><span class="co">#&gt;   warning is likely a false positive caused by the graphics device failing to</span></span>
-<span><span class="co">#&gt;   properly report its support for the `"LinearGradient"` pattern via</span></span>
-<span><span class="co">#&gt;   `grDevices::dev.capabilities()`. Consider reporting a bug to the author of</span></span>
-<span><span class="co">#&gt;   the graphics device.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> See the documentation for `fill_type` in `ggdist::geom_slabinterval()` for</span></span>
-<span><span class="co">#&gt;   more information.</span></span>
-<span><span class="co">#&gt; `fill_type = "gradient"` is not supported by the current graphics device, which</span></span>
-<span><span class="co">#&gt; is `"agg_png"`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Falling back to `fill_type = "segments"`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> If you believe your current graphics device <span style="font-style: italic;">does</span> support `fill_type =</span></span>
-<span><span class="co">#&gt;   "gradient"` but auto-detection failed, try setting `fill_type = "gradient"`</span></span>
-<span><span class="co">#&gt;   explicitly. If this causes the gradient to display correctly, then this</span></span>
-<span><span class="co">#&gt;   warning is likely a false positive caused by the graphics device failing to</span></span>
-<span><span class="co">#&gt;   properly report its support for the `"LinearGradient"` pattern via</span></span>
-<span><span class="co">#&gt;   `grDevices::dev.capabilities()`. Consider reporting a bug to the author of</span></span>
-<span><span class="co">#&gt;   the graphics device.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> See the documentation for `fill_type` in `ggdist::geom_slabinterval()` for</span></span>
-<span><span class="co">#&gt;   more information.</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="uncertainty-representation_files/figure-html/gradient%20x%20gradient-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="visualizing-uncertainty-using-countable-icons">Visualizing uncertainty using countable icons<a class="anchor" aria-label="anchor" href="#visualizing-uncertainty-using-countable-icons"></a>
 </h2>
-<p><code>modelcheck</code> supports a list of visual representations
-that encode uncertainty using countable icons: -
-<code><a href="../reference/mc_model_dots.html">mc_model_dots()</a></code> (<code><a href="../reference/mc_model_dots.html">mc_obs_dots()</a></code>) -
-<code><a href="../reference/mc_model_dotsinterval.html">mc_model_dotsinterval()</a></code>
+<p><code>vmc</code> supports a list of visual representations that
+encode uncertainty using countable icons: - <code><a href="../reference/mc_model_dots.html">mc_model_dots()</a></code>
+(<code><a href="../reference/mc_model_dots.html">mc_obs_dots()</a></code>) - <code><a href="../reference/mc_model_dotsinterval.html">mc_model_dotsinterval()</a></code>
 (<code><a href="../reference/mc_model_dotsinterval.html">mc_obs_dotsinterval()</a></code>) - <code><a href="../reference/mc_model_point.html">mc_model_point()</a></code>
 (<code><a href="../reference/mc_model_point.html">mc_obs_point()</a></code>) - <code><a href="../reference/mc_model_line.html">mc_model_line()</a></code>
 (<code><a href="../reference/mc_model_line.html">mc_obs_line()</a></code>)</p>
@@ -327,10 +260,10 @@ that encode uncertainty using countable icons: -
 <p><img src="uncertainty-representation_files/figure-html/dots%20x%20raincloud-1.png" width="700"></p>
 </div>
 <div class="section level2">
-<h2 id="customize-the-visual-representation-using-modelcheck">Customize the visual representation using modelcheck<a class="anchor" aria-label="anchor" href="#customize-the-visual-representation-using-modelcheck"></a>
+<h2 id="customize-the-visual-representation">Customize the visual representation<a class="anchor" aria-label="anchor" href="#customize-the-visual-representation"></a>
 </h2>
 <p>If your visual representation is not supported directly by
-<code>modelcheck</code>, you can use <code><a href="../reference/mc_model_custom.html">mc_model_custom()</a></code> and
+<code>vmc</code>, you can use <code><a href="../reference/mc_model_custom.html">mc_model_custom()</a></code> and
 <code><a href="../reference/mc_model_custom.html">mc_obs_custom()</a></code> to pass in a geom or stat function to
 specify the visual representation of model predictions and observed
 data. For example, we could use
@@ -345,6 +278,70 @@ a swarm plot for observed data.</p>
 <span>  <span class="fu"><a href="../reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">vs</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="uncertainty-representation_files/figure-html/customized%20plot-1.png" width="700"></p>
+</div>
+<div class="section level2">
+<h2 id="grouping-samples">Grouping samples<a class="anchor" aria-label="anchor" href="#grouping-samples"></a>
+</h2>
+<p><code>vmc</code> supports to show the uncertainty information
+conditioned on two sources, samples and input data points. Take the slab
+representation as example. In the beginning example, we are collapsing
+all the samples based on all the input data points together to form one
+distribution.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mpg_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_model_slab.html">mc_model_slab</a></span><span class="op">(</span>group_sample <span class="op">=</span> <span class="st">"collapse"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_model_slab.html">mc_obs_slab</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_layout_juxtaposition.html">mc_layout_juxtaposition</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="uncertainty-representation_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p>You can also choose to group by the sample when visualizing by slabs
+(i.e., using individual slabs for each sample).</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mpg_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_model_slab.html">mc_model_slab</a></span><span class="op">(</span>group_sample <span class="op">=</span> <span class="st">"group"</span>, alpha <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_model_slab.html">mc_obs_slab</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_layout_juxtaposition.html">mc_layout_juxtaposition</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="uncertainty-representation_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p>Or you can choose to group on input data point.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mpg_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_model_slab.html">mc_model_slab</a></span><span class="op">(</span>group_sample <span class="op">=</span> <span class="st">"group"</span>, group_on <span class="op">=</span> <span class="st">"row"</span>, alpha <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_model_slab.html">mc_obs_slab</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_layout_juxtaposition.html">mc_layout_juxtaposition</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="uncertainty-representation_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p>Instead of overlapping all samples or rows together, you can choose
+to use HOPs to show them each in one time frame.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mpg_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span>ndraws <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_model_slab.html">mc_model_slab</a></span><span class="op">(</span>group_sample <span class="op">=</span> <span class="st">"hops"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_model_slab.html">mc_obs_slab</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; nframes and fps adjusted to match transition</span></span></code></pre></div>
+<p><img src="modelcheck-uncert_hops_1.gif"></p>
+<p>You can also aggregate the model predictions from samples or input
+data points by functions.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mpg_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_model_slab.html">mc_model_slab</a></span><span class="op">(</span>group_sample <span class="op">=</span> <span class="va">mean</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_model_slab.html">mc_obs_slab</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="uncertainty-representation_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mpg_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_observation_transformation.html">mc_observation_transformation</a></span><span class="op">(</span><span class="va">mean</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_model_slab.html">mc_model_slab</a></span><span class="op">(</span>group_sample <span class="op">=</span> <span class="va">mean</span>, group_on <span class="op">=</span> <span class="st">"row"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_model_reference_line.html">mc_obs_reference_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="uncertainty-representation_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 </div>
   </div>
 

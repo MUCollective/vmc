@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Check your model with data observations • modelcheck</title>
+<title>Check your model with data observations • vmc</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/lumen/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -32,15 +32,15 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">modelcheck</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.0</span>
+        <a class="navbar-link" href="index.html">vmc</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="articles/modelcheck.html">Get started</a>
+  <a href="articles/vmc.html">Get started</a>
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
@@ -53,13 +53,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/comparative-layout.html">Comparing model predictions and observed data using modelcheck</a>
+      <a href="articles/comparative-layout.html">Comparing model predictions and observed data using vmc</a>
     </li>
     <li>
-      <a href="articles/distribution.html">Extracting arbitrary distributions from a model using modelcheck</a>
+      <a href="articles/distribution.html">Extracting arbitrary distributions from the model using vmc</a>
     </li>
     <li>
-      <a href="articles/uncertainty-representation.html">Specifying visual representations for model predictions and observed data using modelcheck</a>
+      <a href="articles/uncertainty-representation.html">Specifying visual representations for model predictions and observed data using vmc</a>
     </li>
   </ul>
 </li>
@@ -77,77 +77,27 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="modelcheck-an-r-package-for-generating-model-check-visualizations">Modelcheck: An R package for generating model check visualizations<a class="anchor" aria-label="anchor" href="#modelcheck-an-r-package-for-generating-model-check-visualizations"></a>
+<div class="page-header"><h1 id="vmc-an-r-package-for-generating-model-check-visualizations">VMC: An R package for generating model check visualizations<a class="anchor" aria-label="anchor" href="#vmc-an-r-package-for-generating-model-check-visualizations"></a>
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p><code>modelcheck</code> is a visualization grammar designed to make it easy to generate informative visualizations for model checking. The <code>modelcheck</code> grammar assumes a basic workflow for creating model checks. First, the model predictions or model features need to be extracted as a <strong>distribution</strong> of data from a model object, i.e. data tidying. Then the user must specify an <strong>uncertainty representation</strong> to describe the selected distribution(s). They must also specify the presentation of the observed data. The user can choose among multiple <strong>comparative layouts</strong> to structure their comparison between observed data and model predictions.</p>
+<p><code>vmc</code> is a visualization grammar designed to make it easy to generate informative visualizations for model checking. The <code>vmc</code> grammar assumes a basic workflow for creating model checks. First, the model predictions or model features need to be extracted as a <strong>distribution</strong> of data from a model object, i.e. data tidying. Then the user must specify an <strong>uncertainty representation</strong> to describe the selected distribution(s). They must also specify the presentation of the observed data. The user can choose among multiple <strong>comparative layouts</strong> to structure their comparison between observed data and model predictions.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of modelcheck from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of vmc from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"MUCollective/modelcheck"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"MUCollective/vmc"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <div class="section level3">
-<h3 id="background-model">Background: model<a class="anchor" aria-label="anchor" href="#background-model"></a>
+<h3 id="set-up">Set up<a class="anchor" aria-label="anchor" href="#set-up"></a>
 </h3>
-<p>We use a simple model to show the usage of <code>modelcheck</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms" class="external-link">brms</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: Rcpp</span></span>
-<span><span class="co">#&gt; Loading 'brms' package (version 2.19.0). Useful instructions</span></span>
-<span><span class="co">#&gt; can be found by typing help('brms'). A more detailed introduction</span></span>
-<span><span class="co">#&gt; to the package is available through vignette('brms_overview').</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'brms'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     ar</span></span>
-<span><span class="va">model</span> <span class="op">=</span> <span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brm.html" class="external-link">brm</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brmsformula.html" class="external-link">bf</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">disp</span> <span class="op">+</span> <span class="va">vs</span> <span class="op">+</span> <span class="va">am</span>,</span>
-<span>     <span class="va">sigma</span> <span class="op">~</span> <span class="va">vs</span> <span class="op">+</span> <span class="va">am</span><span class="op">)</span>,</span>
-<span>  init <span class="op">=</span> <span class="st">"0"</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">mtcars</span>,</span>
-<span>  iter <span class="op">=</span> <span class="fl">6000</span>,</span>
-<span>  </span>
-<span>  file <span class="op">=</span> <span class="st">"models/example_model.rds"</span> <span class="co"># cache model (can be removed)  </span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p>The results…</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">model</span></span>
-<span><span class="co">#&gt;  Family: gaussian </span></span>
-<span><span class="co">#&gt;   Links: mu = identity; sigma = log </span></span>
-<span><span class="co">#&gt; Formula: mpg ~ disp + vs + am </span></span>
-<span><span class="co">#&gt;          sigma ~ vs + am</span></span>
-<span><span class="co">#&gt;    Data: mtcars (Number of observations: 32) </span></span>
-<span><span class="co">#&gt;   Draws: 4 chains, each with iter = 6000; warmup = 3000; thin = 1;</span></span>
-<span><span class="co">#&gt;          total post-warmup draws = 12000</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Population-Level Effects: </span></span>
-<span><span class="co">#&gt;                 Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS</span></span>
-<span><span class="co">#&gt; Intercept          23.25      2.87    17.57    28.92 1.00     6198     6420</span></span>
-<span><span class="co">#&gt; sigma_Intercept     0.87      0.20     0.50     1.30 1.00    10336     7471</span></span>
-<span><span class="co">#&gt; disp               -0.02      0.01    -0.04    -0.01 1.00     6404     6672</span></span>
-<span><span class="co">#&gt; vs                  2.74      1.74    -0.73     6.14 1.00     6770     6991</span></span>
-<span><span class="co">#&gt; am                  2.74      1.81    -0.76     6.36 1.00     6100     7119</span></span>
-<span><span class="co">#&gt; sigma_vs            0.27      0.34    -0.38     0.95 1.00     6544     7801</span></span>
-<span><span class="co">#&gt; sigma_am            0.34      0.36    -0.38     1.03 1.00     6925     7174</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
-<span><span class="co">#&gt; and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
-<span><span class="co">#&gt; scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
-</h3>
-<p>You can create a default model check to do a posterior predictive check by using <code><a href="reference/mcplot.html">mcplot()</a></code> (using <code><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip()</a></code> to flip the response variable to the x-axis).</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mucollective.github.io/modelcheck/">modelcheck</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mucollective.github.io/vmc/" class="external-link">vmc</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -158,59 +108,293 @@
 <span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
-<span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
-<p>To control how the distribution is drawn from model, you can add a <code><a href="reference/mc_distribution.html">mc_distribution()</a></code> to <code><a href="reference/mcplot.html">mcplot()</a></code>. For example, there are two push forward transformations <code>mu</code> and <code>sigma</code> besides the predictive distribution in the Gaussian example model we are using. Here, we are drawing the posterior distribution of <code>mu</code> from the Gaussian model.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span><span class="st">"mu"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
-<p>To add marginal effects check, you can use <code><a href="reference/mc_condition_on.html">mc_condition_on()</a></code> to add an x-axis, row grid, and column grid.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span><span class="st">"mu"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
-<p>Or you can check the distribution of <code>sigma</code> in the model by specifying <code>mc_distribution("sigma")</code>. You may find, however, that the unit of observed data misaligned with the <code>sigma</code> distribution. You can add <code>observation_transform</code> to <code><a href="reference/mcplot.html">mcplot()</a></code> to transform the observed data to a comparable unit to <code>sigma</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sd_function</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">{</span><span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">vs</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>observation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">observation</span><span class="op">)</span><span class="op">)</span><span class="op">}</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/" class="external-link">palmerpenguins</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms" class="external-link">brms</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: Rcpp</span></span>
+<span><span class="co">#&gt; Loading 'brms' package (version 2.20.4). Useful instructions</span></span>
+<span><span class="co">#&gt; can be found by typing help('brms'). A more detailed introduction</span></span>
+<span><span class="co">#&gt; to the package is available through vignette('brms_overview').</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'brms'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     ar</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mjskay.github.io/ggdist/" class="external-link">ggdist</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'ggdist'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:brms':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     dstudent_t, pstudent_t, qstudent_t, rstudent_t</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mjskay.github.io/tidybayes/" class="external-link">tidybayes</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'tidybayes'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:brms':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     dstudent_t, pstudent_t, qstudent_t, rstudent_t</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wilkelab.org/cowplot/" class="external-link">cowplot</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://gganimate.com" class="external-link">gganimate</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span>observation_transform <span class="op">=</span> <span class="va">sd_function</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span><span class="st">"sigma"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">vs</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
-<p>For the model checks that have a continuous conditional variable, <code>modelcheck</code> implements uncertainty representations, e.g., line + ribbon plot and point + interval plot, that encode the uncertainty in the model and also reveal the trend of response variable over the conditional variable. For those model checks that have no conditional variable or have a discrete conditional variable, <code>modelcheck</code> implements a group of uncertainty representations, e.g., dots plot, eye plot, and gradient plot, that show the distribution of the model.</p>
-<p>You can use <code><a href="reference/mc_model_lineribbon.html">mc_model_lineribbon()</a></code> to use line + ribbon plot to check the trend of <code>mpg</code> with uncertainty encoded by ribbon.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html" class="external-link">theme_set</a></span><span class="op">(</span><span class="fu"><a href="http://mjskay.github.io/ggdist/reference/theme_ggdist.html" class="external-link">theme_tidybayes</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://wilkelab.org/cowplot/reference/panel_border.html" class="external-link">panel_border</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="model">Model<a class="anchor" aria-label="anchor" href="#model"></a>
+</h3>
+<p>First, we fit a beta regression model to predict the penguins’ bill ratio (i.e., bill depth / bill length) based on penguins’ flipper length.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">penguins</span> <span class="op">&lt;-</span> <span class="va">penguins</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/drop_na.html" class="external-link">drop_na</a></span><span class="op">(</span><span class="va">sex</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>is_gentoo <span class="op">=</span> <span class="va">species</span> <span class="op">==</span> <span class="st">"Gentoo"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>bill_ratio <span class="op">=</span> <span class="va">bill_depth_mm</span> <span class="op">/</span> <span class="va">bill_length_mm</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brm.html" class="external-link">brm</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brmsformula.html" class="external-link">bf</a></span><span class="op">(</span><span class="va">bill_ratio</span> <span class="op">~</span> <span class="va">flipper_length_mm</span>,</span>
+<span>     <span class="va">phi</span> <span class="op">~</span> <span class="va">flipper_length_mm</span><span class="op">)</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brmsfamily.html" class="external-link">Beta</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  init <span class="op">=</span> <span class="st">"0"</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">penguins</span>,</span>
+<span>  prior <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span>,</span>
+<span>            <span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brmsfamily.html" class="external-link">exponential</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"b"</span>, dpar <span class="op">=</span> <span class="st">"phi"</span>, lb <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  file <span class="op">=</span> <span class="st">"models/model.rds"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>The results…</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_beta</span></span>
+<span><span class="co">#&gt;  Family: beta </span></span>
+<span><span class="co">#&gt;   Links: mu = logit; phi = log </span></span>
+<span><span class="co">#&gt; Formula: bill_ratio ~ flipper_length_mm </span></span>
+<span><span class="co">#&gt;          phi ~ flipper_length_mm</span></span>
+<span><span class="co">#&gt;    Data: penguins (Number of observations: 333) </span></span>
+<span><span class="co">#&gt;   Draws: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;</span></span>
+<span><span class="co">#&gt;          total post-warmup draws = 4000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Population-Level Effects: </span></span>
+<span><span class="co">#&gt;                       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS</span></span>
+<span><span class="co">#&gt; Intercept                 3.06      0.16     2.75     3.37 1.00     4082</span></span>
+<span><span class="co">#&gt; phi_Intercept            -1.35      1.30    -3.93     1.22 1.00     1844</span></span>
+<span><span class="co">#&gt; flipper_length_mm        -0.02      0.00    -0.02    -0.02 1.00     4210</span></span>
+<span><span class="co">#&gt; phi_flipper_length_mm     0.03      0.01     0.02     0.04 1.00     1854</span></span>
+<span><span class="co">#&gt;                       Tail_ESS</span></span>
+<span><span class="co">#&gt; Intercept                 2918</span></span>
+<span><span class="co">#&gt; phi_Intercept             1479</span></span>
+<span><span class="co">#&gt; flipper_length_mm         2768</span></span>
+<span><span class="co">#&gt; phi_flipper_length_mm     1625</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
+<span><span class="co">#&gt; and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span><span class="co">#&gt; scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="check-on-the-shape-of-distrition">Check on the shape of distrition<a class="anchor" aria-label="anchor" href="#check-on-the-shape-of-distrition"></a>
+</h3>
+<p>You can start model checking by check the shape of the distribution of predicted bill ratio and observed bill ratio. Using <code>vmc</code>, you can create a posterior predictive check by only one <code><a href="reference/mcplot.html">mcplot()</a></code> (and also using <code><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip()</a></code> to flip the response variable to the x-axis).</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_beta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%"></p>
+<p>You can not only check on the shape of posterior predictive distribution, but also check on other posterior distributions generated by <code>model_beta</code> using the <code>mc_distribution</code> component. For example, there are two parameter <code>mu</code> and <code>phi</code> besides the response variable in the beta regression model we are using. Here, we are check on the posterior distribution of <code>mu</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_beta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span><span class="st">"mu"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_model_lineribbon.html">mc_model_lineribbon</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"> If conditional on a discrete variable, you can use <code>mc_model_dots</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span>observation_transform <span class="op">=</span> <span class="va">sd_function</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span><span class="st">"sigma"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_model_dots.html">mc_model_dots</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">vs</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"></p>
-<p><code><a href="reference/mcplot.html">mcplot()</a></code> puts the model predictions and data observations superposed by default. You can change that by using <code>mc_layout_*()</code>. Here we change the comparative layout into juxtaposition.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/mc_observation_transformation.html">mc_observation_transformation</a></span><span class="op">(</span><span class="va">mean</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_model_reference_line.html">mc_obs_reference_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="check-on-the-marginal-effects">Check on the marginal effects<a class="anchor" aria-label="anchor" href="#check-on-the-marginal-effects"></a>
+</h3>
+<p>You may find the misalignment between the shape of predictive distribution and observed distribution. You can scrutinize the misalignment further by checking on the marginal effects of the predictor using <code>mc_condition_on</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_beta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span><span class="st">"mu"</span>, ndraws <span class="op">=</span> <span class="fl">500</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/mc_model_lineribbon.html">mc_model_lineribbon</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span>ndraws <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">flipper_length_mm</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
+<p>To reveal the uncertainty information inside of the model predictions, you can use either HOPs or other uncertainty representations.</p>
+<p><code>vmc</code> supports HOPs as a method to group samples (see <code><a href="articles/uncertainty-representation.html">vignette("uncertainty-representation")</a></code>).</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_beta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span>ndraws <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_model_point.html">mc_model_point</a></span><span class="op">(</span>group_sample <span class="op">=</span> <span class="st">"hops"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">flipper_length_mm</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; nframes and fps adjusted to match transition</span></span></code></pre></div>
+<p><img src="modelcheck-readme_hops_1.gif"></p>
+<p>You may find that some of the points of model predictions and observed data are overlapped together, which may cause visual clutter. To fix this problem, you can change to another comparative layout using <code>mc_layout_*</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_beta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span>ndraws <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_model_point.html">mc_model_point</a></span><span class="op">(</span>group_sample <span class="op">=</span> <span class="st">"hops"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">flipper_length_mm</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="reference/mc_layout_juxtaposition.html">mc_layout_juxtaposition</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 17 rows containing missing values (`stat_slabinterval()`).</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-10-1.png" width="100%"></p>
+<span><span class="co">#&gt; nframes and fps adjusted to match transition</span></span>
+<span><span class="co">#&gt; # A tibble: 50 × 7</span></span>
+<span><span class="co">#&gt;    format width height colorspace matte filesize density</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt;  &lt;int&gt; &lt;chr&gt;      &lt;lgl&gt;    &lt;int&gt; &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt;  1 gif      800    400 sRGB       FALSE        0 28x28  </span></span>
+<span><span class="co">#&gt;  2 gif      800    400 sRGB       FALSE        0 28x28  </span></span>
+<span><span class="co">#&gt;  3 gif      800    400 sRGB       FALSE        0 28x28  </span></span>
+<span><span class="co">#&gt;  4 gif      800    400 sRGB       FALSE        0 28x28  </span></span>
+<span><span class="co">#&gt;  5 gif      800    400 sRGB       FALSE        0 28x28  </span></span>
+<span><span class="co">#&gt;  6 gif      800    400 sRGB       FALSE        0 28x28  </span></span>
+<span><span class="co">#&gt;  7 gif      800    400 sRGB       FALSE        0 28x28  </span></span>
+<span><span class="co">#&gt;  8 gif      800    400 sRGB       FALSE        0 28x28  </span></span>
+<span><span class="co">#&gt;  9 gif      800    400 sRGB       FALSE        0 28x28  </span></span>
+<span><span class="co">#&gt; 10 gif      800    400 sRGB       FALSE        0 28x28  </span></span>
+<span><span class="co">#&gt; # ℹ 40 more rows</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-11-1.gif" width="100%"></p>
+<p>Other uncertainty representations are supported by the visual representation components (<code>mc_model_*</code> and <code>mc_obs_*</code>).</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_beta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span>ndraws <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_model_lineribbon.html">mc_model_lineribbon</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">flipper_length_mm</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-12-1.png" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="facet-to-find-the-source-of-multimodal">Facet to find the source of multimodal<a class="anchor" aria-label="anchor" href="#facet-to-find-the-source-of-multimodal"></a>
+</h3>
+<p>You may find there seem to be some clusters among the points of observed bill ratio. To find the source of this multimodal, you can change the conditional variable to facet the model checking on rows or columns using <code>mc_condition_on</code>.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_beta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span>observation <span class="op">=</span> <span class="va">penguins</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span>ndraws <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_model_lineribbon.html">mc_model_lineribbon</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">flipper_length_mm</span><span class="op">)</span>,</span>
+<span>                  row <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">sex</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-13-1.png" width="100%"></p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_beta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span>observation <span class="op">=</span> <span class="va">penguins</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span>ndraws <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_model_lineribbon.html">mc_model_lineribbon</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">flipper_length_mm</span><span class="op">)</span>,</span>
+<span>                  row <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">island</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-14-1.png" width="100%"></p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_beta</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span>observation <span class="op">=</span> <span class="va">penguins</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span>ndraws <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_model_lineribbon.html">mc_model_lineribbon</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">flipper_length_mm</span><span class="op">)</span>,</span>
+<span>                  row <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">species</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-15-1.png" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="new-model">New model<a class="anchor" aria-label="anchor" href="#new-model"></a>
+</h3>
+<p>When faceting on the species of penguins, you can see the points of observed bill ratio are clustered into three groups. This finding can inform an update on the model to include species as an independent variable.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_species</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brm.html" class="external-link">brm</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brmsformula.html" class="external-link">bf</a></span><span class="op">(</span><span class="va">bill_ratio</span> <span class="op">~</span> <span class="va">flipper_length_mm</span> <span class="op">*</span> <span class="va">species</span>,</span>
+<span>     <span class="va">phi</span> <span class="op">~</span> <span class="va">flipper_length_mm</span> <span class="op">*</span> <span class="va">species</span><span class="op">)</span>,</span>
+<span>  family <span class="op">=</span> <span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/brmsfamily.html" class="external-link">Beta</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  init <span class="op">=</span> <span class="st">"0"</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">penguins</span>,</span>
+<span>  prior <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span>,</span>
+<span>            <span class="fu"><a href="https://paul-buerkner.github.io/brms/reference/set_prior.html" class="external-link">prior</a></span><span class="op">(</span><span class="fu">normal</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.15</span><span class="op">)</span>, class <span class="op">=</span> <span class="st">"b"</span>, dpar <span class="op">=</span> <span class="st">"phi"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  cores <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  iter <span class="op">=</span> <span class="fl">24000</span>,</span>
+<span>  warmup <span class="op">=</span> <span class="fl">14000</span>,</span>
+<span>  </span>
+<span>  file <span class="op">=</span> <span class="st">"models/model_species.rds"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>The result…</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_species</span></span>
+<span><span class="co">#&gt;  Family: beta </span></span>
+<span><span class="co">#&gt;   Links: mu = logit; phi = log </span></span>
+<span><span class="co">#&gt; Formula: bill_ratio ~ flipper_length_mm * species </span></span>
+<span><span class="co">#&gt;          phi ~ flipper_length_mm * species</span></span>
+<span><span class="co">#&gt;    Data: penguins (Number of observations: 333) </span></span>
+<span><span class="co">#&gt;   Draws: 4 chains, each with iter = 24000; warmup = 14000; thin = 1;</span></span>
+<span><span class="co">#&gt;          total post-warmup draws = 40000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Population-Level Effects: </span></span>
+<span><span class="co">#&gt;                                        Estimate Est.Error l-95% CI u-95% CI</span></span>
+<span><span class="co">#&gt; Intercept                                 -0.40      0.26    -0.91     0.12</span></span>
+<span><span class="co">#&gt; phi_Intercept                              7.76      2.29     3.25    12.24</span></span>
+<span><span class="co">#&gt; flipper_length_mm                          0.00      0.00    -0.00     0.00</span></span>
+<span><span class="co">#&gt; speciesChinstrap                          -0.13      0.32    -0.76     0.50</span></span>
+<span><span class="co">#&gt; speciesGentoo                             -0.45      0.31    -1.05     0.15</span></span>
+<span><span class="co">#&gt; flipper_length_mm:speciesChinstrap        -0.00      0.00    -0.00     0.00</span></span>
+<span><span class="co">#&gt; flipper_length_mm:speciesGentoo           -0.00      0.00    -0.00     0.00</span></span>
+<span><span class="co">#&gt; phi_flipper_length_mm                     -0.01      0.01    -0.04     0.01</span></span>
+<span><span class="co">#&gt; phi_speciesChinstrap                      -0.01      0.15    -0.31     0.28</span></span>
+<span><span class="co">#&gt; phi_speciesGentoo                          0.00      0.15    -0.29     0.30</span></span>
+<span><span class="co">#&gt; phi_flipper_length_mm:speciesChinstrap     0.01      0.00     0.00     0.01</span></span>
+<span><span class="co">#&gt; phi_flipper_length_mm:speciesGentoo        0.01      0.00     0.00     0.01</span></span>
+<span><span class="co">#&gt;                                        Rhat Bulk_ESS Tail_ESS</span></span>
+<span><span class="co">#&gt; Intercept                              1.00    21184    25569</span></span>
+<span><span class="co">#&gt; phi_Intercept                          1.00    30353    28724</span></span>
+<span><span class="co">#&gt; flipper_length_mm                      1.00    21186    25744</span></span>
+<span><span class="co">#&gt; speciesChinstrap                       1.00    21067    24050</span></span>
+<span><span class="co">#&gt; speciesGentoo                          1.00    21687    24792</span></span>
+<span><span class="co">#&gt; flipper_length_mm:speciesChinstrap     1.00    20879    23602</span></span>
+<span><span class="co">#&gt; flipper_length_mm:speciesGentoo        1.00    20853    23819</span></span>
+<span><span class="co">#&gt; phi_flipper_length_mm                  1.00    30039    28653</span></span>
+<span><span class="co">#&gt; phi_speciesChinstrap                   1.00    35917    28882</span></span>
+<span><span class="co">#&gt; phi_speciesGentoo                      1.00    36834    27541</span></span>
+<span><span class="co">#&gt; phi_flipper_length_mm:speciesChinstrap 1.00    38256    30833</span></span>
+<span><span class="co">#&gt; phi_flipper_length_mm:speciesGentoo    1.00    27289    27179</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS</span></span>
+<span><span class="co">#&gt; and Tail_ESS are effective sample size measures, and Rhat is the potential</span></span>
+<span><span class="co">#&gt; scale reduction factor on split chains (at convergence, Rhat = 1).</span></span></code></pre></div>
+<p>You can check on this new model on the marginal effects of flipper length and species in one plot by using <code>mc_condition_on</code>.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_species</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span>ndraws <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_model_lineribbon.html">mc_model_lineribbon</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">flipper_length_mm</span><span class="op">)</span>,</span>
+<span>                  color <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">species</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-18-1.png" width="100%"></p>
+<p>By this model checking, the new model is validated to capture the multimodal in the observed data. Then you can check more on the posterior distribution of the model conditioned on species using <code>vmc</code>.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_species</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_model_slab.html">mc_model_slab</a></span><span class="op">(</span>side <span class="op">=</span> <span class="st">"left"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_model_dots.html">mc_obs_dots</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">species</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-19-1.png" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="check-on-model-assumptions">Check on model assumptions<a class="anchor" aria-label="anchor" href="#check-on-model-assumptions"></a>
+</h3>
+<p>To check on some particular assumptions of the model, you can pick different mark types of the visual representation. For example, to check the calibration of the model, you can choose to use intervals to represent the model distribution.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_species</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_model_interval.html">mc_model_interval</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_model_interval.html">mc_obs_interval</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_layout_juxtaposition.html">mc_layout_nested</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-20-1.png" width="100%"></p>
+<p><code>vmc</code> also supports to check on other assumptions, like heteroskedasticity and the normality of residuals.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_species</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span>ndraws <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">flipper_length_mm</span><span class="op">)</span>,</span>
+<span>                  color <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_layout_juxtaposition.html">mc_layout_encoding</a></span><span class="op">(</span><span class="st">"residual"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-21-1.png" width="100%"></p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model_species</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span>ndraws <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_layout_juxtaposition.html">mc_layout_encoding</a></span><span class="op">(</span><span class="st">"qq"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_abline</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-22-1.png" width="100%"></p>
 </div>
 </div>
 </div>
@@ -229,7 +413,7 @@
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing modelcheck</a></li>
+<li><a href="authors.html#citation">Citing vmc</a></li>
 </ul>
 </div>
 
