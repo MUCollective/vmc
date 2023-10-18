@@ -65,6 +65,8 @@ reference:
   - mc_model_slab
   - mc_obs_tile
   - mc_model_tile
+  - mc_obs_reference_line
+  - mc_model_reference_line
 
 - title: Comparative layouts
   desc: >
