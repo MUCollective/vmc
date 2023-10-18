@@ -1,5 +1,5 @@
 ---
-title: "Comparing the model prediction and observed data using vmc"
+title: "Comparing model predictions and observed data using vmc"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Comparing the model prediction and observed data using vmc}
@@ -17,7 +17,11 @@ knitr::opts_chunk$set(
 
 # Introduction
 
+<<<<<<< HEAD
 This vignette describes how to use `vmc` package to specify the comparative layout that organizes the visual representations of model predictions and observed data into a layout that enhances the visual comparison. We developed `vmc` to support comparative layouts in three categories, juxtaposition, superposition, and explicit encoding. For a more general introduction to `vmc` and its use on a standard model check workflow, see `vignette("vmc")`.
+=======
+This vignette describes how to use the `vmc` package to specify a comparative layout that organizes the visual representation of model predictions and observed data into a layout to enhance visual comparison. We developed `vmc` to support comparative layouts of three types: juxtaposition, superposition, and explicit encoding. For a more general introduction to `vmc` and demonstration of its use in a standard model check workflow, see `vignette("vmc")`.
+>>>>>>> main
 
 # Setup
 
@@ -47,7 +51,11 @@ options(mc.cores = parallel::detectCores())
 
 # Model
 
+<<<<<<< HEAD
 We use the built-in model `mpg_model`, a `brmsfit` object fitted in Gaussian model family with push-forward transformations `mu` and `sigma`, to demonstrate different visual representations `vmc` defines to show the distributions in model and observed data. 
+=======
+We use the built-in model `mpg_model`, a `brmsfit` object fitted in Gaussian model family with checkable push-forward transformations `mu` and `sigma`, to demonstrate different visual representations that `vmc` defines to show the distributions of model predictions and observed data. 
+>>>>>>> main
 
 ```{r example_model}
 mpg_model
@@ -55,7 +63,7 @@ mpg_model
 
 # Juxtaposition
 
-Juxtaposition puts the visual representations of model prediction and observed data side by side. This comparative layout presents each object (visual representations for model prediction and observed data) separately, but also relies on the viewer's memory to make connection between objects. We could specify the juxtaposition layout for a model check by `mc_layout_juxtaposition()`.
+Juxtaposition puts the visual representations of model predictions and observed data side by side. This comparative layout presents each object (visual representation for model predictions and observed data) separately, but requires that the viewer scan the plots to relate them. We specify the juxtaposition layout for a model check by `mc_layout_juxtaposition()`.
 
 ```{r juxtaposition}
 mpg_model %>%
@@ -64,7 +72,7 @@ mpg_model %>%
   mc_gglayer(coord_flip())
 ```
 
-`vmc` also supports a variant of juxtaposition, nested juxtaposition, which could help to reduce the memory cost of the viewers by nested the juxtaposition layout in the plot when the model check has a discrete conditional variable. We could specify that by `mc_layout_nested()`.
+`vmc` also supports a variant of juxtaposition, nested juxtaposition, which helps reduce the amount of scanning required by viewers by nesting the juxtaposition layout in the plot when the model check has a discrete conditional variable. We specify this by `mc_layout_nested()`.
 
 ```{r nested juxtaposition}
 mpg_model %>%
@@ -76,7 +84,7 @@ mpg_model %>%
 
 # Superposition
 
-Superposition overlays the objects (visual representations for model prediction and observed data) and present the objects in the same coordinate system. `vmc` uses superposition as the default comparative layout if users don't specify a comparative layout.
+Superposition overlays the objects (visual representations for model predictions and observed data) and presents the objects in a single coordinate system. `vmc` uses superposition as the default comparative layout if users don't specify a comparative layout.
 
 ```{r superposition}
 mpg_model %>%
@@ -87,9 +95,11 @@ mpg_model %>%
 
 # Explicit encoding
 
-Explicit encoding directly encodes the connections between objects visually and uses computation to determine the comparison between model prediction and observed data. For example, residual plot computes the difference between model prediction and observed data to encode the comparison, and quantile-quantile (QQ) plot computes the quantile of the residual to encode the comparison.
+Explicit encoding directly encodes the connections between objects visually after calculating the difference between model predictions and observed data. For example, a residual plot presents the difference between the model predictions and observed data to encode the comparison about a central line encoding perfect prediction. A quantile-quantile (QQ) plot computes the quantiles of the residuals to encode the comparison. 
 
-Let's check the linearity of the model by drawing a residual plot conditional on response variable `mpg`, where we use two visual representations (`mc_model_lineribbon()` and `mc_model_point()`) for the model prediction to reveal the trend of residual while showing a set of raw data points.
+Explicit encoding can also explicitly enable the user to check a model feature but not depends on viewer's perception on the distribution of model prediction and observed data shown in raw coordinates of response variable and independent variables. For example, residual plot conditional on response variable enables to check linearity and QQ plot enables to check the normality of residuals.
+
+Let's check the linearity of the model by specifying a residual plot conditional on the response variable `mpg`, where we use two visual representations (`mc_model_lineribbon()` and `mc_model_point()`) for the model predictions to reveal the trend of residuals while also showing a set of raw data points.
 
 ```{r residual}
 mpg_model %>% 
@@ -101,7 +111,7 @@ mpg_model %>%
   mc_gglayer(geom_hline(yintercept = 0))
 ```
 
-Then let's check the normality of the residual by drawing a QQ plot. We could specify this easily by using `mc_layout_encoding(tranform = "qq")`.
+Next let's check the normality of the residuals by drawing a QQ plot. We could specify this easily by using `mc_layout_encoding(tranform = "qq")`.
 
 ```{r qq}
 mpg_model %>% 
@@ -113,7 +123,7 @@ mpg_model %>%
 
 ## Specify your own explicit encoding
 
-Explicit encoding is a layout that encodes the connections between model prediction and observed data visually and uses computation to facilitate the comparison. We could use `vmc` to specify a customized transformation function that computes the comparison. The transformation function should take an input as a data frame that is generated from the `newdata` data frame in `mc_distribution()` (if not specified, it's the data used to fit the model, e.g., you can get that by `insight::get_data(model)`) with additional columns: `.row`, `.draw`, `prediction`, and `observation` (if `newdata` has a column for the response variable). We could transform the input data frame to generate a new one that has the columns for the variable shown on y axis and x axis named as `y_axis` and `x_axis` (optional).
+We could use `vmc` to specify a customized transformation function that computes the comparison between model predictions and observed data. The transformation function should take as input a data frame that is generated from the `newdata` data frame in `mc_distribution()` (if not specified, it's the data used to fit the model, e.g., you can get that by `insight::get_data(model)`) with additional columns: `.row`, `.draw`, `prediction`, and `observation` (if `newdata` has a column for the response variable). We can transform the input data frame to generate a new one that has the columns for the variable shown on the y-axis and x-axis named as `y_axis` and `x_axis` (optional).
 
 Here is an example of a customized explicit encoding, where we want to check the variance of residuals. 
 

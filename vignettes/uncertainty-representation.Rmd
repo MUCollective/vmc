@@ -1,5 +1,5 @@
 ---
-title: "Visualizing the distribution of model prediction and observed data using vmc"
+title: "Specifying visual representations for model predictions and observed data using vmc"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Visualizing the distribution of model prediction and observed data using vmc}
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette describes how to use `vmc` package to specify the visual representations to describe the distribution of model prediction and observed data. We developed `vmc` to support visual representations in three categories, area/extent, visual variable, and countable icon, encoding the uncertainty using different cognitive variables.  For a more general introduction to `vmc` and its use on a standard model check workflow, see `vignette("vmc")`.
+This vignette describes how to use the `vmc` package to specify the visual representations used to describe the distribution of model predictions and observed data. We developed `vmc` to support visual representations of three types: area/extent, visual variable, and countable icon. For a more general introduction to `vmc` and its use on a standard model check workflow, see `vignette("vmc")`.
 
 # Setup
 
@@ -46,7 +46,7 @@ options(mc.cores = parallel::detectCores())
 
 # Model
 
-We use the built-in model `mpg_model`, a `brmsfit` object fitted in Gaussian model family with push-forward transformations `mu` and `sigma`, to demonstrate different visual representations `vmc` defines to show the distributions in model and observed data. 
+We use the built-in model `mpg_model`, a `brmsfit` object fitted in Gaussian model family with push-forward transformations `mu` and `sigma`, to demonstrate different visual representations `vmc` defines to show the distribution of model predictions and observed data. 
 
 
 ```{r example_model}
@@ -103,9 +103,9 @@ mpg_model %>%
   mc_condition_on(x = vars(disp))
 ```
 
-# Visualizing uncertainty using visual variable
+# Visualizing uncertainty using visual variables
 
-`vmc` supports a list of visual representations to encode uncertainty using visual variable: 
+`vmc` supports a list of visual representation that encode uncertainty using diffferent visual variables: 
 - `mc_model_gradientinterval()` (`mc_obs_gradientinterval()`)
 - `mc_model_interval()` (`mc_obs_interval()`)
 - `mc_model_lineribbbon()` (`mc_obs_lineribbon()`)
@@ -133,9 +133,9 @@ mpg_model %>%
   mc_gglayer(coord_flip())
 ```
 
-# Visualizing uncertainty using countable icon
+# Visualizing uncertainty using countable icons
 
-`vmc` supports a list of visual representations to encode uncertainty using countable icon: 
+`vmc` supports a list of visual representations that encode uncertainty using countable icons: 
 - `mc_model_dots()` (`mc_obs_dots()`)
 - `mc_model_dotsinterval()` (`mc_obs_dotsinterval()`)
 - `mc_model_point()` (`mc_obs_point()`)
@@ -163,7 +163,7 @@ mpg_model %>%
 
 # Customize the visual representation
 
-If your visual representation is not supported directly by `vmc`, you can use `mc_model_custom()` and `mc_obs_custom()` to pass in a geom or stat function to specify the visual representation for model prediction and observed data. For example, we could use `mc_model_custom(stat_boxplot)` to specify a box plot for model prediction and `mc_obs_custom(geom_swarm)` to specify a swarm plot for observed data.
+If your visual representation is not supported directly by `vmc`, you can use `mc_model_custom()` and `mc_obs_custom()` to pass in a geom or stat function to specify the visual representation of model predictions and observed data. For example, we could use `mc_model_custom(stat_boxplot)` to specify a box plot for model predictions and `mc_obs_custom(geom_swarm)` to specify a swarm plot for observed data.
 
 ```{r customized plot}
 mpg_model %>%

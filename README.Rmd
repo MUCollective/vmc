@@ -154,6 +154,7 @@ model_beta %>%
 
 You may find there seem to be some clusters among the points of observed bill ratio. To find the source of this multimodal, you can change the conditional variable to facet the model checking on rows or columns using `mc_condition_on`.
 
+
 ```{r}
 model_beta %>%
   mcplot(observation = penguins) +
@@ -163,6 +164,7 @@ model_beta %>%
                   row = vars(sex))
 ```
 
+
 ```{r}
 model_beta %>%
   mcplot(observation = penguins) +
@@ -171,6 +173,7 @@ model_beta %>%
   mc_condition_on(x = vars(flipper_length_mm),
                   row = vars(island))
 ```
+
 
 ```{r}
 model_beta %>%

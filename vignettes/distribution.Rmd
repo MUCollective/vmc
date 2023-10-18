@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette describes how to use `vmc` package to define extracting a data frame to show in model checks (e.g., tidy data frames) from arbitrary distributions that directly describes the predictions (e.g., posterior predictive distribution) or indirectly describes the prediction by being transformed (e.g., model variables like `mu` and `sigma` in Gaussian family models).  For a more general introduction to `vmc` and its use on a standard model check workflow, see `vignette("vmc")`.
+This vignette describes how to use the `vmc` package to define how to extract a data frame to use in model checks (e.g., tidy data frame) from arbitrary distributions that directly describe the model predictions (e.g., posterior predictive distribution) or indirectly describe the predictions via push-forward transformations (e.g., model variables like `mu` and `sigma` in Gaussian family models).  For a more general introduction to `vmc` and its use on a standard model check workflow, see `vignette("vmc")`.
 
 # Setup
 
@@ -49,7 +49,7 @@ options(mc.cores = parallel::detectCores())
 
 `vmc` package uses the extraction functions from `tidybayes` package, which can work for the Bayesian models supporting fit and prediction, such as `brms::brm()` models and [`rstanarm``](https://mc-stan.org/rstanarm/reference/rstanarm-package.html) models. For a full list of supported models by `tidybayes` extraction functions, see [`tidybayes::tidybayes-models`](http://mjskay.github.io/tidybayes/reference/tidybayes-models.html).
 
-We go through this section by a built-in model `mpg_model`, a `brmsfit` object fitted in Gaussian model family with push-forward transformations `mu` and `sigma`. The usage of other models is the same with it as long as they are supported by the extraction functions from `tidybayes`.
+We go through this section using a built-in model `mpg_model`, a `brmsfit` object fitted in the Gaussian model family with push-forward transformations `mu` and `sigma`. The usage of other models is the same as long as they are supported by the extraction functions from `tidybayes`.
 
 ```{r example_model}
 mpg_model
@@ -74,7 +74,7 @@ mpg_model %>%
 
 ## Push-forward transformations
 
-Only checking the predictive distributions might not fulfill all the purposes of model check. Imagine a scenario where the model designer finds a misalignment between model prediction and observed data. Then they might want to know more details about which part of the model leads it to behave different from the observed data. For a Bayesian model, they can access those quantities by extracting push-forward transformations. For example, when they find a mismatched pattern in a Gaussian predictive model, they can check whether the mean of the model mismatches, the variance of the model mismatches, or they both mismatches by checking the `mu` push-forward transformation and the `sigma` push-forward transformation separately. After finding which part is wrong, they can correct that part in the formula of the model or change the prior to make them align with observed data.
+Only checking the predictive distributions might not fulfill all the purposes of model check. Imagine a scenario where the model designer identifies misalignment between the model predictions and observed data. This may lead them to want to know more details about which part of the model leads it to behave differently from the observed data. For a Bayesian model, they can access those quantities by extracting push-forward transformations. For example, when they find a mismatched pattern in a Gaussian predictive model, they can check whether the mean of the model mismatches, the variance of the model mismatches, or whether both mismatch by checking the `mu` push-forward transformation and the `sigma` push-forward transformation separately. After identifying which part is more responsible for they discrepancy, they can correct that part in the formula of the model or change the prior to better align predictions with the observed data.
 
 ```{r brms mu}
 mpg_model %>%
@@ -83,7 +83,7 @@ mpg_model %>%
   mc_gglayer(coord_flip())
 ```
 
-Some model variables have a different unit than the observation of response variable, such as `sigma` in a Gaussian model, which will make them incomparable. In that case, we could add a transform function for the observed data to make them in the same unit. For example, the `sigma` push-forward transformation describes the variance of the observed data, so we could transform the observed data by `sd()`.
+Some model variables have a different unit than the observations of the response variable, such as `sigma` in a Gaussian model, which will make them incomparable. In that case, we could add a transform function for the observed data to bring them into the same unit. For example, the `sigma` push-forward transformation describes the variance of the observed data, so we could transform the observed data using `sd()`.
 
 ```{r brms sigma}
 mpg_model %>%
@@ -93,11 +93,11 @@ mpg_model %>%
   mc_gglayer(coord_flip())
 ```
 
-Note that we group the observation by `vs` and `am` before transforming it by `sd()` because the model's sigma has two predictors `vs` and `am`, but you can also group them by other variables or even don't group them (which will make the observation as a single value).
+Note that we group the observation by `vs` and `am` before transforming by `sd()` because the model's sigma has two predictors `vs` and `am`. However you can also group them by other variables or even not group them (which will make the observation a single value).
 
 ## Distributions predicting on new data set
 
-In model check, we may want to generate the model's output on a new data but not just replicate the output on the data that is used to fit the model. For example, we may want to use `modelr::data_grid()` to generate a grid describing the predictors we want and then let the model predict on it.
+In a model check, we may want to generate the model's prediction on a new data set, rather than just replicating the output on the data that is used to fit the model. For example, we may want to use `modelr::data_grid()` to generate a grid describing the predictors we want and then let the model predict on it.
 
 ```{r brms new data}
 mpg_model %>%
@@ -124,7 +124,7 @@ mpg_model %>%
 
 # Frequentist models
 
-For the models that are not supported by extract functions in `tidybayes`, `vmc` uses `insight::get_predicted()` to extract the distributions of prediction and push-forward transformations. See a full list of the model supported by `insight` by `insight::supported_models()`. We could choose to show the predictive distributions, link-scale distributions, and expectation distribution (the distribution of the expectation of the predictions) when defining `mc_distribution()`.
+For the models that are not supported by extract functions in `tidybayes`, `vmc` uses `insight::get_predicted()` to extract the distributions of predictions and push-forward transformations. See a full list of the model types supported by `insight` by `insight::supported_models()`. We could choose these to show the predictive distributions, link-scale distributions, and the expectation distribution (the distribution of the expectation of the predictions) when defining `mc_distribution()`.
 
 We go through this section to show how to generate model checks using `vmc` for an example general regression model that is fitted using `glm(family = "Gamma")` with a push-forward transformation on the `inverse` scale.
 
@@ -135,7 +135,7 @@ glm_model
 
 ## Predictive distribution
 
-Similar with Bayesian models, `mcplot()` generates predictive distribution from the model by default if no distribution is specified.
+Similar to Bayesian models, `mcplot()` generates a predictive distribution from the model by default if no distribution is specified.
 
 ```{r non bayesian predictive}
 glm_model %>%
@@ -145,7 +145,7 @@ glm_model %>%
 
 ## Push-forward transformations
 
-The Gamma family in `glm` links the response variable by `inverse` by default. Like `sigma` push forward transformation in the example Bayesian model, we could transform the observed data into a scale that is comparable with the `inverse` link in this model. 
+The Gamma family in `glm` links the response variable using `inverse` by default. Like the `sigma` push forward transformation in the example Bayesian model, we could transform the observed data into a scale that is comparable with the `inverse` link in this model. 
 
 ```{r non bayesian link}
 glm_model %>% 
@@ -157,7 +157,7 @@ glm_model %>%
 
 ## Distributions predicting on new data set
 
-We could also specify a new data set to be used to generate distributions for non Bayesian models.
+We could also specify a new data set to be used to generate distributions for non-Bayesian models.
 
 ```{r non bayesian new data}
 glm_model %>%
