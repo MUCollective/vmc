@@ -1,8 +1,8 @@
 ---
-title: "Extracting arbitrary distributions from a model using modelcheck"
+title: "Extracting arbitrary distributions from the model using vmc"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Using modelcheck to describe arbitrary distributions from the model}
+  %\VignetteIndexEntry{Using vmc to describe arbitrary distributions from the model}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,16 +16,16 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette describes how to use the `modelcheck` package to define how to extract a data frame to use in model checks (e.g., tidy data frame) from arbitrary distributions that directly describe the model predictions (e.g., posterior predictive distribution) or indirectly describe the predictions via push-forward transformations (e.g., model variables like `mu` and `sigma` in Gaussian family models).  For a more general introduction to `modelcheck` and its use on a standard model check workflow, see `vignette("modelcheck")`.
+This vignette describes how to use the `vmc` package to define how to extract a data frame to use in model checks (e.g., tidy data frame) from arbitrary distributions that directly describe the model predictions (e.g., posterior predictive distribution) or indirectly describe the predictions via push-forward transformations (e.g., model variables like `mu` and `sigma` in Gaussian family models).  For a more general introduction to `vmc` and its use on a standard model check workflow, see `vignette("vmc")`.
 
 # Setup
 
 The following libraries are required to run this vignette:
 
-```{r setup}
+```{r setup, message = FALSE, warning = FALSE}
 library(dplyr)
 library(purrr)
-library(modelcheck)
+library(vmc)
 library(ggplot2)
 library(ggdist)
 library(cowplot)
@@ -47,7 +47,7 @@ options(mc.cores = parallel::detectCores())
 
 # Bayesian models
 
-`modelcheck` package uses the extraction functions from the `tidybayes` package, which support fitting and prediction with Bayesian models, such as `brms::brm()` models and [`rstanarm``](https://mc-stan.org/rstanarm/reference/rstanarm-package.html) models. For a full list of supported models by `tidybayes` extraction functions, see [`tidybayes::tidybayes-models`](http://mjskay.github.io/tidybayes/reference/tidybayes-models.html).
+`vmc` package uses the extraction functions from `tidybayes` package, which can work for the Bayesian models supporting fit and prediction, such as `brms::brm()` models and [`rstanarm``](https://mc-stan.org/rstanarm/reference/rstanarm-package.html) models. For a full list of supported models by `tidybayes` extraction functions, see [`tidybayes::tidybayes-models`](http://mjskay.github.io/tidybayes/reference/tidybayes-models.html).
 
 We go through this section using a built-in model `mpg_model`, a `brmsfit` object fitted in the Gaussian model family with push-forward transformations `mu` and `sigma`. The usage of other models is the same as long as they are supported by the extraction functions from `tidybayes`.
 
@@ -57,14 +57,14 @@ mpg_model
 
 ## Predictive distribution
 
-Now we have the data ready for doing a model check. We could use a single `mcplot()` statement to generate a density plot for predictive distributions, where `modelcheck` uses `tidybayes::predicted_draw()` to extract tidy data frames from the model and then compares it with the observed data that uses to fit the model.
+Now we have the data ready for doing model check. We could use a single `mcplot()` statement to generate a density plot for predictive distributions, where `vmc` uses `tidybayes::predicted_draw()` to extract tidy data frames from the model and then compares it with the observed data that uses to fit the model.
 
 ```{r non flip brms predictive}
 mpg_model %>%
   mcplot()
 ```
 
-`modelcheck` puts the response variable on the y-axis by default. We could use `ggplot2::coord_flip()` to flip the axes.
+`vmc` puts the response variable on the y axis by default. We could use `ggplot2::coord_flip()` to flip the axes.
 
 ```{r brms predictive}
 mpg_model %>%
@@ -87,11 +87,8 @@ Some model variables have a different unit than the observations of the response
 
 ```{r brms sigma}
 mpg_model %>%
-  mcplot(observation_transform = function(df) {
-    df %>%
-      group_by(vs, am) %>%
-      mutate(observation = sd(observation))
-      }) +
+  mcplot() +
+  mc_observation_transformation(sd, vars(vs, am)) +
   mc_distribution("sigma") +
   mc_gglayer(coord_flip())
 ```
@@ -119,20 +116,17 @@ mpg_model %>%
 
 ```{r brms new data sigma}
 mpg_model %>%
-  mcplot(observation_transform = function(df) {
-    df %>%
-      group_by(vs, am) %>%
-      mutate(observation = sd(observation))
-      }) +
+  mcplot() +
+  mc_observation_transformation(sd, vars(vs, am)) +
   mc_distribution("sigma", newdata = data_grid(mpg_model$data, disp, vs, am)) +
   mc_gglayer(coord_flip())
 ```
 
 # Frequentist models
 
-For the models that are not supported by extract functions in `tidybayes`, `modelcheck` uses `insight::get_predicted()` to extract the distributions of predictions and push-forward transformations. See a full list of the model types supported by `insight` by `insight::supported_models()`. We could choose these to show the predictive distributions, link-scale distributions, and the expectation distribution (the distribution of the expectation of the predictions) when defining `mc_distribution()`.
+For the models that are not supported by extract functions in `tidybayes`, `vmc` uses `insight::get_predicted()` to extract the distributions of predictions and push-forward transformations. See a full list of the model types supported by `insight` by `insight::supported_models()`. We could choose these to show the predictive distributions, link-scale distributions, and the expectation distribution (the distribution of the expectation of the predictions) when defining `mc_distribution()`.
 
-We go through this section to show how to generate model checks using `modelcheck` for an example general regression model that is fitted using `glm(family = "Gamma")` with a push-forward transformation on the `inverse` scale.
+We go through this section to show how to generate model checks using `vmc` for an example general regression model that is fitted using `glm(family = "Gamma")` with a push-forward transformation on the `inverse` scale.
 
 ```{r non bayesian example model}
 glm_model <- glm(mpg ~ cyl + hp, data = mtcars, family = "Gamma")
@@ -155,10 +149,8 @@ The Gamma family in `glm` links the response variable using `inverse` by default
 
 ```{r non bayesian link}
 glm_model %>% 
-  mcplot(observation_transform = function(df) {
-    df %>% 
-      mutate(observation = 1 / observation)
-    }) +
+  mcplot() +
+  mc_observation_transformation(function(x) 1/x) +
   mc_distribution("link") +
   mc_gglayer(coord_flip())
 ```
@@ -176,10 +168,8 @@ glm_model %>%
 
 ```{r non bayesian new data link}
 glm_model %>%
-  mcplot(observation_transform = function(df) {
-    df %>% 
-      mutate(observation = 1 / observation)
-    }) +
+  mcplot() +
+  mc_observation_transformation(function(x) 1/x) +
   mc_distribution("link", newdata = data_grid(get_data(glm_model), cyl, hp)) +
   mc_gglayer(coord_flip())
 ```

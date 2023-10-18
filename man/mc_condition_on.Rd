@@ -4,7 +4,13 @@
 \alias{mc_condition_on}
 \title{Add marginal check to model check}
 \usage{
-mc_condition_on(x = NULL, color = NULL, row = NULL, col = NULL)
+mc_condition_on(
+  x = NULL,
+  color = NULL,
+  row = NULL,
+  col = NULL,
+  scales = "fixed"
+)
 }
 \arguments{
 \item{x}{A variable quoted by \code{ggplot2::vars()} and defining the conditional variable on x axis.}
@@ -12,6 +18,8 @@ mc_condition_on(x = NULL, color = NULL, row = NULL, col = NULL)
 \item{color}{A variable quoted by \code{ggplot2::vars()} and defining the color aesthetic in model check.}
 
 \item{row, col}{A set of variables quoted by \code{ggplot2::vars()} and defining faceting groups on the rows or columns}
+
+\item{scales}{The setting of scales in \code{ggplot2::facet_grid()}. Default to be \code{"fixed"}.}
 }
 \description{
 Add marginal check to model check

@@ -4,35 +4,23 @@
 \alias{mcplot}
 \title{Create a new mcplot}
 \usage{
-mcplot(model, observation = NULL, observation_transform = NULL)
+mcplot(model, observation = NULL)
 }
 \arguments{
 \item{model}{The model fit object.}
 
 \item{observation}{A data frame standing for data observations. Default to be
-\code{NULL}. If \code{NULL}, \code{modelcheck} will set the observations as the
+\code{NULL}. If \code{NULL}, \code{vmc} will set the observations as the
 data set that used to fit the model. The input data frame should include the variables in model formula.}
-
-\item{observation_transform}{The transform function that is applied on the
-response variable in observed data. Default to be \code{NULL}. If \code{NULL},
-\code{modelcheck} will use no transformation. The transform function takes an input
-of a data frame, e.g., the data frame passed to \code{observation}, containing a
-column named \code{observation} standing for observations of the response variable
-and several columns standing for the predictors in model (if any). The output
-of the transform function should be in the same form as the input, a data frame
-containing a column named observation and several columns for the predictors.
-This argument is useful when \code{mc_distribution} is set to a distribution
-that is in a different unit from the raw observation, e.g., \code{sigma} in Gaussian
-family models describes the variance of observation. See example for more details.}
 }
 \description{
-\code{mcplot()} initializes a modelcheck object. It follows the ggplot syntax,
+\code{mcplot()} initializes a \code{vmc} object. It follows the ggplot syntax,
 which uses a plus sign (\code{+}) to define features of model check visualization.
 }
 \details{
 \code{mcplot()} uses a list of defaults to generate model check visualizations.
 One line of \code{mcplot(model)} could generate a complete visualization for
-posterior predictive checks. See \code{vignette("modelcheck")} for a complete
+posterior predictive checks. See \code{vignette("vmc")} for a complete
 guidance.
 }
 \examples{
@@ -47,14 +35,5 @@ mcplot(mpg_model) +
 # you can also choose to use another observed data to show in model checks
 new_observed_data = mtcars \%>\% mutate(mpg = rnorm(nrow(mtcars), 20, 5))
 mcplot(mpg_model, new_observed_data) +
-  mc_gglayer(coord_flip())
-# you can also define a transform function on the observed data, which will
-# be applied to the observation data frame just before the visualization.
-# This function is even more useful when the distribution in model has a
-# different unit from observed data.
-sd_function = function(df) {df \%>\% mutate(observation = sd(observation))}
-mcplot(mpg_model, observation_transform = sd_function) +
-  mc_distribution("sigma") +
-  mc_condition_on(x = vars(disp)) +
   mc_gglayer(coord_flip())
 }

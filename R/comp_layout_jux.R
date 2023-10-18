@@ -1,8 +1,8 @@
 
 comp_layout_jux = function(p_obs, ...) {
-  function(p_pred, samples, is_animation, color_var, row_vars, col_vars, color,
-           x_type, y_type, labels, gglayers, model_color, observed_color) {
-    if (!is_animation && ".row" %in% colnames(samples)) {
+  function(p_pred, samples, is_animation, color_var, row_vars, col_vars, scales, color,
+           x_type, y_type, labels, gglayers, model_color, observed_color, ndraw) {
+    if (".row" %in% colnames(samples)) {
       if ("x_axis" %in% colnames(samples)) {
         samples = samples %>%
           dplyr::group_by_at(c(ggplot2::vars(x_axis, observation, .row), color_var, row_vars, col_vars)) %>%
@@ -50,7 +50,7 @@ comp_layout_jux = function(p_obs, ...) {
     }
 
     p_obs <- obs_p +
-      ggplot2::facet_grid(rows = row_vars, cols = col_vars, labeller = ggplot2::label_both) +
+      ggplot2::facet_grid(rows = row_vars, cols = col_vars, scales = scales) +
       gglayers
 
     x_lim = ggplot2::layer_scales(p_sup)$x$range$range
@@ -60,23 +60,23 @@ comp_layout_jux = function(p_obs, ...) {
     p_pred = p_pred + ggplot2::lims(x = x_lim, y = y_lim)
 
     if (is_animation) {
-      p_obs <- p_obs +
-        gganimate::transition_manual(.draw, cumulative = TRUE)
+      temp = file.path(tempdir(), "obs_plot.png")
+      ggsave(temp, p_obs, units = "px", dpi = 72, height = 400, width = 400)
+      p_obs <- magick::image_read(temp)
 
-      p_obs <- p_obs %>%
-        gganimate::animate(renderer = gganimate::gifski_renderer()) %>%
-        magick::image_read()
       p_pred <- p_pred %>%
-        gganimate::animate(renderer = gganimate::gifski_renderer()) %>%
+        gganimate::animate(renderer = gganimate::gifski_renderer(),
+                           units = "px", res = 72, height = 400, width = 400) %>%
         magick::image_read()
       p <- magick::image_append(c(p_obs[1], p_pred[1]))
       for (i in 2:length(p_pred)) {
         combined <- magick::image_append(c(p_obs[1], p_pred[i]))
         p <- c(p, combined)
       }
+      return(magick::image_animate(p, fps = 5, dispose = "previous"))
     } else {
       p = cowplot::plot_grid(p_obs, p_pred, ...)
+      return(p)
     }
-    p
   }
 }

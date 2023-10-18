@@ -9,11 +9,12 @@ mc_operate <- function(prev_ret, operation, x_label = NULL, y_label = NULL) {
     return(list(samples, response_var, labels))
   }
   if (is.function(operation)) {
-    samples = operation(samples)
+    samples = operation(samples %>% ungroup())
     labels$x = x_label
     labels$y = y_label
   } else if (operation == "residual") {
     samples = samples %>%
+      ungroup() %>%
       dplyr::mutate(y_axis = prediction - observation)
     labels$y = paste("prediction - observation:", labels$y)
   } else if (operation == "qq") {

@@ -1,8 +1,8 @@
 ---
-title: "Specifying visual representations for model predictions and observed data using modelcheck"
+title: "Specifying visual representations for model predictions and observed data using vmc"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Visualizing the distribution of model prediction and observed data using modelcheck}
+  %\VignetteIndexEntry{Visualizing the distribution of model prediction and observed data using vmc}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,22 +16,23 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette describes how to use the `modelcheck` package to specify the visual representations used to describe the distribution of model predictions and observed data. We developed `modelcheck` to support visual representations of three types: area/extent, visual variable, and countable icon. For a more general introduction to `modelcheck` and its use on a standard model check workflow, see `vignette("modelcheck")`.
+This vignette describes how to use the `vmc` package to specify the visual representations used to describe the distribution of model predictions and observed data. We developed `vmc` to support visual representations of three types: area/extent, visual variable, and countable icon. For a more general introduction to `vmc` and its use on a standard model check workflow, see `vignette("vmc")`.
 
 # Setup
 
 The following libraries are required to run this vignette:
 
-```{r setup}
+```{r setup, message = FALSE, warning = FALSE}
 library(dplyr)
 library(purrr)
-library(modelcheck)
+library(vmc)
 library(ggplot2)
 library(ggdist)
 library(cowplot)
 library(rstan)
 library(brms)
 library(gganimate)
+library(beeswarm)
 
 theme_set(theme_tidybayes() + panel_border())
 ```
@@ -45,7 +46,7 @@ options(mc.cores = parallel::detectCores())
 
 # Model
 
-We use the built-in model `mpg_model`, a `brmsfit` object fitted in Gaussian model family with push-forward transformations `mu` and `sigma`, to demonstrate different visual representations `modelcheck` defines to show the distribution of model predictions and observed data. 
+We use the built-in model `mpg_model`, a `brmsfit` object fitted in Gaussian model family with push-forward transformations `mu` and `sigma`, to demonstrate different visual representations `vmc` defines to show the distribution of model predictions and observed data. 
 
 
 ```{r example_model}
@@ -54,7 +55,7 @@ mpg_model
 
 # Visualizing uncertainty using area/extent
 
-`modelcheck` supports a list of visual representations to encode uncertainty using area/extent variable: 
+`vmc` supports a list of visual representations to encode uncertainty using area/extent variable: 
 - `mc_model_slab()` (`mc_obs_slab()`)
 - `mc_model_ccdf()` (`mc_obs_ccdf()`)
 - `mc_model_cdf()` (`mc_obs_cdf()`)
@@ -104,7 +105,7 @@ mpg_model %>%
 
 # Visualizing uncertainty using visual variables
 
-`modelcheck` supports a list of visual representation that encode uncertainty using diffferent visual variables: 
+`vmc` supports a list of visual representation that encode uncertainty using diffferent visual variables: 
 - `mc_model_gradientinterval()` (`mc_obs_gradientinterval()`)
 - `mc_model_interval()` (`mc_obs_interval()`)
 - `mc_model_lineribbbon()` (`mc_obs_lineribbon()`)
@@ -134,7 +135,7 @@ mpg_model %>%
 
 # Visualizing uncertainty using countable icons
 
-`modelcheck` supports a list of visual representations that encode uncertainty using countable icons: 
+`vmc` supports a list of visual representations that encode uncertainty using countable icons: 
 - `mc_model_dots()` (`mc_obs_dots()`)
 - `mc_model_dotsinterval()` (`mc_obs_dotsinterval()`)
 - `mc_model_point()` (`mc_obs_point()`)
@@ -160,9 +161,9 @@ mpg_model %>%
   mc_gglayer(coord_flip())
 ```
 
-# Customize the visual representation using modelcheck
+# Customize the visual representation
 
-If your visual representation is not supported directly by `modelcheck`, you can use `mc_model_custom()` and `mc_obs_custom()` to pass in a geom or stat function to specify the visual representation of model predictions and observed data. For example, we could use `mc_model_custom(stat_boxplot)` to specify a box plot for model predictions and `mc_obs_custom(geom_swarm)` to specify a swarm plot for observed data.
+If your visual representation is not supported directly by `vmc`, you can use `mc_model_custom()` and `mc_obs_custom()` to pass in a geom or stat function to specify the visual representation of model predictions and observed data. For example, we could use `mc_model_custom(stat_boxplot)` to specify a box plot for model predictions and `mc_obs_custom(geom_swarm)` to specify a swarm plot for observed data.
 
 ```{r customized plot}
 mpg_model %>%
@@ -172,3 +173,76 @@ mpg_model %>%
   mc_condition_on(x = vars(vs)) +
   mc_gglayer(coord_flip())
 ```
+
+# Grouping samples
+
+`vmc` supports to show the uncertainty information conditioned on two sources, samples and input data points. Take the slab representation as example. In the beginning example, we are collapsing all the samples based on all the input data points together to form one distribution.
+
+```{r}
+mpg_model %>%
+  mcplot() +
+  mc_model_slab(group_sample = "collapse") +
+  mc_obs_slab() +
+  mc_gglayer(coord_flip()) +
+  mc_layout_juxtaposition()
+```
+
+You can also choose to group by the sample when visualizing by slabs (i.e., using individual slabs for each sample).
+
+```{r}
+mpg_model %>%
+  mcplot() +
+  mc_model_slab(group_sample = "group", alpha = .2) +
+  mc_obs_slab() +
+  mc_gglayer(coord_flip()) +
+  mc_layout_juxtaposition()
+```
+
+Or you can choose to group on input data point.
+
+```{r}
+mpg_model %>%
+  mcplot() +
+  mc_model_slab(group_sample = "group", group_on = "row", alpha = .2) +
+  mc_obs_slab() +
+  mc_gglayer(coord_flip()) +
+  mc_layout_juxtaposition()
+```
+
+Instead of overlapping all samples or rows together, you can choose to use HOPs to show them each in one time frame.
+
+```{r}
+mpg_model %>%
+  mcplot() +
+  mc_distribution(ndraws = 50) +
+  mc_model_slab(group_sample = "hops") +
+  mc_obs_slab(alpha = .5) +
+  mc_gglayer(coord_flip())
+```
+
+
+```{r echo=FALSE, results='asis'}
+# animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
+anim_save("modelcheck-uncert_hops_1.gif")
+cat("![](modelcheck-uncert_hops_1.gif)\n")
+```
+
+You can also aggregate the model predictions from samples or input data points by functions.
+
+```{r}
+mpg_model %>%
+  mcplot() +
+  mc_model_slab(group_sample = mean) +
+  mc_obs_slab(alpha = .5) +
+  mc_gglayer(coord_flip())
+```
+
+```{r}
+mpg_model %>%
+  mcplot() +
+  mc_observation_transformation(mean) +
+  mc_model_slab(group_sample = mean, group_on = "row") +
+  mc_obs_reference_line() +
+  mc_gglayer(coord_flip())
+```
+

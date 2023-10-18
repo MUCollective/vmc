@@ -1,6 +1,6 @@
 globalVariables(c(".draw", "x_type", "y_type"))
 
-auto_plot = function(..., n_sample = NA, draw = NULL) {
+auto_plot = function(..., n_sample = NA, draw = NULL, group_on = NULL) {
   function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var) {
     if (!is.na(n_sample) && ".draw" %in% colnames(samples)) {
       ndraw <- max(samples$.draw)
@@ -9,6 +9,14 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
         dplyr::filter(.draw %in% sample_ids)
     }
     zeallot::`%<-%`(c(x_type, y_type), axis_type)
+    if (is.null(group_on)) {
+      group_on = rlang::quo(.draw)
+    }
+    if (rlang::quo_name(group_on) == ".draw") {
+      group_by_vars = ggplot2::vars(.row)
+    } else {
+      group_by_vars = ggplot2::vars(.draw)
+    }
 
     if ("x_axis" %in% colnames(samples)) {
       x_axis_order = sort(unique(samples$x_axis))
@@ -51,11 +59,11 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
 
           if ("x_axis" %in% colnames(samples)) {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(group_by_vars, ggplot2::vars(x_axis), row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           } else {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(group_by_vars, row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           }
           p = ggplot2::geom_point(data = agg_sample,
@@ -74,7 +82,7 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
         } else if (draw == "group") {
           p = ggplot2::geom_point(data = samples,
                                   mapping = ggplot2::aes(y = !!y_var,
-                                                         group = .draw,
+                                                         group = !!group_on,
                                                          color = !!model_color),
                                   ...,
                                   shape = shape,
@@ -83,8 +91,9 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
           hops_id = get_unique_id()
           draw_col = paste(".draw", hops_id, sep = "")
           p = c(ggplot2::geom_point(data = samples %>%
-                                      dplyr::mutate(!!draw_col := .draw),
+                                      dplyr::mutate(!!draw_col := !!group_on),
                                   mapping = ggplot2::aes(y = !!y_var,
+                                                         group = !!draw_col,
                                                          color = !!model_color),
                                   ...,
                                   shape = shape,
@@ -105,11 +114,11 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
 
           if ("x_axis" %in% colnames(samples)) {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(group_by_vars, ggplot2::vars(x_axis), row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           } else {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(group_by_vars, row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           }
           p = c(ggplot2::geom_bin2d(data = agg_sample,
@@ -126,7 +135,7 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
         } else if (draw == "group") {
           p = c(ggplot2::geom_bin2d(data = samples,
                                     mapping = ggplot2::aes(y = factor(!!y_var, levels = y_axis_order),
-                                                           group = .draw,
+                                                           group = !!group_on,
                                                            fill = ggplot2::after_stat(count)),
                                     ...),
                 ggplot2::scale_fill_gradient2(name = 'Count of Records', low="white", high=model_color))
@@ -134,8 +143,9 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
           hops_id = get_unique_id()
           draw_col = paste(".draw", hops_id, sep = "")
           p = c(ggplot2::geom_bin2d(data = samples %>%
-                                      dplyr::mutate(!!draw_col := .draw),
+                                      dplyr::mutate(!!draw_col := !!group_on),
                                     mapping = ggplot2::aes(y = factor(!!y_var, levels = y_axis_order),
+                                                           group = !!draw_col,
                                                            fill = ggplot2::after_stat(count)),
                                     ...),
                 ggplot2::scale_fill_gradient2(name = 'Count of Records', low="white", high=model_color),
@@ -154,11 +164,11 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
 
           if ("x_axis" %in% colnames(samples)) {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(group_by_vars, ggplot2::vars(x_axis), row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           } else {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(group_by_vars, row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           }
           p = ggplot2::geom_line(data = agg_sample,
@@ -172,14 +182,14 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
                                  ...)
         } else if (draw == "group") {
           p = ggplot2::geom_line(data = samples,
-                                 mapping = ggplot2::aes(y = !!y_var, group = .draw,
+                                 mapping = ggplot2::aes(y = !!y_var, group = !!group_on,
                                                         color = !!model_color), stat = "density",
                                  ..., alpha = .1)
         } else if (draw == "hops") {
           hops_id = get_unique_id()
           draw_col = paste(".draw", hops_id, sep = "")
           p = c(ggplot2::geom_line(data = samples %>%
-                                     dplyr::mutate(!!draw_col := .draw),
+                                     dplyr::mutate(!!draw_col := !!group_on),
                                  mapping = ggplot2::aes(y = !!y_var, group = !!rlang::sym(draw_col),
                                                         color = !!model_color), stat = "density",
                                  ...),
@@ -198,11 +208,11 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
           # }
           if ("x_axis" %in% colnames(samples)) {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(ggplot2::vars(.row, x_axis), row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(group_by_vars, ggplot2::vars(x_axis), row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           } else {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(group_by_vars, row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           }
           p = ggplot2::geom_point(data = agg_sample,
@@ -224,7 +234,7 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
                                     dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)),
                                   mapping = ggplot2::aes(y = y_axis,
                                                          x = ..prop..,
-                                                         group = .draw,
+                                                         group = !!group_on,
                                                          color = !!model_color,
                                                          fill = !!model_color),
                                   stat = StatDisProp,
@@ -234,7 +244,7 @@ auto_plot = function(..., n_sample = NA, draw = NULL) {
           draw_col = paste(".draw", hops_id, sep = "")
           p = c(ggplot2::geom_point(data = samples %>%
                                     dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)) %>%
-                                    dplyr::mutate(!!draw_col := .draw),
+                                    dplyr::mutate(!!draw_col := !!group_on),
                                   mapping = ggplot2::aes(y = y_axis, x = (..count..)/sum(..count..),
                                                          group = !!rlang::sym(draw_col),
                                                          color = !!model_color,

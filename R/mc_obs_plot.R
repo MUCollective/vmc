@@ -1,55 +1,4 @@
 
-mc_obs = function(obs_uncertainty_representation, ...) {
-  p = function(mc_setting = NULL) {
-    if (obs_uncertainty_representation == "cdf") {
-      uncert_rep = uncertainty_rep_cdf(..., n_sample = NA, draw = "collapse")
-    } else if (obs_uncertainty_representation == "ccdf") {
-      uncert_rep = uncertainty_rep_ccdf(..., n_sample = NA, draw = "collapse")
-    } else if (obs_uncertainty_representation == "dots") {
-      uncert_rep = uncertainty_rep_dots(..., n_sample = NA, draw = "collapse")
-    } else if (obs_uncertainty_representation == "dotsinterval") {
-      uncert_rep = uncertainty_rep_dotsinterval(..., n_sample = NA, draw = "collapse")
-    } else if (obs_uncertainty_representation == "eye") {
-      uncert_rep = uncertainty_rep_eye(..., n_sample = NA, draw = "collapse")
-    } else if (obs_uncertainty_representation == "halfeye") {
-      uncert_rep = uncertainty_rep_halfeye(..., n_sample = NA, draw = "collapse")
-    } else if (obs_uncertainty_representation == "slab") {
-      uncert_rep = uncertainty_rep_slab(..., n_sample = NA, draw = "collapse")
-    } else if (obs_uncertainty_representation == "gradient") {
-      uncert_rep = uncertainty_rep_gradient(..., n_sample = NA, draw = "collapse")
-    } else if (obs_uncertainty_representation == "histinterval") {
-      uncert_rep = uncertainty_rep_his(..., n_sample = NA, draw = "collapse")
-    } else if (obs_uncertainty_representation == "pointinterval") {
-      uncert_rep = uncertainty_rep_pointinterval(..., n_sample = NA, draw = "collapse")
-    } else if (obs_uncertainty_representation == "lineribbon") {
-      uncert_rep = uncertainty_rep_lineribbon(..., n_sample = NA, draw = "collapse")
-    } else if (obs_uncertainty_representation == "ribbon") {
-      uncert_rep = uncertainty_rep_ribbon(..., n_sample = NA, draw = "collapse")
-    }
-    # else if (obs_uncertainty_representation == "none") {
-    #   if (base_plot == "auto") {
-    #     uncert_rep = auto_plot(..., n_sample = NA, draw = "collapse")
-    #   } else if (base_plot == "point") {
-    #     uncert_rep = point_plot(..., n_sample = NA, draw = "collapse")
-    #   } else if (base_plot == "line") {
-    #     uncert_rep = line_plot(..., n_sample = NA, draw = "collapse")
-    #   } else if (base_plot == "tile") {
-    #     uncert_rep = tile_plot(..., n_sample = NA, draw = "collapse")
-    #   } else if (is.function(base_plot)) {
-    #     uncert_rep = customized_plot(base_plot, ..., n_sample = NA, draw = "collapse")
-    #   }
-    # }
-    if (!("obs_uncertainty_representation" %in% names(mc_setting))) {
-      mc_setting = c(list(obs_uncertainty_representation = c(uncert_rep)), mc_setting)
-    } else {
-      mc_setting$obs_uncertainty_representation = c(mc_setting$obs_uncertainty_representation, uncert_rep)
-    }
-    mc_setting
-  }
-  class(p) <- 'modelcheck'
-  p
-}
-
 #' @rdname mc_model_cdf
 #' @export
 mc_obs_cdf = function(...) {
@@ -301,33 +250,6 @@ mc_obs_ribbon = function(...) {
 # }
 
 
-mc_obs = function(..., base_plot = "auto") {
-  p = function(mc_setting = NULL) {
-
-    if (base_plot == "auto") {
-      uncert_rep = auto_plot(..., n_sample = NA, draw = "collapse")
-    } else if (base_plot == "point") {
-      uncert_rep = point_plot(..., n_sample = NA, draw = "collapse")
-    } else if (base_plot == "line") {
-      uncert_rep = line_plot(..., n_sample = NA, draw = "collapse")
-    } else if (base_plot == "tile") {
-      uncert_rep = tile_plot(..., n_sample = NA, draw = "collapse")
-    } else if (is.function(base_plot)) {
-      uncert_rep = customized_plot(base_plot, ..., n_sample = NA, draw = "collapse")
-    }
-
-    if (!("uncertainty_representation" %in% names(mc_setting))) {
-      mc_setting = c(list(obs_uncertainty_representation = c(uncert_rep)), mc_setting)
-    } else {
-      mc_setting$obs_uncertainty_representation = c(mc_setting$obs_uncertainty_representation, uncert_rep)
-    }
-    mc_setting
-  }
-  class(p) <- 'modelcheck'
-  p
-}
-
-
 #' @rdname mc_model_auto
 #' @export
 mc_obs_auto = function(...) {
@@ -400,6 +322,22 @@ mc_obs_tile = function(...) {
   p
 }
 
+#' @rdname mc_model_reference_line
+#' @export
+mc_obs_reference_line = function(...) {
+  p = function(mc_setting = NULL) {
+    uncert_rep = reference_line(..., n_sample = NA, draw = "collapse")
+
+    if (!("uncertainty_representation" %in% names(mc_setting))) {
+      mc_setting = c(list(obs_uncertainty_representation = c(uncert_rep)), mc_setting)
+    } else {
+      mc_setting$obs_uncertainty_representation = c(mc_setting$obs_uncertainty_representation, uncert_rep)
+    }
+    mc_setting
+  }
+  class(p) <- 'modelcheck'
+  p
+}
 
 #' @rdname mc_model_custom
 #' @export

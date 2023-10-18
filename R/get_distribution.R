@@ -37,7 +37,7 @@
 
 mc_get_distribution <- function(distribution = "prediction", newdata = NULL,
                                 draw_function = NULL, response_var = NULL,
-                                ndraws = 500, ...) {
+                                ndraws = 500, transform = TRUE, ...) {
   function(model) {
     x_label = NULL
 
@@ -56,7 +56,8 @@ mc_get_distribution <- function(distribution = "prediction", newdata = NULL,
         response_var = insight::find_response(model)
       }
       y_label = response_var
-      fit_data <- insight::get_data(model)
+      # fit_data <- insight::get_data(model)
+      fit_data = model$data
 
       if (is.null(newdata)) {
         newdata <- fit_data
@@ -97,6 +98,7 @@ mc_get_distribution <- function(distribution = "prediction", newdata = NULL,
               tidybayes::linpred_draws(newdata = newdata,
                                        dpar = distribution,
                                        ndraws = ndraws,
+                                       transform = transform,
                                        ...)
             samples$prediction = samples[[distribution]]
           } else {
@@ -132,7 +134,10 @@ mc_get_distribution <- function(distribution = "prediction", newdata = NULL,
                         ndraws = ndraws, ...)
       }
     }
-    samples$observation = samples[[response_var]]
+    if (response_var %in% colnames(samples)) {
+      samples = samples %>% dplyr::mutate(observation = !!rlang::sym(response_var))
+    }
+    # samples$observation = samples[[response_var]]
     list(samples, model, response_var, list(y = y_label, x = x_label))
   }
 }

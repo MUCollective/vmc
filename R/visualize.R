@@ -1,13 +1,13 @@
 
 mc_visualize <- function(prev_ret, uncertainty_representation,
-                         conditional_vars = list(NULL, NULL, NULL, NULL),
+                         conditional_vars = list(NULL, NULL, NULL, NULL, "fixed"),
                          n_sample = 100,
                          axis_type = list(NULL, NULL),
                          model_color = NULL,
                          observed_color = NULL,
                          show_draw = "all") {
   zeallot::`%<-%`(c(samples, response_var, labels), prev_ret)
-  zeallot::`%<-%`(c(x_var, color_var, row_vars, col_vars), conditional_vars)
+  zeallot::`%<-%`(c(x_var, color_var, row_vars, col_vars, scales), conditional_vars)
   zeallot::`%<-%`(c(x_axis_type, y_axis_type), axis_type)
 
   x_var = x_var[[1]]
@@ -106,7 +106,7 @@ mc_visualize <- function(prev_ret, uncertainty_representation,
   }
   is_animation = "gganim" %in% class(p)
 
-  p <- p + ggplot2::facet_grid(rows = row_vars, cols = col_vars, labeller = ggplot2::label_both)
+  p <- p + ggplot2::facet_grid(rows = row_vars, cols = col_vars, scales = scales)
 
   list(samples, p, labels, response_var, conditional_vars, is_animation, x_axis_type, y_axis_type)
 }
