@@ -29,7 +29,6 @@
 #' mcplot(mpg_model) +
 #'   mc_distribution("sigma") +
 #'   mc_observation_transformation(sd, vars(disp)) +
-#'   mc_condition_on(x = vars(disp)) +
 #'   mc_gglayer(coord_flip())
 mc_observation_transformation = function(transform = NULL, group = NULL) {
   p = function(mc_setting = NULL) {
