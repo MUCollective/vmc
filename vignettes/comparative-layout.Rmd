@@ -17,11 +17,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-<<<<<<< HEAD
-This vignette describes how to use `vmc` package to specify the comparative layout that organizes the visual representations of model predictions and observed data into a layout that enhances the visual comparison. We developed `vmc` to support comparative layouts in three categories, juxtaposition, superposition, and explicit encoding. For a more general introduction to `vmc` and its use on a standard model check workflow, see `vignette("vmc")`.
-=======
 This vignette describes how to use the `vmc` package to specify a comparative layout that organizes the visual representation of model predictions and observed data into a layout to enhance visual comparison. We developed `vmc` to support comparative layouts of three types: juxtaposition, superposition, and explicit encoding. For a more general introduction to `vmc` and demonstration of its use in a standard model check workflow, see `vignette("vmc")`.
->>>>>>> main
 
 # Setup
 

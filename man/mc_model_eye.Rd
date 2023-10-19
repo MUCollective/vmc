@@ -50,7 +50,7 @@ mcplot(mpg_model) +
   mc_condition_on(x = vars(vs))
 
 mcplot(mpg_model) +
-  mc_model_eye(n_sample = 50, group_sample = mean, group_on = .row) +
+  mc_model_eye(n_sample = 50, group_sample = mean, group_on = "row") +
   mc_obs_eye() +
   mc_condition_on(x = vars(vs))
 }
