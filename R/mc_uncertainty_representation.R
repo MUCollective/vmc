@@ -36,7 +36,7 @@
 #'   mc_condition_on(x = vars(vs))
 #'
 #' mcplot(mpg_model) +
-#'   mc_model_cdf(n_sample = 50, group_sample = "group", group_on = .row) +
+#'   mc_model_cdf(n_sample = 50, group_sample = "group", group_on = "row") +
 #'   mc_obs_cdf() +
 #'   mc_condition_on(x = vars(vs))
 mc_model_cdf = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
@@ -91,7 +91,7 @@ mc_model_cdf = function(..., n_sample = NA, group_sample = "collapse", group_on 
 #'   mc_condition_on(x = vars(vs))
 #'
 #' mcplot(mpg_model) +
-#'   mc_model_ccdf(n_sample = 50, group_sample = mean, group_on = .row) +
+#'   mc_model_ccdf(n_sample = 50, group_sample = mean, group_on = "row") +
 #'   mc_obs_ccdf() +
 #'   mc_condition_on(x = vars(vs))
 mc_model_ccdf = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
@@ -147,7 +147,7 @@ mc_model_ccdf = function(..., n_sample = NA, group_sample = "collapse", group_on
 #'
 #' mcplot(mpg_model) +
 #'   mc_observation_transformation(mean) +
-#'   mc_model_dots(n_sample = 50, group_sample = mean, group_on = .row) +
+#'   mc_model_dots(n_sample = 50, group_sample = mean, group_on = "row") +
 #'   mc_obs_reference_line() +
 #'   mc_condition_on(x = vars(vs))
 mc_model_dots = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
@@ -202,7 +202,7 @@ mc_model_dots = function(..., n_sample = NA, group_sample = "collapse", group_on
 #'   mc_condition_on(x = vars(vs))
 #'
 #' mcplot(mpg_model) +
-#'   mc_model_dotsinterval(n_sample = 50, group_sample = mean, group_on = .row) +
+#'   mc_model_dotsinterval(n_sample = 50, group_sample = mean, group_on = "row") +
 #'   mc_obs_dotsinterval() +
 #'   mc_condition_on(x = vars(vs))
 mc_model_dotsinterval = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
@@ -257,7 +257,7 @@ mc_model_dotsinterval = function(..., n_sample = NA, group_sample = "collapse", 
 #'   mc_condition_on(x = vars(vs))
 #'
 #' mcplot(mpg_model) +
-#'   mc_model_eye(n_sample = 50, group_sample = mean, group_on = .row) +
+#'   mc_model_eye(n_sample = 50, group_sample = mean, group_on = "row") +
 #'   mc_obs_eye() +
 #'   mc_condition_on(x = vars(vs))
 mc_model_eye = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
@@ -312,7 +312,7 @@ mc_model_eye = function(..., n_sample = NA, group_sample = "collapse", group_on 
 #'   mc_condition_on(x = vars(vs))
 #'
 #' mcplot(mpg_model) +
-#'   mc_model_halfeye(n_sample = 50, group_sample = mean, group_on = .row) +
+#'   mc_model_halfeye(n_sample = 50, group_sample = mean, group_on = "row") +
 #'   mc_obs_halfeye() +
 #'   mc_condition_on(x = vars(vs))
 mc_model_halfeye = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
@@ -367,7 +367,7 @@ mc_model_halfeye = function(..., n_sample = NA, group_sample = "collapse", group
 #'   mc_condition_on(x = vars(vs))
 #'
 #' mcplot(mpg_model) +
-#'   mc_model_slab(n_sample = 50, group_sample = mean, group_on = .row) +
+#'   mc_model_slab(n_sample = 50, group_sample = mean, group_on = "row") +
 #'   mc_obs_slab() +
 #'   mc_condition_on(x = vars(vs))
 mc_model_slab = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
@@ -422,7 +422,7 @@ mc_model_slab = function(..., n_sample = NA, group_sample = "collapse", group_on
 #'   mc_condition_on(x = vars(vs))
 #'
 #' mcplot(mpg_model) +
-#'   mc_model_gradientinterval(n_sample = 50, group_sample = mean, group_on = .row) +
+#'   mc_model_gradientinterval(n_sample = 50, group_sample = mean, group_on = "row") +
 #'   mc_obs_gradientinterval() +
 #'   mc_condition_on(x = vars(vs))
 mc_model_gradientinterval = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
@@ -477,7 +477,7 @@ mc_model_gradientinterval = function(..., n_sample = NA, group_sample = "collaps
 #'   mc_condition_on(x = vars(vs))
 #'
 #' mcplot(mpg_model) +
-#'   mc_model_histinterval(n_sample = 50, group_sample = mean, group_on = .row) +
+#'   mc_model_histinterval(n_sample = 50, group_sample = mean, group_on = "row") +
 #'   mc_obs_histinterval() +
 #'   mc_condition_on(x = vars(vs))
 mc_model_histinterval = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {

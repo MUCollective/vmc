@@ -51,7 +51,7 @@ mcplot(mpg_model) +
 
 mcplot(mpg_model) +
   mc_observation_transformation(mean) +
-  mc_model_dots(n_sample = 50, group_sample = mean, group_on = .row) +
+  mc_model_dots(n_sample = 50, group_sample = mean, group_on = "row") +
   mc_obs_reference_line() +
   mc_condition_on(x = vars(vs))
 }

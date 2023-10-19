@@ -9,6 +9,10 @@ uncertainty_rep_lineribbon = function(..., n_sample = NA, draw = "collapse", gro
     }
     if (is.null(group_on)) {
       group_on = rlang::quo(.draw)
+    } else if (group_on == "sample") {
+      group_on = rlang::quo(.draw)
+    } else if (group_on == "row") {
+      group_on = rlang::quo(.row)
     }
     if (rlang::quo_name(group_on) == ".draw") {
       group_by_vars = ggplot2::vars(.row)
