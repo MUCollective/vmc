@@ -33,7 +33,7 @@ devtools::install_github("MUCollective/vmc")
 
 ### Set up
 
-```{r}
+```{r setup, message = FALSE, warning = FALSE}
 library(vmc)
 library(ggplot2)
 library(dplyr)
@@ -94,8 +94,7 @@ You can not only check on the shape of posterior predictive distribution, but al
 model_beta %>%
   mcplot() +
   mc_distribution("mu") +
-  mc_observation_transformation(mean) +
-  mc_obs_reference_line() +
+  mc_observation_transformation(mean, group = vars(flipper_length_mm)) +
   mc_gglayer(coord_flip())
 ```
 
@@ -120,12 +119,6 @@ model_beta %>%
   mc_distribution(ndraws = 50) +
   mc_model_point(group_sample = "hops") +
   mc_condition_on(x = vars(flipper_length_mm))
-```
-
-```{r echo=FALSE, results='asis'}
-# animate() doesn't seem to put the images in the right place for pkgdown, so this is a manual workaround
-anim_save("modelcheck-readme_hops_1.gif")
-cat("![](modelcheck-readme_hops_1.gif)\n")
 ```
 
 You may find that some of the points of model predictions and observed data are overlapped together, which may cause visual clutter. To fix this problem, you can change to another comparative layout using `mc_layout_*`.
