@@ -34,38 +34,10 @@ devtools::install_github("MUCollective/vmc")
 library(vmc)
 library(ggplot2)
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(palmerpenguins)
 library(brms)
-#> Loading required package: Rcpp
-#> Loading 'brms' package (version 2.20.4). Useful instructions
-#> can be found by typing help('brms'). A more detailed introduction
-#> to the package is available through vignette('brms_overview').
-#> 
-#> Attaching package: 'brms'
-#> The following object is masked from 'package:stats':
-#> 
-#>     ar
 library(ggdist)
-#> 
-#> Attaching package: 'ggdist'
-#> The following objects are masked from 'package:brms':
-#> 
-#>     dstudent_t, pstudent_t, qstudent_t, rstudent_t
 library(tidybayes)
-#> 
-#> Attaching package: 'tidybayes'
-#> 
-#> The following objects are masked from 'package:brms':
-#> 
-#>     dstudent_t, pstudent_t, qstudent_t, rstudent_t
 library(cowplot)
 library(tidyr)
 library(gganimate)
@@ -141,7 +113,7 @@ model_beta %>%
   mc_gglayer(coord_flip())
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
 You can not only check on the shape of posterior predictive
 distribution, but also check on other posterior distributions generated
@@ -154,12 +126,11 @@ posterior distribution of `mu`.
 model_beta %>%
   mcplot() +
   mc_distribution("mu") +
-  mc_observation_transformation(mean) +
-  mc_obs_reference_line() +
+  mc_observation_transformation(mean, group = vars(flipper_length_mm)) +
   mc_gglayer(coord_flip())
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 ### Check on the marginal effects
 
@@ -175,7 +146,7 @@ model_beta %>%
   mc_condition_on(x = vars(flipper_length_mm))
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 To reveal the uncertainty information inside of the model predictions,
 you can use either HOPs or other uncertainty representations.
@@ -191,8 +162,6 @@ model_beta %>%
   mc_condition_on(x = vars(flipper_length_mm))
 #> nframes and fps adjusted to match transition
 ```
-
-![](modelcheck-readme_hops_1.gif)
 
 You may find that some of the points of model predictions and observed
 data are overlapped together, which may cause visual clutter. To fix
@@ -223,7 +192,7 @@ model_beta %>%
 #> # ℹ 40 more rows
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.gif" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.gif" width="100%" />
 
 Other uncertainty representations are supported by the visual
 representation components (`mc_model_*` and `mc_obs_*`).
@@ -236,7 +205,7 @@ model_beta %>%
   mc_condition_on(x = vars(flipper_length_mm))
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 ### Facet to find the source of multimodal
 
@@ -254,7 +223,7 @@ model_beta %>%
                   row = vars(sex))
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 ``` r
 model_beta %>%
@@ -265,7 +234,7 @@ model_beta %>%
                   row = vars(island))
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 ``` r
 model_beta %>%
@@ -276,7 +245,7 @@ model_beta %>%
                   row = vars(species))
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
 
 ### New model
 
@@ -359,7 +328,7 @@ model_species %>%
                   color = vars(species))
 ```
 
-<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
 
 By this model checking, the new model is validated to capture the
 multimodal in the observed data. Then you can check more on the
@@ -373,7 +342,7 @@ model_species %>%
   mc_condition_on(x = vars(species))
 ```
 
-<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
 
 ### Check on model assumptions
 
@@ -391,7 +360,7 @@ model_species %>%
   mc_layout_nested()
 ```
 
-<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
 
 `vmc` also supports to check on other assumptions, like
 heteroskedasticity and the normality of residuals.
@@ -406,7 +375,7 @@ model_species %>%
   mc_gglayer(geom_hline(yintercept = 0))
 ```
 
-<img src="man/figures/README-unnamed-chunk-21-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
 
 ``` r
 model_species %>%
@@ -417,4 +386,4 @@ model_species %>%
   mc_gglayer(geom_abline())
 ```
 
-<img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
