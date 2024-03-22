@@ -46,8 +46,8 @@ mc_operate <- function(prev_ret, operation, x_label = NULL, y_label = NULL) {
       dplyr::mutate(ranks_in_row = order(order(y_axis, decreasing=FALSE)),
              x_axis = qnorm((ranks_in_row) / n.row),
              y_axis = y_axis - x_axis)
-    range_squish = c(min(samples$y_axis[!is.infinite(samples$y_axis)]),
-                     max(samples$y_axis[!is.infinite(samples$y_axis)])) + 0.1
+    range_squish = c(min(samples$y_axis[!is.infinite(samples$y_axis)]) - 0.1,
+                     max(samples$y_axis[!is.infinite(samples$y_axis)]) + 0.1)
     samples <- samples %>%
       mutate(y_axis = scales::squish_infinite(y_axis, range_squish))
     labels$x = "theoretical"
