@@ -79,7 +79,7 @@ column named <code>observation</code> standing for observations of the response 
 and several columns standing for the predictors in model (if any). The output
 of the transform function should be in the same form as the input, a data frame
 containing a column named observation and several columns for the predictors.
-This argument is useful when <code>mc_distribution</code> is set to a distribution
+This argument is useful when <code>mc_draw</code> is set to a distribution
 that is in a different unit from the raw observation, e.g., <code>sigma</code> in Gaussian
 family models describes the variance of observation. See example for more details.</p></dd>
 
@@ -103,7 +103,7 @@ in model check directly but need to be transformed into the same scale of
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="mcplot.html">mcplot</a></span><span class="op">(</span><span class="va">mpg_model</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="mc_distribution.html">mc_distribution</a></span><span class="op">(</span><span class="st">"sigma"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="mc_draw.html">mc_draw</a></span><span class="op">(</span><span class="st">"sigma"</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu">mc_observation_transformation</span><span class="op">(</span><span class="va">sd</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html" class="external-link">coord_flip</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 23 rows containing non-finite outside the scale range</span>

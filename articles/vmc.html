@@ -190,7 +190,7 @@ lines are roughly equivalent to following:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="../reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span><span class="st">"prediction"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_draw.html">mc_draw</a></span><span class="op">(</span><span class="st">"prediction"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_model_line.html">mc_model_line</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"density"</span>, alpha <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_model_line.html">mc_obs_line</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"density"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_layout_juxtaposition.html">mc_layout_superposition</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -198,9 +198,9 @@ lines are roughly equivalent to following:</p>
 <span><span class="co">#&gt; Warning: No shared levels found between `names(values)` of the manual scale and the</span></span>
 <span><span class="co">#&gt; data's <span style="color: #00BB00;">fill</span> values.</span></span></code></pre></div>
 <p><img src="vmc_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
-<p><code><a href="../reference/mc_distribution.html">mc_distribution()</a></code> defines how <code>vmc</code> would
-draw the posterior distribution, where <code>"prediction"</code> says to
-draw from the posterior predictive distribution and
+<p><code><a href="../reference/mc_draw.html">mc_draw()</a></code> defines how <code>vmc</code> would draw the
+posterior distribution, where <code>"prediction"</code> says to draw
+from the posterior predictive distribution and
 <code>newdata = NULL</code> says to use the observed dataset to
 generate. <code><a href="../reference/mc_model_line.html">mc_model_line()</a></code> and <code><a href="../reference/mc_model_line.html">mc_obs_line()</a></code>
 define the geom of model predictions and data observations and choose a
@@ -341,7 +341,7 @@ but users can also pass in a customized operation function.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/mcplot.html">mcplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="../reference/mc_distribution.html">mc_distribution</a></span><span class="op">(</span>ndraws <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="../reference/mc_draw.html">mc_draw</a></span><span class="op">(</span>ndraws <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_layout_juxtaposition.html">mc_layout_encoding</a></span><span class="op">(</span>transform <span class="op">=</span> <span class="st">"qq"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/mc_gglayer.html">mc_gglayer</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_abline</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: No shared levels found between `names(values)` of the manual scale and the</span></span>

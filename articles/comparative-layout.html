@@ -263,15 +263,14 @@ We could specify this easily by using
 function that computes the comparison between model predictions and
 observed data. The transformation function should take as input a data
 frame that is generated from the <code>newdata</code> data frame in
-<code><a href="../reference/mc_distribution.html">mc_distribution()</a></code> (if not specified, it’s the data used to
-fit the model, e.g., you can get that by
-<code>insight::get_data(model)</code>) with additional columns:
-<code>.row</code>, <code>.draw</code>, <code>prediction</code>, and
-<code>observation</code> (if <code>newdata</code> has a column for the
-response variable). We can transform the input data frame to generate a
-new one that has the columns for the variable shown on the y-axis and
-x-axis named as <code>y_axis</code> and <code>x_axis</code>
-(optional).</p>
+<code><a href="../reference/mc_draw.html">mc_draw()</a></code> (if not specified, it’s the data used to fit the
+model, e.g., you can get that by <code>insight::get_data(model)</code>)
+with additional columns: <code>.row</code>, <code>.draw</code>,
+<code>prediction</code>, and <code>observation</code> (if
+<code>newdata</code> has a column for the response variable). We can
+transform the input data frame to generate a new one that has the
+columns for the variable shown on the y-axis and x-axis named as
+<code>y_axis</code> and <code>x_axis</code> (optional).</p>
 <p>Here is an example of a customized explicit encoding, where we want
 to check the variance of residuals.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">

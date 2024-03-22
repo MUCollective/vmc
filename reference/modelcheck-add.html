@@ -83,7 +83,7 @@ then get more and more complex, checking your work at each step.</p>
     <h2>what can you add?</h2>
     
 
-<p>You can add any of the following types of objects:</p><ul><li><p>An <code><a href="mc_distribution.html">mc_distribution()</a></code> object overrides the current model distribution</p></li>
+<p>You can add any of the following types of objects:</p><ul><li><p>An <code><a href="mc_draw.html">mc_draw()</a></code> object overrides the current model distribution</p></li>
 <li><p>A uncertainty representation layer created by <code>mc_model_</code> or <code>mc_obs_</code>
 functions adds a visual layer for model distribution or observed data.</p></li>
 <li><p>A comparative layout layer created by <code>mc_layout_</code> functions overrides
@@ -103,7 +103,7 @@ be added in turn.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="mcplot.html">mcplot</a></span><span class="op">(</span><span class="va">mpg_model</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="mc_distribution.html">mc_distribution</a></span><span class="op">(</span><span class="st">"mu"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="mc_draw.html">mc_draw</a></span><span class="op">(</span><span class="st">"mu"</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No shared levels found between `names(values)` of the manual scale and the</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> data's <span style="color: #00BB00;">fill</span> values.</span>
@@ -112,7 +112,7 @@ be added in turn.</p>
 <span class="r-in"><span><span class="co"># Alternatively, you can add multiple components with a list.</span></span></span>
 <span class="r-in"><span><span class="co"># This can be useful to return from a function.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="mcplot.html">mcplot</a></span><span class="op">(</span><span class="va">mpg_model</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="mc_distribution.html">mc_distribution</a></span><span class="op">(</span><span class="st">"mu"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="mc_draw.html">mc_draw</a></span><span class="op">(</span><span class="st">"mu"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>       <span class="fu"><a href="mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">disp</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No shared levels found between `names(values)` of the manual scale and the</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> data's <span style="color: #00BB00;">fill</span> values.</span>
