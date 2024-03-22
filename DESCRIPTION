@@ -24,6 +24,7 @@ Imports:
     insight (>= 0.19.2),
     magick (>= 2.7.4),
     rlang (>= 1.1.0),
+    scales,
     tidybayes (>= 3.0.4),
     tidyverse,
     zeallot (>= 0.1.0)
