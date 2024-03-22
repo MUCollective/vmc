@@ -6,7 +6,7 @@
 #' @section what can you add?:
 #' You can add any of the following types of objects:
 #'
-#'   - An `mc_distribution()` object overrides the current model distribution
+#'   - An `mc_draw()` object overrides the current model distribution
 #'   - A uncertainty representation layer created by `mc_model_` or `mc_obs_`
 #'     functions adds a visual layer for model distribution or observed data.
 #'   - A comparative layout layer created by `mc_layout_` functions overrides
@@ -31,13 +31,13 @@
 #' library(ggplot2)
 #'
 #' mcplot(mpg_model) +
-#'   mc_distribution("mu") +
+#'   mc_draw("mu") +
 #'   mc_condition_on(x = vars(disp))
 #'
 #' # Alternatively, you can add multiple components with a list.
 #' # This can be useful to return from a function.
 #' mcplot(mpg_model) +
-#'   list(mc_distribution("mu"),
+#'   list(mc_draw("mu"),
 #'        mc_condition_on(x = vars(disp)))
 '+.modelcheck' = function(e1, e2) {
   e2name = deparse(substitute(e2))

@@ -79,7 +79,7 @@ Only checking the predictive distributions might not fulfill all the purposes of
 ```{r brms mu}
 mpg_model %>%
   mcplot() +
-  mc_distribution("mu") +
+  mc_draw("mu") +
   mc_gglayer(coord_flip())
 ```
 
@@ -89,7 +89,7 @@ Some model variables have a different unit than the observations of the response
 mpg_model %>%
   mcplot() +
   mc_observation_transformation(sd, vars(vs, am)) +
-  mc_distribution("sigma") +
+  mc_draw("sigma") +
   mc_gglayer(coord_flip())
 ```
 
@@ -102,14 +102,14 @@ In a model check, we may want to generate the model's prediction on a new data s
 ```{r brms new data}
 mpg_model %>%
   mcplot() +
-  mc_distribution("prediction", newdata = data_grid(mpg_model$data, disp, vs, am)) +
+  mc_draw("prediction", newdata = data_grid(mpg_model$data, disp, vs, am)) +
   mc_gglayer(coord_flip())
 ```
 
 ```{r brm new data mu}
 mpg_model %>%
   mcplot() +
-  mc_distribution("mu", newdata = data_grid(mpg_model$data, disp, vs, am)) +
+  mc_draw("mu", newdata = data_grid(mpg_model$data, disp, vs, am)) +
   mc_gglayer(coord_flip())
 ```
 
@@ -118,13 +118,13 @@ mpg_model %>%
 mpg_model %>%
   mcplot() +
   mc_observation_transformation(sd, vars(vs, am)) +
-  mc_distribution("sigma", newdata = data_grid(mpg_model$data, disp, vs, am)) +
+  mc_draw("sigma", newdata = data_grid(mpg_model$data, disp, vs, am)) +
   mc_gglayer(coord_flip())
 ```
 
 # Frequentist models
 
-For the models that are not supported by extract functions in `tidybayes`, `vmc` uses `insight::get_predicted()` to extract the distributions of predictions and push-forward transformations. See a full list of the model types supported by `insight` by `insight::supported_models()`. We could choose these to show the predictive distributions, link-scale distributions, and the expectation distribution (the distribution of the expectation of the predictions) when defining `mc_distribution()`.
+For the models that are not supported by extract functions in `tidybayes`, `vmc` uses `insight::get_predicted()` to extract the distributions of predictions and push-forward transformations. See a full list of the model types supported by `insight` by `insight::supported_models()`. We could choose these to show the predictive distributions, link-scale distributions, and the expectation distribution (the distribution of the expectation of the predictions) when defining `mc_draw()`.
 
 We go through this section to show how to generate model checks using `vmc` for an example general regression model that is fitted using `glm(family = "Gamma")` with a push-forward transformation on the `inverse` scale.
 
@@ -151,7 +151,7 @@ The Gamma family in `glm` links the response variable using `inverse` by default
 glm_model %>% 
   mcplot() +
   mc_observation_transformation(function(x) 1/x) +
-  mc_distribution("link") +
+  mc_draw("link") +
   mc_gglayer(coord_flip())
 ```
 
@@ -162,7 +162,7 @@ We could also specify a new data set to be used to generate distributions for no
 ```{r non bayesian new data}
 glm_model %>%
   mcplot() +
-  mc_distribution("prediction", newdata = data_grid(get_data(glm_model), cyl, hp)) +
+  mc_draw("prediction", newdata = data_grid(get_data(glm_model), cyl, hp)) +
   mc_gglayer(coord_flip())
 ```
 
@@ -170,6 +170,6 @@ glm_model %>%
 glm_model %>%
   mcplot() +
   mc_observation_transformation(function(x) 1/x) +
-  mc_distribution("link", newdata = data_grid(get_data(glm_model), cyl, hp)) +
+  mc_draw("link", newdata = data_grid(get_data(glm_model), cyl, hp)) +
   mc_gglayer(coord_flip())
 ```

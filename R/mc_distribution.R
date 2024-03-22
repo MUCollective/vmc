@@ -39,13 +39,13 @@
 #' library(modelr)
 #'
 #' mcplot(mpg_model) +
-#'   mc_distribution()
+#'   mc_draw()
 #'
 #' mcplot(mpg_model) +
-#'   mc_distribution("mu")
+#'   mc_draw("mu")
 #'
 #' mcplot(mpg_model) +
-#'   mc_distribution("mu", data_grid(mpg_model$data, disp, vs, am))
+#'   mc_draw("mu", data_grid(mpg_model$data, disp, vs, am))
 #'
 #' epred_draws_mu = function(model, newdata, ...) {
 #'   epred_draws(model, newdata, dpar = "mu", ...) %>%
@@ -53,8 +53,8 @@
 #' }
 #'
 #' mcplot(mpg_model) +
-#'   mc_distribution(extract_function = epred_draws_mu)
-mc_distribution = function(distribution = "prediction", newdata = NULL, extract_function = NULL, response_var = NULL, ndraws = 500, transform = TRUE, ...) {
+#'   mc_draw(extract_function = epred_draws_mu)
+mc_draw = function(distribution = "prediction", newdata = NULL, extract_function = NULL, response_var = NULL, ndraws = 500, transform = TRUE, ...) {
   p = function(mc_setting = NULL) {
     c(list(get_distribution = mc_get_distribution(distribution = distribution, newdata = newdata,
                                                   draw_function = extract_function, response_var = response_var,

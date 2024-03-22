@@ -86,14 +86,14 @@ model %>%
 ```{r}
 model %>% 
   mcplot() +
-  mc_distribution("prediction") +
+  mc_draw("prediction") +
   mc_model_line(stat = "density", alpha = .1) +
   mc_obs_line(stat = "density") +
   mc_layout_superposition() +
   mc_gglayer(coord_flip())
 ```
 
-`mc_distribution()` defines how `vmc` would draw the posterior distribution, where `"prediction"` says to draw from the posterior predictive distribution and `newdata = NULL` says to use the observed dataset to generate. `mc_model_line()` and `mc_obs_line()` define the geom of model predictions and data observations and choose a suitable geom for users based on data types. `mc_layout_superposition()` defines the comparative layout of the model check as superposition, i.e. to overlay model predictions and data observations. `mc_gglayer()` adds `ggplot2::layer()` to the model checking visualization. We will discuss more details about these functions in later sections.
+`mc_draw()` defines how `vmc` would draw the posterior distribution, where `"prediction"` says to draw from the posterior predictive distribution and `newdata = NULL` says to use the observed dataset to generate. `mc_model_line()` and `mc_obs_line()` define the geom of model predictions and data observations and choose a suitable geom for users based on data types. `mc_layout_superposition()` defines the comparative layout of the model check as superposition, i.e. to overlay model predictions and data observations. `mc_gglayer()` adds `ggplot2::layer()` to the model checking visualization. We will discuss more details about these functions in later sections.
 
 # Add conditional predictions for posterior predictive checks
 
@@ -210,7 +210,7 @@ Q-Q plot:
 ```{r}
 model %>%
   mcplot() + 
-  mc_distribution(ndraws = 1) +
+  mc_draw(ndraws = 1) +
   mc_layout_encoding(transform = "qq") +
   mc_gglayer(geom_abline())
 ```

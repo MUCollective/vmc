@@ -14,7 +14,7 @@ test_that("vanilla distribution", {
                               )
 
   vdiffr::expect_doppelganger("vanilla mu distribution",
-                              model_df %>% mcplot(observation = mtcars) + mc_distribution("mu")
+                              model_df %>% mcplot(observation = mtcars) + mc_draw("mu")
   )
 
   sd_function = function(df) {
@@ -23,7 +23,7 @@ test_that("vanilla distribution", {
 
   vdiffr::expect_doppelganger("vanilla sigma distribution",
                               model_df %>% mcplot(observation = mtcars, observation_transform = sd_function) +
-                                mc_distribution("sigma") +
+                                mc_draw("sigma") +
                                 mc_condition_on(x = ggplot2::vars(disp))
   )
 })

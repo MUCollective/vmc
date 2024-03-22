@@ -119,7 +119,7 @@ mpg_model %>%
 
 ## Specify your own explicit encoding
 
-We could use `vmc` to specify a customized transformation function that computes the comparison between model predictions and observed data. The transformation function should take as input a data frame that is generated from the `newdata` data frame in `mc_distribution()` (if not specified, it's the data used to fit the model, e.g., you can get that by `insight::get_data(model)`) with additional columns: `.row`, `.draw`, `prediction`, and `observation` (if `newdata` has a column for the response variable). We can transform the input data frame to generate a new one that has the columns for the variable shown on the y-axis and x-axis named as `y_axis` and `x_axis` (optional).
+We could use `vmc` to specify a customized transformation function that computes the comparison between model predictions and observed data. The transformation function should take as input a data frame that is generated from the `newdata` data frame in `mc_draw()` (if not specified, it's the data used to fit the model, e.g., you can get that by `insight::get_data(model)`) with additional columns: `.row`, `.draw`, `prediction`, and `observation` (if `newdata` has a column for the response variable). We can transform the input data frame to generate a new one that has the columns for the variable shown on the y-axis and x-axis named as `y_axis` and `x_axis` (optional).
 
 Here is an example of a customized explicit encoding, where we want to check the variance of residuals. 
 

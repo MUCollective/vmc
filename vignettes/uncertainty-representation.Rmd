@@ -214,7 +214,7 @@ Instead of overlapping all samples or rows together, you can choose to use HOPs 
 ```{r}
 mpg_model %>%
   mcplot() +
-  mc_distribution(ndraws = 50) +
+  mc_draw(ndraws = 50) +
   mc_model_slab(group_sample = "hops") +
   mc_obs_slab(alpha = .5) +
   mc_gglayer(coord_flip())

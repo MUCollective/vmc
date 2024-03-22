@@ -19,7 +19,7 @@ then get more and more complex, checking your work at each step.
 
 You can add any of the following types of objects:
 \itemize{
-\item An \code{mc_distribution()} object overrides the current model distribution
+\item An \code{mc_draw()} object overrides the current model distribution
 \item A uncertainty representation layer created by \code{mc_model_} or \code{mc_obs_}
 functions adds a visual layer for model distribution or observed data.
 \item A comparative layout layer created by \code{mc_layout_} functions overrides
@@ -40,12 +40,12 @@ be added in turn.
 library(ggplot2)
 
 mcplot(mpg_model) +
-  mc_distribution("mu") +
+  mc_draw("mu") +
   mc_condition_on(x = vars(disp))
 
 # Alternatively, you can add multiple components with a list.
 # This can be useful to return from a function.
 mcplot(mpg_model) +
-  list(mc_distribution("mu"),
+  list(mc_draw("mu"),
        mc_condition_on(x = vars(disp)))
 }
