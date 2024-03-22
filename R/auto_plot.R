@@ -1,6 +1,6 @@
 globalVariables(c(".draw", "x_type", "y_type"))
 
-auto_plot = function(..., n_sample = NA, draw = NULL, group_on = NULL) {
+auto_plot = function(..., n_sample = NA, draw = NULL) {
   function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var) {
     if (!is.na(n_sample) && ".draw" %in% colnames(samples)) {
       ndraw <- max(samples$.draw)
@@ -9,18 +9,8 @@ auto_plot = function(..., n_sample = NA, draw = NULL, group_on = NULL) {
         dplyr::filter(.draw %in% sample_ids)
     }
     zeallot::`%<-%`(c(x_type, y_type), axis_type)
-    if (is.null(group_on)) {
-      group_on = rlang::quo(.draw)
-    } else if (group_on == "sample") {
-      group_on = rlang::quo(.draw)
-    } else if (group_on == "row") {
-      group_on = rlang::quo(.row)
-    }
-    if (rlang::quo_name(group_on) == ".draw") {
-      group_by_vars = ggplot2::vars(.row)
-    } else {
-      group_by_vars = ggplot2::vars(.draw)
-    }
+
+    group_on = rlang::quo(.draw)
 
     if ("x_axis" %in% colnames(samples)) {
       x_axis_order = sort(unique(samples$x_axis))
@@ -63,11 +53,11 @@ auto_plot = function(..., n_sample = NA, draw = NULL, group_on = NULL) {
 
           if ("x_axis" %in% colnames(samples)) {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(group_by_vars, ggplot2::vars(x_axis), row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row), ggplot2::vars(x_axis), row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           } else {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(group_by_vars, row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           }
           p = ggplot2::geom_point(data = agg_sample,
@@ -118,11 +108,11 @@ auto_plot = function(..., n_sample = NA, draw = NULL, group_on = NULL) {
 
           if ("x_axis" %in% colnames(samples)) {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(group_by_vars, ggplot2::vars(x_axis), row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row), ggplot2::vars(x_axis), row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           } else {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(group_by_vars, row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           }
           p = c(ggplot2::geom_bin2d(data = agg_sample,
@@ -168,11 +158,11 @@ auto_plot = function(..., n_sample = NA, draw = NULL, group_on = NULL) {
 
           if ("x_axis" %in% colnames(samples)) {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(group_by_vars, ggplot2::vars(x_axis), row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row), ggplot2::vars(x_axis), row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           } else {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(group_by_vars, row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           }
           p = ggplot2::geom_line(data = agg_sample,
@@ -212,11 +202,11 @@ auto_plot = function(..., n_sample = NA, draw = NULL, group_on = NULL) {
           # }
           if ("x_axis" %in% colnames(samples)) {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(group_by_vars, ggplot2::vars(x_axis), row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row), ggplot2::vars(x_axis), row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           } else {
             agg_sample = samples %>%
-              dplyr::group_by_at(c(group_by_vars, row_vars, col_vars)) %>%
+              dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
               dplyr::summarise(y_agg = draw(!!y_var))
           }
           p = ggplot2::geom_point(data = agg_sample,

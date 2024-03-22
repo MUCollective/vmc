@@ -11,9 +11,6 @@
 #'  `group_sample` is `"hops"`, then `mc_model_cdf()` will use animation to show each
 #'  sample in one frame; if `group_sample` is an function, then all samples are aggregated
 #'  by `group_sample()`.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -36,12 +33,13 @@
 #'   mc_condition_on(x = vars(vs))
 #'
 #' mcplot(mpg_model) +
-#'   mc_model_cdf(n_sample = 50, group_sample = "group", group_on = "row") +
+#'   mc_model_cdf(n_sample = 50, group_sample = mean) +
+#'   mc_observation_transformation(mean) +
 #'   mc_obs_cdf() +
 #'   mc_condition_on(x = vars(vs))
-mc_model_cdf = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_cdf = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_cdf(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = uncertainty_rep_cdf(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -66,9 +64,6 @@ mc_model_cdf = function(..., n_sample = NA, group_sample = "collapse", group_on 
 #'  `group_sample` is `"hops"`, then `mc_model_ccdf()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -91,12 +86,13 @@ mc_model_cdf = function(..., n_sample = NA, group_sample = "collapse", group_on 
 #'   mc_condition_on(x = vars(vs))
 #'
 #' mcplot(mpg_model) +
-#'   mc_model_ccdf(n_sample = 50, group_sample = mean, group_on = "row") +
+#'   mc_model_ccdf(n_sample = 50, group_sample = mean) +
+#'   mc_observation_transformation(mean) +
 #'   mc_obs_ccdf() +
 #'   mc_condition_on(x = vars(vs))
-mc_model_ccdf = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_ccdf = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_ccdf(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = uncertainty_rep_ccdf(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -121,9 +117,6 @@ mc_model_ccdf = function(..., n_sample = NA, group_sample = "collapse", group_on
 #'  `group_sample` is `"hops"`, then `mc_model_dots()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -141,18 +134,12 @@ mc_model_ccdf = function(..., n_sample = NA, group_sample = "collapse", group_on
 #'   mc_condition_on(x = vars(vs))
 #'
 #' mcplot(mpg_model) +
-#'   mc_model_dots(n_sample = 50, group_sample = mean) +
-#'   mc_obs_dots() +
-#'   mc_condition_on(x = vars(vs))
-#'
-#' mcplot(mpg_model) +
 #'   mc_observation_transformation(mean) +
-#'   mc_model_dots(n_sample = 50, group_sample = mean, group_on = "row") +
-#'   mc_obs_reference_line() +
-#'   mc_condition_on(x = vars(vs))
-mc_model_dots = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+#'   mc_model_dots(n_sample = 50, group_sample = mean) +
+#'   mc_obs_reference_line()
+mc_model_dots = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_dots(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = uncertainty_rep_dots(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -177,9 +164,6 @@ mc_model_dots = function(..., n_sample = NA, group_sample = "collapse", group_on
 #'  `group_sample` is `"hops"`, then `mc_model_dotsinterval()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -200,14 +184,9 @@ mc_model_dots = function(..., n_sample = NA, group_sample = "collapse", group_on
 #'   mc_model_dotsinterval(n_sample = 50, group_sample = mean) +
 #'   mc_obs_dotsinterval() +
 #'   mc_condition_on(x = vars(vs))
-#'
-#' mcplot(mpg_model) +
-#'   mc_model_dotsinterval(n_sample = 50, group_sample = mean, group_on = "row") +
-#'   mc_obs_dotsinterval() +
-#'   mc_condition_on(x = vars(vs))
 mc_model_dotsinterval = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_dotsinterval(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = uncertainty_rep_dotsinterval(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -232,9 +211,6 @@ mc_model_dotsinterval = function(..., n_sample = NA, group_sample = "collapse", 
 #'  `group_sample` is `"hops"`, then `mc_model_eye()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -255,14 +231,9 @@ mc_model_dotsinterval = function(..., n_sample = NA, group_sample = "collapse", 
 #'   mc_model_eye(n_sample = 50, group_sample = mean) +
 #'   mc_obs_eye() +
 #'   mc_condition_on(x = vars(vs))
-#'
-#' mcplot(mpg_model) +
-#'   mc_model_eye(n_sample = 50, group_sample = mean, group_on = "row") +
-#'   mc_obs_eye() +
-#'   mc_condition_on(x = vars(vs))
-mc_model_eye = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_eye = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_eye(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = uncertainty_rep_eye(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -287,9 +258,6 @@ mc_model_eye = function(..., n_sample = NA, group_sample = "collapse", group_on 
 #'  `group_sample` is `"hops"`, then `mc_model_halfeye()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -310,14 +278,9 @@ mc_model_eye = function(..., n_sample = NA, group_sample = "collapse", group_on 
 #'   mc_model_halfeye(n_sample = 50, group_sample = mean) +
 #'   mc_obs_halfeye() +
 #'   mc_condition_on(x = vars(vs))
-#'
-#' mcplot(mpg_model) +
-#'   mc_model_halfeye(n_sample = 50, group_sample = mean, group_on = "row") +
-#'   mc_obs_halfeye() +
-#'   mc_condition_on(x = vars(vs))
-mc_model_halfeye = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_halfeye = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_halfeye(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = uncertainty_rep_halfeye(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -342,9 +305,6 @@ mc_model_halfeye = function(..., n_sample = NA, group_sample = "collapse", group
 #'  `group_sample` is `"hops"`, then `mc_model_slab()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -365,14 +325,9 @@ mc_model_halfeye = function(..., n_sample = NA, group_sample = "collapse", group
 #'   mc_model_slab(n_sample = 50, group_sample = mean) +
 #'   mc_obs_slab() +
 #'   mc_condition_on(x = vars(vs))
-#'
-#' mcplot(mpg_model) +
-#'   mc_model_slab(n_sample = 50, group_sample = mean, group_on = "row") +
-#'   mc_obs_slab() +
-#'   mc_condition_on(x = vars(vs))
-mc_model_slab = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_slab = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_slab(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = uncertainty_rep_slab(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -397,9 +352,6 @@ mc_model_slab = function(..., n_sample = NA, group_sample = "collapse", group_on
 #'  `group_sample` is `"hops"`, then `mc_model_gradientinterval()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -420,14 +372,9 @@ mc_model_slab = function(..., n_sample = NA, group_sample = "collapse", group_on
 #'   mc_model_gradientinterval(n_sample = 50, group_sample = mean) +
 #'   mc_obs_gradientinterval() +
 #'   mc_condition_on(x = vars(vs))
-#'
-#' mcplot(mpg_model) +
-#'   mc_model_gradientinterval(n_sample = 50, group_sample = mean, group_on = "row") +
-#'   mc_obs_gradientinterval() +
-#'   mc_condition_on(x = vars(vs))
-mc_model_gradientinterval = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_gradientinterval = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_gradient(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = uncertainty_rep_gradient(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -475,14 +422,9 @@ mc_model_gradientinterval = function(..., n_sample = NA, group_sample = "collaps
 #'   mc_model_histinterval(n_sample = 50, group_sample = mean) +
 #'   mc_obs_histinterval() +
 #'   mc_condition_on(x = vars(vs))
-#'
-#' mcplot(mpg_model) +
-#'   mc_model_histinterval(n_sample = 50, group_sample = mean, group_on = "row") +
-#'   mc_obs_histinterval() +
-#'   mc_condition_on(x = vars(vs))
-mc_model_histinterval = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_histinterval = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_his(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = uncertainty_rep_his(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -507,9 +449,6 @@ mc_model_histinterval = function(..., n_sample = NA, group_sample = "collapse", 
 #'  `group_sample` is `"hops"`, then `mc_model_pointinterval()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -525,9 +464,9 @@ mc_model_histinterval = function(..., n_sample = NA, group_sample = "collapse", 
 #'   mc_model_pointinterval(n_sample = 50) +
 #'   mc_obs_pointinterval() +
 #'   mc_condition_on(x = vars(disp))
-mc_model_pointinterval = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_pointinterval = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_pointinterval(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = uncertainty_rep_pointinterval(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -552,9 +491,6 @@ mc_model_pointinterval = function(..., n_sample = NA, group_sample = "collapse",
 #'  `group_sample` is `"hops"`, then `mc_model_interval()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -570,9 +506,9 @@ mc_model_pointinterval = function(..., n_sample = NA, group_sample = "collapse",
 #'   mc_model_interval(n_sample = 50) +
 #'   mc_obs_interval() +
 #'   mc_condition_on(x = vars(vs))
-mc_model_interval = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_interval = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_interval(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = uncertainty_rep_interval(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -597,9 +533,6 @@ mc_model_interval = function(..., n_sample = NA, group_sample = "collapse", grou
 #'  `group_sample` is `"hops"`, then `mc_model_lineribbon()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -610,9 +543,9 @@ mc_model_interval = function(..., n_sample = NA, group_sample = "collapse", grou
 #'   mc_model_lineribbon(n_sample = 50) +
 #'   mc_obs_lineribbon() +
 #'   mc_condition_on(x = vars(disp))
-mc_model_lineribbon = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_lineribbon = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_lineribbon(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = uncertainty_rep_lineribbon(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -637,9 +570,6 @@ mc_model_lineribbon = function(..., n_sample = NA, group_sample = "collapse", gr
 #'  `group_sample` is `"hops"`, then `mc_model_ribbon()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -650,9 +580,9 @@ mc_model_lineribbon = function(..., n_sample = NA, group_sample = "collapse", gr
 #'   mc_model_ribbon(n_sample = 50) +
 #'   mc_obs_ribbon() +
 #'   mc_condition_on(x = vars(disp))
-mc_model_ribbon = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_ribbon = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
-    uncert_rep = uncertainty_rep_ribbon(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = uncertainty_rep_ribbon(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -679,9 +609,6 @@ mc_model_ribbon = function(..., n_sample = NA, group_sample = "collapse", group_
 #'  `group_sample` is `"hops"`, then `mc_model_auto()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -701,10 +628,10 @@ mc_model_ribbon = function(..., n_sample = NA, group_sample = "collapse", group_
 #'   mc_model_auto(n_sample = 50) +
 #'   mc_obs_auto() +
 #'   mc_condition_on(x = vars(vs))
-mc_model_auto = function(..., n_sample = NA, group_sample = NULL, group_on = NULL) {
+mc_model_auto = function(..., n_sample = NA, group_sample = NULL) {
   p = function(mc_setting = NULL) {
 
-    uncert_rep = auto_plot(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = auto_plot(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -730,9 +657,6 @@ mc_model_auto = function(..., n_sample = NA, group_sample = NULL, group_on = NUL
 #'  if `group_sample` is `"hops"`, then `mc_model_point()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -743,10 +667,10 @@ mc_model_auto = function(..., n_sample = NA, group_sample = NULL, group_on = NUL
 #'   mc_model_point(n_sample = 50) +
 #'   mc_obs_point() +
 #'   mc_condition_on(x = vars(disp))
-mc_model_point = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_point = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
 
-    uncert_rep = point_plot(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = point_plot(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -772,9 +696,6 @@ mc_model_point = function(..., n_sample = NA, group_sample = "collapse", group_o
 #'  if `group_sample` is `"hops"`, then `mc_model_line()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -785,10 +706,10 @@ mc_model_point = function(..., n_sample = NA, group_sample = "collapse", group_o
 #'   mc_model_line(n_sample = 50) +
 #'   mc_obs_line() +
 #'   mc_condition_on(x = vars(disp))
-mc_model_line = function(..., n_sample = NA, group_sample = "group", group_on = NULL) {
+mc_model_line = function(..., n_sample = NA, group_sample = "group") {
   p = function(mc_setting = NULL) {
 
-    uncert_rep = line_plot(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = line_plot(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -814,17 +735,14 @@ mc_model_line = function(..., n_sample = NA, group_sample = "group", group_on = 
 #'  if `group_sample` is `"hops"`, then `mc_model_tile()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
 #' @examples
-mc_model_tile = function(..., n_sample = NA, group_sample = "hops", group_on = NULL) {
+mc_model_tile = function(..., n_sample = NA, group_sample = "hops") {
   p = function(mc_setting = NULL) {
 
-    uncert_rep = tile_plot(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = tile_plot(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -851,9 +769,6 @@ mc_model_tile = function(..., n_sample = NA, group_sample = "hops", group_on = N
 #'  if `group_sample` is `"hops"`, then `mc_model_reference_line()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -864,10 +779,10 @@ mc_model_tile = function(..., n_sample = NA, group_sample = "hops", group_on = N
 #'   mc_observation_transformation(mean) +
 #'   mc_model_slab(n_sample = 50) +
 #'   mc_obs_reference_line()
-mc_model_reference_line = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_reference_line = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
 
-    uncert_rep = reference_line(..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = reference_line(..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)
@@ -896,9 +811,6 @@ mc_model_reference_line = function(..., n_sample = NA, group_sample = "collapse"
 #'  if `group_sample` is `"hops"`, then `mc_model_custom()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
@@ -911,10 +823,10 @@ mc_model_reference_line = function(..., n_sample = NA, group_sample = "collapse"
 #'   mc_obs_custom(geom_swarm) +
 #'   mc_condition_on(x = vars(vs)) +
 #'   mc_gglayer(coord_flip())
-mc_model_custom = function(plot, ..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_custom = function(plot, ..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
 
-    uncert_rep = customized_plot(plot, ..., n_sample = n_sample, draw = group_sample, group_on = group_on)
+    uncert_rep = customized_plot(plot, ..., n_sample = n_sample, draw = group_sample)
 
     if (!("uncertainty_representation" %in% names(mc_setting))) {
       mc_setting = c(list(uncertainty_representation = c(uncert_rep)), mc_setting)

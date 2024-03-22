@@ -1,4 +1,4 @@
-point_plot = function(..., n_sample = NA, draw = "collapse", group_on = NULL) {
+point_plot = function(..., n_sample = NA, draw = "collapse") {
   function(samples, row_vars, col_vars, labels, axis_type, model_color, is_animation, y_var) {
     if (!is.na(n_sample) && ".draw" %in% colnames(samples)) {
       ndraw <- max(samples$.draw)
@@ -6,18 +6,7 @@ point_plot = function(..., n_sample = NA, draw = "collapse", group_on = NULL) {
       samples <- samples %>%
         dplyr::filter(.draw %in% sample_ids)
     }
-    if (is.null(group_on)) {
-      group_on = rlang::quo(.draw)
-    } else if (group_on == "sample") {
-      group_on = rlang::quo(.draw)
-    } else if (group_on == "row") {
-      group_on = rlang::quo(.row)
-    }
-    if (rlang::quo_name(group_on) == ".draw") {
-      group_by_vars = ggplot2::vars(.row)
-    } else {
-      group_by_vars = ggplot2::vars(.draw)
-    }
+    group_on = rlang::quo(.draw)
 
     if (is.function(draw)) {
       # if (is.null(agg_func)) {
@@ -28,11 +17,11 @@ point_plot = function(..., n_sample = NA, draw = "collapse", group_on = NULL) {
       # }
       if ("x_axis" %in% colnames(samples)) {
         agg_sample = samples %>%
-          dplyr::group_by_at(c(group_by_vars, ggplot2::vars(x_axis), row_vars, col_vars)) %>%
+          dplyr::group_by_at(c(ggplot2::vars(.row), ggplot2::vars(x_axis), row_vars, col_vars)) %>%
           dplyr::summarise(y_agg = draw(!!y_var))
       } else {
         agg_sample = samples %>%
-          dplyr::group_by_at(c(group_by_vars, row_vars, col_vars)) %>%
+          dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
           dplyr::summarise(y_agg = draw(!!y_var))
       }
 
