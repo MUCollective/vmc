@@ -65,7 +65,7 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mc_obs_ccdf</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mc_model_ccdf</span><span class="op">(</span><span class="va">...</span>, n_sample <span class="op">=</span> <span class="cn">NA</span>, group_sample <span class="op">=</span> <span class="st">"collapse"</span>, group_on <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">mc_model_ccdf</span><span class="op">(</span><span class="va">...</span>, n_sample <span class="op">=</span> <span class="cn">NA</span>, group_sample <span class="op">=</span> <span class="st">"collapse"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -87,12 +87,6 @@ is <code>"group"</code>, then each draw is shown in an individual CCDF bar plot;
 <code>group_sample</code> is <code>"hops"</code>, then <code>mc_model_ccdf()</code> will use animation to show each
 draw in one frame; if <code>group_sample</code> is an function, then all draws are aggregated
 by <code>group_sample()</code>. See examples for more details.</p></dd>
-
-
-<dt>group_on</dt>
-<dd><p>To group the samples by sample id or row id (i.e., the input data point id).
-Default <code>NULL</code>. If <code>group_on = NULL</code> or <code>group_on = "sample"</code>, the group sample method is applied by grouping on <code>.draw</code>.
-If <code>group_on = "row"</code>, the group sample method is applied on <code>.row</code>.</p></dd>
 
 </dl></div>
 
@@ -119,7 +113,8 @@ If <code>group_on = "row"</code>, the group sample method is applied on <code>.r
 <span class="r-plt img"><img src="mc_model_ccdf-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="mcplot.html">mcplot</a></span><span class="op">(</span><span class="va">mpg_model</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu">mc_model_ccdf</span><span class="op">(</span>n_sample <span class="op">=</span> <span class="fl">50</span>, group_sample <span class="op">=</span> <span class="va">mean</span>, group_on <span class="op">=</span> <span class="st">"row"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">mc_model_ccdf</span><span class="op">(</span>n_sample <span class="op">=</span> <span class="fl">50</span>, group_sample <span class="op">=</span> <span class="va">mean</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="mc_observation_transformation.html">mc_observation_transformation</a></span><span class="op">(</span><span class="va">mean</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu">mc_obs_ccdf</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="mc_condition_on.html">mc_condition_on</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">vs</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="mc_model_ccdf-4.png" alt="" width="700" height="433"></span>
