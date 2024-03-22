@@ -22,12 +22,12 @@ tile_plot = function(..., n_sample = NA, draw = "hops") {
       if ("x_axis" %in% colnames(samples)) {
         agg_sample = samples %>%
           dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)) %>%
-          dplyr::group_by_at(c(ggplot2::vars(.row), ggplot2::vars(x_axis), row_vars, col_vars)) %>%
+          dplyr::group_by_at(c(ggplot2::vars(.draw), ggplot2::vars(x_axis), row_vars, col_vars)) %>%
           dplyr::summarise(y_agg = draw(y_axis))
       } else {
         agg_sample = samples %>%
           dplyr::mutate(y_axis = factor(!!y_var, levels = y_axis_order)) %>%
-          dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+          dplyr::group_by_at(c(ggplot2::vars(.draw), row_vars, col_vars)) %>%
           dplyr::summarise(y_agg = draw(y_axis))
       }
       p = c(ggplot2::geom_bin2d(data = agg_sample,

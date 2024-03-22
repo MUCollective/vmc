@@ -7,18 +7,20 @@ customized_plot = function(func, ..., n_sample = NA, draw = "collapse", group_on
         dplyr::filter(.draw %in% sample_ids)
     }
     zeallot::`%<-%`(c(x_type, y_type), axis_type)
-    if (is.null(group_on)) {
-      group_on = rlang::quo(.draw)
-    } else if (group_on == "sample") {
-      group_on = rlang::quo(.draw)
-    } else if (group_on == "row") {
-      group_on = rlang::quo(.row)
-    }
-    if (rlang::quo_name(group_on) == ".draw") {
-      group_by_vars = ggplot2::vars(.row)
-    } else {
-      group_by_vars = ggplot2::vars(.draw)
-    }
+    group_on = rlang::quo(.draw)
+    group_by_vars = ggplot2::vars(.draw)
+    # if (is.null(group_on)) {
+    #   group_on = rlang::quo(.draw)
+    # } else if (group_on == "sample") {
+    #   group_on = rlang::quo(.draw)
+    # } else if (group_on == "row") {
+    #   group_on = rlang::quo(.row)
+    # }
+    # if (rlang::quo_name(group_on) == ".draw") {
+    #   group_by_vars = ggplot2::vars(.row)
+    # } else {
+    #   group_by_vars = ggplot2::vars(.draw)
+    # }
 
     if (is.function(draw)) {
       # if (is.null(agg_func)) {
