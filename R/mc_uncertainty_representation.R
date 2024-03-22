@@ -184,7 +184,7 @@ mc_model_dots = function(..., n_sample = NA, group_sample = "collapse") {
 #'   mc_model_dotsinterval(n_sample = 50, group_sample = mean) +
 #'   mc_obs_dotsinterval() +
 #'   mc_condition_on(x = vars(vs))
-mc_model_dotsinterval = function(..., n_sample = NA, group_sample = "collapse", group_on = NULL) {
+mc_model_dotsinterval = function(..., n_sample = NA, group_sample = "collapse") {
   p = function(mc_setting = NULL) {
     uncert_rep = uncertainty_rep_dotsinterval(..., n_sample = n_sample, draw = group_sample)
 
@@ -399,9 +399,6 @@ mc_model_gradientinterval = function(..., n_sample = NA, group_sample = "collaps
 #'  `group_sample` is `"hops"`, then `mc_model_histinterval()` will use animation to show each
 #'  draw in one frame; if `group_sample` is an function, then all draws are aggregated
 #'  by `group_sample()`. See examples for more details.
-#' @param group_on To group the samples by sample id or row id (i.e., the input data point id).
-#'  Default `NULL`. If `group_on = NULL` or `group_on = "sample"`, the group sample method is applied by grouping on `.draw`.
-#'  If `group_on = "row"`, the group sample method is applied on `.row`.
 #'
 #' @export
 #'
