@@ -8,7 +8,7 @@
 \usage{
 mc_obs_point(...)
 
-mc_model_point(..., n_sample = NA, group_sample = "collapse", group_on = NULL)
+mc_model_point(..., n_sample = NA, group_sample = "collapse")
 }
 \arguments{
 \item{...}{Augments passed to \href{https://ggplot2.tidyverse.org/reference/geom_point.html}{\code{ggplot2::geom_point}}.}
@@ -24,10 +24,6 @@ then all draws are collapsed together and each point represents one data point;
 if \code{group_sample} is \code{"hops"}, then \code{mc_model_point()} will use animation to show each
 draw in one frame; if \code{group_sample} is an function, then all draws are aggregated
 by \code{group_sample()}. See examples for more details.}
-
-\item{group_on}{To group the samples by sample id or row id (i.e., the input data point id).
-Default \code{NULL}. If \code{group_on = NULL} or \code{group_on = "sample"}, the group sample method is applied by grouping on \code{.draw}.
-If \code{group_on = "row"}, the group sample method is applied on \code{.row}.}
 }
 \description{
 Points geom

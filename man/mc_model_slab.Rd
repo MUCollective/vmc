@@ -8,7 +8,7 @@
 \usage{
 mc_obs_slab(...)
 
-mc_model_slab(..., n_sample = NA, group_sample = "collapse", group_on = NULL)
+mc_model_slab(..., n_sample = NA, group_sample = "collapse")
 }
 \arguments{
 \item{...}{Augments passed to \href{https://mjskay.github.io/ggdist/reference/stat_slab.html}{\code{ggdist::stat_slab}}.}
@@ -23,10 +23,6 @@ is \code{"group"}, then each draw is shown in an individual slab plot; if
 \code{group_sample} is \code{"hops"}, then \code{mc_model_slab()} will use animation to show each
 draw in one frame; if \code{group_sample} is an function, then all draws are aggregated
 by \code{group_sample()}. See examples for more details.}
-
-\item{group_on}{To group the samples by sample id or row id (i.e., the input data point id).
-Default \code{NULL}. If \code{group_on = NULL} or \code{group_on = "sample"}, the group sample method is applied by grouping on \code{.draw}.
-If \code{group_on = "row"}, the group sample method is applied on \code{.row}.}
 }
 \description{
 Slab (ridge) plot for model predictions
@@ -46,11 +42,6 @@ mcplot(mpg_model) +
 
 mcplot(mpg_model) +
   mc_model_slab(n_sample = 50, group_sample = mean) +
-  mc_obs_slab() +
-  mc_condition_on(x = vars(vs))
-
-mcplot(mpg_model) +
-  mc_model_slab(n_sample = 50, group_sample = mean, group_on = "row") +
   mc_obs_slab() +
   mc_condition_on(x = vars(vs))
 }

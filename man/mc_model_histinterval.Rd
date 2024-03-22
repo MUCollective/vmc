@@ -8,12 +8,7 @@
 \usage{
 mc_obs_histinterval(...)
 
-mc_model_histinterval(
-  ...,
-  n_sample = NA,
-  group_sample = "collapse",
-  group_on = NULL
-)
+mc_model_histinterval(..., n_sample = NA, group_sample = "collapse")
 }
 \arguments{
 \item{...}{Augments passed to \href{https://mjskay.github.io/ggdist/reference/stat_histinterval.html}{\code{ggdist::stat_histinterval}}.}
@@ -51,11 +46,6 @@ mcplot(mpg_model) +
 
 mcplot(mpg_model) +
   mc_model_histinterval(n_sample = 50, group_sample = mean) +
-  mc_obs_histinterval() +
-  mc_condition_on(x = vars(vs))
-
-mcplot(mpg_model) +
-  mc_model_histinterval(n_sample = 50, group_sample = mean, group_on = "row") +
   mc_obs_histinterval() +
   mc_condition_on(x = vars(vs))
 }
