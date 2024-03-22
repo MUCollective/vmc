@@ -18,11 +18,11 @@ uncertainty_rep_lineribbon = function(..., n_sample = NA, draw = "collapse") {
 
         if ("x_axis" %in% colnames(samples)) {
           agg_sample = samples %>%
-            dplyr::group_by_at(c(ggplot2::vars(.row), ggplot2::vars(x_axis), row_vars, col_vars)) %>%
+            dplyr::group_by_at(c(ggplot2::vars(.draw), ggplot2::vars(x_axis), row_vars, col_vars)) %>%
             dplyr::summarise(y_agg = draw(!!y_var))
         } else {
           agg_sample = samples %>%
-            dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+            dplyr::group_by_at(c(ggplot2::vars(.draw), row_vars, col_vars)) %>%
             dplyr::summarise(y_agg = draw(!!y_var))
         }
         p = list(ggdist::stat_lineribbon(data = agg_sample,
@@ -67,7 +67,7 @@ uncertainty_rep_lineribbon = function(..., n_sample = NA, draw = "collapse") {
       #   x_seq = function(len) seq(min(samples[[rlang::quo_name(y_var)]]),
       #                             max(samples[[rlang::quo_name(y_var)]]), length.out = len)
       #   temp_samples <- samples %>%
-      #     dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+      #     dplyr::group_by_at(c(ggplot2::vars(.draw), row_vars, col_vars)) %>%
       #     dplyr::filter(dplyr::n()> 1) %>%
       #     dplyr::summarise(x_ds = list(stats::density(!!y_var)$x),
       #                      y_ds = list(stats::density(!!y_var)$y)) %>%

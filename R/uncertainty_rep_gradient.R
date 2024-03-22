@@ -19,11 +19,11 @@ uncertainty_rep_gradient = function(..., n_sample = NA, draw = "collapse") {
 
       if ("x_axis" %in% colnames(samples)) {
         agg_sample = samples %>%
-          dplyr::group_by_at(c(ggplot2::vars(.row), ggplot2::vars(x_axis), row_vars, col_vars)) %>%
+          dplyr::group_by_at(c(ggplot2::vars(.draw), ggplot2::vars(x_axis), row_vars, col_vars)) %>%
           dplyr::summarise(y_agg = draw(!!y_var))
       } else {
         agg_sample = samples %>%
-          dplyr::group_by_at(c(ggplot2::vars(.row), row_vars, col_vars)) %>%
+          dplyr::group_by_at(c(ggplot2::vars(.draw), row_vars, col_vars)) %>%
           dplyr::summarise(y_agg = draw(!!y_var))
       }
       return(c(ggdist::stat_gradientinterval(data = agg_sample,
