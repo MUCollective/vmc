@@ -8,12 +8,7 @@
 \usage{
 mc_obs_dotsinterval(...)
 
-mc_model_dotsinterval(
-  ...,
-  n_sample = NA,
-  group_sample = "collapse",
-  group_on = NULL
-)
+mc_model_dotsinterval(..., n_sample = NA, group_sample = "collapse")
 }
 \arguments{
 \item{...}{Augments passed to \href{https://mjskay.github.io/ggdist/reference/stat_dotsinterval.html}{\code{ggdist::stat_dotsinterval}}.}
