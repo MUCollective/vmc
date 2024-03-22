@@ -15,7 +15,7 @@ column named \code{observation} standing for observations of the response variab
 and several columns standing for the predictors in model (if any). The output
 of the transform function should be in the same form as the input, a data frame
 containing a column named observation and several columns for the predictors.
-This argument is useful when \code{mc_distribution} is set to a distribution
+This argument is useful when \code{mc_draw} is set to a distribution
 that is in a different unit from the raw observation, e.g., \code{sigma} in Gaussian
 family models describes the variance of observation. See example for more details.}
 
@@ -37,7 +37,7 @@ in model check directly but need to be transformed into the same scale of
 library(ggplot2)
 
 mcplot(mpg_model) +
-  mc_distribution("sigma") +
+  mc_draw("sigma") +
   mc_observation_transformation(sd, vars(disp)) +
   mc_gglayer(coord_flip())
 }

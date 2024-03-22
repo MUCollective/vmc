@@ -18,7 +18,7 @@ reference:
     distribution and the distribution of push forward transformations that the
     model used to link the independent variables to the response variable.
   contents:
-  - mc_distribution
+  - mc_draw
 
 - title: Uncertainty representation layers
   desc: >

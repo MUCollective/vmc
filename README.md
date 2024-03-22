@@ -111,23 +111,27 @@ using `coord_flip()` to flip the response variable to the x-axis).
 model_beta %>%
   mcplot() +
   mc_gglayer(coord_flip())
+#> Warning: No shared levels found between `names(values)` of the manual scale and the
+#> data's fill values.
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
 You can not only check on the shape of posterior predictive
 distribution, but also check on other posterior distributions generated
-by `model_beta` using the `mc_distribution` component. For example,
-there are two parameter `mu` and `phi` besides the response variable in
-the beta regression model we are using. Here, we are check on the
-posterior distribution of `mu`.
+by `model_beta` using the `mc_draw` component. For example, there are
+two parameter `mu` and `phi` besides the response variable in the beta
+regression model we are using. Here, we are check on the posterior
+distribution of `mu`.
 
 ``` r
 model_beta %>%
   mcplot() +
-  mc_distribution("mu") +
+  mc_draw("mu") +
   mc_observation_transformation(mean, group = vars(flipper_length_mm)) +
   mc_gglayer(coord_flip())
+#> Warning: No shared levels found between `names(values)` of the manual scale and the
+#> data's fill values.
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
@@ -142,8 +146,10 @@ predictor using `mc_condition_on`.
 ``` r
 model_beta %>%
   mcplot() +
-  mc_distribution(ndraws = 1) +
+  mc_draw(ndraws = 1) +
   mc_condition_on(x = vars(flipper_length_mm))
+#> Warning: No shared levels found between `names(values)` of the manual scale and the
+#> data's fill values.
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
@@ -157,10 +163,12 @@ you can use either HOPs or other uncertainty representations.
 ``` r
 model_beta %>%
   mcplot() +
-  mc_distribution(ndraws = 50) +
+  mc_draw(ndraws = 50) +
   mc_model_point(group_sample = "hops") +
   mc_condition_on(x = vars(flipper_length_mm))
-#> nframes and fps adjusted to match transition
+#> Warning: No shared levels found between `names(values)` of the manual scale and the
+#> data's fill values.
+#> `nframes` and `fps` adjusted to match transition
 ```
 
 You may find that some of the points of model predictions and observed
@@ -171,11 +179,19 @@ this problem, you can change to another comparative layout using
 ``` r
 model_beta %>%
   mcplot() +
-  mc_distribution(ndraws = 50) +
+  mc_draw(ndraws = 50) +
   mc_model_point(group_sample = "hops") +
   mc_condition_on(x = vars(flipper_length_mm)) +
   mc_layout_juxtaposition()
-#> nframes and fps adjusted to match transition
+#> Warning: No shared levels found between `names(values)` of the manual scale and the
+#> data's fill values.
+#> No shared levels found between `names(values)` of the manual scale and the
+#> data's fill values.
+#> No shared levels found between `names(values)` of the manual scale and the
+#> data's fill values.
+#> No shared levels found between `names(values)` of the manual scale and the
+#> data's fill values.
+#> `nframes` and `fps` adjusted to match transition
 #> # A tibble: 50 × 7
 #>    format width height colorspace matte filesize density
 #>    <chr>  <int>  <int> <chr>      <lgl>    <int> <chr>  
@@ -200,7 +216,7 @@ representation components (`mc_model_*` and `mc_obs_*`).
 ``` r
 model_beta %>%
   mcplot() +
-  mc_distribution(ndraws = 1000) +
+  mc_draw(ndraws = 1000) +
   mc_model_lineribbon() +
   mc_condition_on(x = vars(flipper_length_mm))
 ```
@@ -217,7 +233,7 @@ using `mc_condition_on`.
 ``` r
 model_beta %>%
   mcplot(observation = penguins) +
-  mc_distribution(ndraws = 1000) +
+  mc_draw(ndraws = 1000) +
   mc_model_lineribbon() +
   mc_condition_on(x = vars(flipper_length_mm),
                   row = vars(sex))
@@ -228,7 +244,7 @@ model_beta %>%
 ``` r
 model_beta %>%
   mcplot(observation = penguins) +
-  mc_distribution(ndraws = 1000) +
+  mc_draw(ndraws = 1000) +
   mc_model_lineribbon() +
   mc_condition_on(x = vars(flipper_length_mm),
                   row = vars(island))
@@ -239,7 +255,7 @@ model_beta %>%
 ``` r
 model_beta %>%
   mcplot(observation = penguins) +
-  mc_distribution(ndraws = 1000) +
+  mc_draw(ndraws = 1000) +
   mc_model_lineribbon() +
   mc_condition_on(x = vars(flipper_length_mm),
                   row = vars(species))
@@ -322,7 +338,7 @@ length and species in one plot by using `mc_condition_on`.
 ``` r
 model_species %>%
   mcplot() +
-  mc_distribution(ndraws = 1000) +
+  mc_draw(ndraws = 1000) +
   mc_model_lineribbon() +
   mc_condition_on(x = vars(flipper_length_mm),
                   color = vars(species))
@@ -358,6 +374,8 @@ model_species %>%
   mc_obs_interval() +
   mc_condition_on(x = vars(species)) +
   mc_layout_nested()
+#> Warning: No shared levels found between `names(values)` of the manual scale and the
+#> data's fill values.
 ```
 
 <img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
@@ -368,7 +386,7 @@ heteroskedasticity and the normality of residuals.
 ``` r
 model_species %>%
   mcplot() +
-  mc_distribution(ndraws = 1) +
+  mc_draw(ndraws = 1) +
   mc_condition_on(x = vars(flipper_length_mm),
                   color = vars(species)) +
   mc_layout_encoding("residual") +
@@ -380,7 +398,7 @@ model_species %>%
 ``` r
 model_species %>%
   mcplot() +
-  mc_distribution(ndraws = 1) +
+  mc_draw(ndraws = 1) +
   mc_condition_on(color = vars(species)) +
   mc_layout_encoding("qq") +
   mc_gglayer(geom_abline())
